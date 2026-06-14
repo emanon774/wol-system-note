@@ -1,5 +1,4 @@
 // Layout
-// Layout width fix
 
 @media (min-width: 50rem) {
   .side-bar,
@@ -10,9 +9,18 @@
 
   .main,
   .side-bar + .main {
-    max-width: 100rem !important;
+    max-width: 85rem !important;
     margin-left: 16.5rem !important;
   }
+}
+
+.main-content-wrap {
+  max-width: none;
+}
+
+.main-content {
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 
@@ -28,6 +36,7 @@
     width: 100%;
     max-width: 100%;
     margin-left: 0 !important;
+    box-sizing: border-box;
   }
 
   .search-input {
@@ -36,19 +45,6 @@
   }
 }
 
-.main-content-wrap,
-.main {
-  max-width: none;
-}
-
-.main-content {
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-.side-bar {
-  width: 18rem;
-}
 
 // Typography
 
@@ -88,6 +84,7 @@
 .main-content tbody tr:nth-child(even) {
   background-color: #fffdf8;
 }
+
 
 // Code blocks
 
