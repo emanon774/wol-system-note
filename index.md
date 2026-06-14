@@ -1,6 +1,6 @@
 ---
 title: ホーム
-nav_order: 1
+nav_order: 2
 ---
 
 # WOL System Note
