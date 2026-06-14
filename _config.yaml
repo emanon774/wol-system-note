@@ -3,6 +3,6 @@ description: FF14システム情報メモ
 remote_theme: just-the-docs/just-the-docs
 color_scheme: light
 search_enabled: true
-aux_links:
-  GitHub:
-    - https://github.com/emanon774/wol-system-note
+just_the_docs:
+  custom_css:
+    - assets/css/custom.css
