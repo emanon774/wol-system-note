@@ -1,4 +1,3 @@
-# Warrior of Light System Notes
 - 📖 [コンテンツガイド](contents.md)
 - ⚔️ 装備・トークン
 - 📅 週制限一覧
