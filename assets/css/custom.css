@@ -1,0 +1,27 @@
+:root {
+  --ls-gold: #c7a44f;
+}
+
+body {
+  background: #f5f5f5;
+}
+
+.site-header {
+  border-top: 4px solid var(--ls-gold);
+}
+
+.main-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+h1 {
+  border-bottom: 3px solid var(--ls-gold);
+  padding-bottom: 8px;
+}
+
+h2 {
+  border-left: 4px solid var(--ls-gold);
+  padding-left: 12px;
+}
