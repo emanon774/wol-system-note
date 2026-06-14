@@ -1,29 +1,24 @@
 // Layout
-@media (min-width: 50rem) {
-  .main {
-    max-width: 100rem !important;
-  }
-}
+// Layout width fix
 
-@media (min-width: 66.5rem) {
+@media (min-width: 50rem) {
+  .side-bar,
+  .site-header {
+    width: 16.5rem !important;
+    min-width: 16.5rem !important;
+  }
+
+  .main,
   .side-bar + .main {
+    max-width: 100rem !important;
     margin-left: 16.5rem !important;
   }
 }
 
-// Sidebar header / search layout fix
+
+// Sidebar header / search fix
 
 @media (min-width: 50rem) {
-  .side-bar {
-    width: 16.5rem;
-    min-width: 16.5rem;
-  }
-
-  .site-header {
-    width: 16.5rem;
-    min-width: 16.5rem;
-  }
-
   .site-title {
     max-width: 100%;
     overflow-wrap: break-word;
@@ -32,6 +27,7 @@
   .search {
     width: 100%;
     max-width: 100%;
+    margin-left: 0 !important;
   }
 
   .search-input {
