@@ -1,15 +1,19 @@
 // Layout
 
 .main-content-wrap,
-.main-content {
+.main {
   max-width: none;
 }
 
 .main-content {
   padding-left: 2rem;
   padding-right: 2rem;
+  max-width: 100rem;
 }
 
+.side-bar {
+  width: 18rem;
+}
 
 // Typography
 
