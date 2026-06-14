@@ -1,9 +1,3 @@
-@import "just-the-docs";
-
-body {
-  background: hotpink !important;
-}
-
 :root {
   --ffxiv-gold: #c6a75a;
   --ffxiv-gold-dark: #9f8240;
