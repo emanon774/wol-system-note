@@ -1,7 +1,6 @@
-# wol-system-note
-[コンテンツ](contents.md)
-装備
-トークン
-週制限
-お得意様
-クロちゃんの空想帳
+# Warrior of Light System Notes
+- 📖 [コンテンツガイド](contents.md)
+- ⚔️ 装備・トークン
+- 📅 週制限一覧
+- 🤝 お得意様取引
+- 📓 クロの空想帳
