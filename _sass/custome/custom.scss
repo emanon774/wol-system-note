@@ -1,4 +1,9 @@
 // Layout
+@media (min-width: 50rem) {
+  .main {
+    max-width: 100rem;
+  }
+}
 
 .main-content-wrap,
 .main {
@@ -8,7 +13,6 @@
 .main-content {
   padding-left: 2rem;
   padding-right: 2rem;
-  max-width: 100rem;
 }
 
 .side-bar {
