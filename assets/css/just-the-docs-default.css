@@ -44,3 +44,7 @@ h3 {
 table {
   width: 100%;
 }
+
+.anchor {
+  display: none;
+}
