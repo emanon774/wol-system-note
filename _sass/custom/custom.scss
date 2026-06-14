@@ -1,13 +1,42 @@
 // Layout
 @media (min-width: 50rem) {
   .main {
-    max-width: none;
+    max-width: 100rem !important;
   }
 }
 
 @media (min-width: 66.5rem) {
   .side-bar + .main {
-    margin-left: 16.5rem;
+    margin-left: 16.5rem !important;
+  }
+}
+
+// Sidebar header / search layout fix
+
+@media (min-width: 50rem) {
+  .side-bar {
+    width: 16.5rem;
+    min-width: 16.5rem;
+  }
+
+  .site-header {
+    width: 16.5rem;
+    min-width: 16.5rem;
+  }
+
+  .site-title {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .search {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
