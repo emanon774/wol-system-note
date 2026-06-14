@@ -5,6 +5,12 @@
   }
 }
 
+@media (min-width: 100rem) {
+  .side-bar {
+    width: calc((100% - 100rem) / 2 + 16.5rem);
+  }
+}
+
 .main-content-wrap,
 .main {
   max-width: none;
