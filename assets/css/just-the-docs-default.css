@@ -48,3 +48,7 @@ table {
 .anchor {
   display: none;
 }
+
+svg {
+  display: none !important;
+}
