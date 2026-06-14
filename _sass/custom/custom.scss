@@ -53,11 +53,29 @@
   font-weight: 700;
 }
 
-.main-content h1,
-.main-content h2,
-.main-content h3,
+.main-content h1 {
+  color: #4f4337;
+  border-bottom: 0.2rem solid #8b6a45;
+  padding-bottom: 0.4rem;
+}
+
+.main-content h2 {
+  background: #efe8dc;
+  border-left: 0.35rem solid #8b6a45;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.25rem;
+}
+
+.main-content h3 {
+  color: #5f4b32;
+  border-bottom: 1px solid #d7cbb8;
+  padding-bottom: 0.2rem;
+}
+
 .main-content h4 {
-  color: #78350f;
+  color: #6f5d49;
+  padding-left: 1rem;
+  border-left: 0.15rem solid #d7cbb8;
 }
 
 
