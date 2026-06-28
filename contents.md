@@ -105,7 +105,7 @@ nav_order: 10
 |----|:------:|:-----:|----|
 | 異聞シラディハ水道 | 高難易度 | 4人 | [基本ハムカツ　ぽんぽん2回目　4回目ジジー　鎖塔東西　呪具４無敵　呪具５固定](https://jp.finalfantasyxiv.com/lodestone/character/50168577/blog/5372925/) |
 | 異聞零式シラディハ水道 | 高難易度＋α | 4人 |  |
-| 異聞六根山 | 高難易度 | 4人 | [基本ハムカツ　サイコロSpell変現ぽしうめ　T近調整(https://jp.finalfantasyxiv.com/lodestone/character/21754202/blog/5316372/)] |
+| 異聞六根山 | 高難易度 | 4人 | [基本ハムカツ　サイコロSpell変現ぽしうめ　T近調整](https://jp.finalfantasyxiv.com/lodestone/character/21754202/blog/5316372/) |
 | 異聞零式六根山 | 高難易度＋α | 4人 |  |
 | 異聞アロアロ島 | 高難易度 | 4人 | [基本ハムカツ　湧水ぴれん遠隔泡追いTH塔中央 ダーツ遠調整運動会ゆーくん](https://note.com/norahsandoleh/n/n8aea296213e3) |
 | 異聞零式アロアロ島 | 高難易度＋α | 4人 |  |
