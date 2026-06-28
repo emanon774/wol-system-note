@@ -118,6 +118,7 @@
 |水晶龍の鱗|5|NM|
 
 ## レジスタンスウェポン（RW）
+[【暁月】今から始めるRW強化チャート【6.1】](https://jp.finalfantasyxiv.com/lodestone/character/3223857/blog/5007445)
 
 | クエスト | やること | 必要なアイテム |
 |---|---|---|
