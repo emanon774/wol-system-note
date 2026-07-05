@@ -1,0 +1,1233 @@
+{
+  "hashSize": 16,
+  "maps": {
+    "lakeland": {
+      "name": "レイクランド",
+      "image": "maps/レイクランド.jpg",
+      "sizeFactor": 100
+    },
+    "kholusia": {
+      "name": "コルシア島",
+      "image": "maps/コルシア島.jpg",
+      "sizeFactor": 100
+    },
+    "amhAraeng": {
+      "name": "アム・アレーン",
+      "image": "maps/アム・アレーン.jpg",
+      "sizeFactor": 100
+    },
+    "ilMheg": {
+      "name": "イル・メグ",
+      "image": "maps/イル・メグ.jpg",
+      "sizeFactor": 100
+    },
+    "raktika": {
+      "name": "ラケティカ大森林",
+      "image": "maps/ラケティカ大森林.jpg",
+      "sizeFactor": 100
+    },
+    "tempest": {
+      "name": "テンペスト",
+      "image": "maps/テンペスト.jpg",
+      "sizeFactor": 100
+    },
+    "labyrinthos": {
+      "name": "ラヴィリンソス",
+      "image": "maps/ラヴィリンソス.jpg",
+      "sizeFactor": 100
+    },
+    "thavnair": {
+      "name": "サベネア島",
+      "image": "maps/サベネア島.jpg",
+      "sizeFactor": 100
+    },
+    "garlemald": {
+      "name": "ガレマルド",
+      "image": "maps/ガレマルド.jpg",
+      "sizeFactor": 100
+    },
+    "mareLamentorum": {
+      "name": "嘆きの海",
+      "image": "maps/嘆きの海.jpg",
+      "sizeFactor": 100
+    },
+    "elpis": {
+      "name": "エルピス",
+      "image": "maps/エルピス.jpg",
+      "sizeFactor": 100
+    },
+    "ultimaThule": {
+      "name": "ウルティマ・トゥーレ",
+      "image": "maps/ウルティマ・トゥーレ.jpg",
+      "sizeFactor": 100
+    },
+    "urqopacha": {
+      "name": "オルコ・パチャ",
+      "image": "maps/オルコ・パチャ.jpg",
+      "sizeFactor": 100
+    },
+    "kozamauka": {
+      "name": "コザマル・カ",
+      "image": "maps/コザマル・カ.jpg",
+      "sizeFactor": 100
+    },
+    "yakTel": {
+      "name": "ヤクテル樹海",
+      "image": "maps/ヤクテル樹海.jpg",
+      "sizeFactor": 100
+    },
+    "shaaloani": {
+      "name": "シャーローニ荒野",
+      "image": "maps/シャーローニ荒野.jpg",
+      "sizeFactor": 100
+    },
+    "heritageFound": {
+      "name": "ヘリテージファウンド",
+      "image": "maps/ヘリテージファウンド.jpg",
+      "sizeFactor": 100
+    },
+    "livingMemory": {
+      "name": "リビング・メモリー",
+      "image": "maps/リビング・メモリー.jpg",
+      "sizeFactor": 100
+    }
+  },
+  "entries": [
+    {
+      "id": "G12_amhAraeng_12_14",
+      "grade": "G12",
+      "map": "amhAraeng",
+      "x": 12.0,
+      "y": 14.0,
+      "hash": "c40b4a07206e013aca5be7c363eb393b3d371c9d6ce93f337e1ba53bc1fbe7a3"
+    },
+    {
+      "id": "G12_amhAraeng_13_30",
+      "grade": "G12",
+      "map": "amhAraeng",
+      "x": 13.0,
+      "y": 30.0,
+      "hash": "400f4a0709ee49fa16d2531b293b29391d3dce9f894b988b1a5bc63bc4bfe7a3"
+    },
+    {
+      "id": "G12_amhAraeng_26_23",
+      "grade": "G12",
+      "map": "amhAraeng",
+      "x": 26.0,
+      "y": 23.0,
+      "hash": "400b4a07ae4e5c3a1c0f1cd36ccb3d33791ff08f65cf31bb70dbb2fbc0bbe7a3"
+    },
+    {
+      "id": "G12_amhAraeng_27_13",
+      "grade": "G12",
+      "map": "amhAraeng",
+      "x": 27.0,
+      "y": 13.0,
+      "hash": "400f4a27284e5b8e1e163cd76c4b393b793b709f70cb3a3b52cbb3fbc3fbe5b7"
+    },
+    {
+      "id": "G12_amhAraeng_30_30",
+      "grade": "G12",
+      "map": "amhAraeng",
+      "x": 30.0,
+      "y": 30.0,
+      "hash": "500baa0fa04e417e0a561ac729fb1b3b1b3f061d266b2c390dd38c3bc4bbe7a3"
+    },
+    {
+      "id": "G12_amhAraeng_32_8",
+      "grade": "G12",
+      "map": "amhAraeng",
+      "x": 32.0,
+      "y": 8.0,
+      "hash": "101f4a27ac665a7a521a5359e1ed3b2d333f0d9f29cb393f099b81fbc3bbe7a3"
+    },
+    {
+      "id": "G12_amhAraeng_34_17",
+      "grade": "G12",
+      "map": "amhAraeng",
+      "x": 34.0,
+      "y": 17.0,
+      "hash": "500f4a270ce61c62386763f36b331b3313330de368e33ac31793833bc37be7a7"
+    },
+    {
+      "id": "G12_amhAraeng_36_11",
+      "grade": "G12",
+      "map": "amhAraeng",
+      "x": 36.0,
+      "y": 11.0,
+      "hash": "c80faa072c2e469e134c0bd98be3db61dfd1cf8b8f033903320be23bc0bbe7a3"
+    },
+    {
+      "id": "G12_ilMheg_10_13",
+      "grade": "G12",
+      "map": "ilMheg",
+      "x": 10.0,
+      "y": 13.0,
+      "hash": "200f2c072c0e5cca496b734d63e363334b3b0d8f274b0c3b298b83ebc0bbe783"
+    },
+    {
+      "id": "G12_ilMheg_12_20",
+      "grade": "G12",
+      "map": "ilMheg",
+      "x": 12.0,
+      "y": 20.0,
+      "hash": "840fac078666463a8f1b039b2beb3b313b350d9728db395907cd83fdc3bbe7a3"
+    },
+    {
+      "id": "G12_ilMheg_14_27",
+      "grade": "G12",
+      "map": "ilMheg",
+      "x": 14.0,
+      "y": 27.0,
+      "hash": "c44fac0fa84e497e4a5f09c729e331333b330c1b6d230b170fcb83f3c3bf6783"
+    },
+    {
+      "id": "G12_ilMheg_21_7",
+      "grade": "G12",
+      "map": "ilMheg",
+      "x": 21.0,
+      "y": 7.0,
+      "hash": "800bac07886e49ee9f46de7378dbe323633b1d8f28ef392b1fcb83fbc3bbe7a3"
+    },
+    {
+      "id": "G12_ilMheg_25_12",
+      "grade": "G12",
+      "map": "ilMheg",
+      "x": 25.0,
+      "y": 12.0,
+      "hash": "1249ac27ac664cfa5cb6619769c7796b3b3b79cb6ccf3e372e57c27bd4bf6783"
+    },
+    {
+      "id": "G12_ilMheg_31_4",
+      "grade": "G12",
+      "map": "ilMheg",
+      "x": 31.0,
+      "y": 4.0,
+      "hash": "200f48270ccecf0e431742d7cb5b133333374d9b49cb3a3b169b83fb83bfe78b"
+    },
+    {
+      "id": "G12_ilMheg_33_10",
+      "grade": "G12",
+      "map": "ilMheg",
+      "x": 33.0,
+      "y": 10.0,
+      "hash": "840fac0f00ce413e0e57130729af3b37333d0c9b29db393307e383fbc3bbe7a3"
+    },
+    {
+      "id": "G12_ilMheg_7_17",
+      "grade": "G12",
+      "map": "ilMheg",
+      "x": 7.0,
+      "y": 17.0,
+      "hash": "ac0fac0e016e465a0cd731d731d3233363374ccf4d639b3b035b837bc0bfe7a3"
+    },
+    {
+      "id": "G12_kholusia_11_13",
+      "grade": "G12",
+      "map": "kholusia",
+      "x": 11.0,
+      "y": 13.0,
+      "hash": "401ba40fa44e415a12d713e73b4b3b333333658f60cb993b0f9b837bc3bfe7a3"
+    },
+    {
+      "id": "G12_kholusia_13_16",
+      "grade": "G12",
+      "map": "kholusia",
+      "x": 13.0,
+      "y": 16.0,
+      "hash": "800fac07244e493e0f1e03d72bef3b3b3b330c8f2deb3c33069b833bc0fbe7a3"
+    },
+    {
+      "id": "G12_kholusia_20_17",
+      "grade": "G12",
+      "map": "kholusia",
+      "x": 20.0,
+      "y": 17.0,
+      "hash": "c0fac0f44ce4a3207470383232b3b3b3d3b04cf60eb303b069b83bbc1bbe783"
+    },
+    {
+      "id": "G12_kholusia_21_9.5",
+      "grade": "G12",
+      "map": "kholusia",
+      "x": 21.0,
+      "y": 9.5,
+      "hash": "8c0fac0e41ce481e06de0bdf2b0b3b37393d088b2acb103b06db83bbc6fbe7a7"
+    },
+    {
+      "id": "G12_kholusia_30_17",
+      "grade": "G12",
+      "map": "kholusia",
+      "x": 30.0,
+      "y": 17.0,
+      "hash": "4f242725e649e606c713572b2b333317230ccf6b4b193b0edb83fbc1bfe78b"
+    },
+    {
+      "id": "G12_kholusia_33_31",
+      "grade": "G12",
+      "map": "kholusia",
+      "x": 33.0,
+      "y": 31.0,
+      "hash": "124ba40fa44e40e608d713c72bcb2b231b33148f20cb39370cdd837bc1bfe7a3"
+    },
+    {
+      "id": "G12_kholusia_34_10",
+      "grade": "G12",
+      "map": "kholusia",
+      "x": 34.0,
+      "y": 10.0,
+      "hash": "c072c07056e88fe0ec713cf6b4b2b3b1b179d8f8debb27b38db6c7b847be5b7"
+    },
+    {
+      "id": "G12_kholusia_7_18",
+      "grade": "G12",
+      "map": "kholusia",
+      "x": 7.0,
+      "y": 18.0,
+      "hash": "a1ba407a44e416e465e63c761eb193b333b049f24cb393b0a5b837bc3bbe7a3"
+    },
+    {
+      "id": "G12_lakeland_10_11",
+      "grade": "G12",
+      "map": "lakeland",
+      "x": 10.0,
+      "y": 11.0,
+      "hash": "100f8407004e493e0e9703d72b6b33331333cccf614bc03b527b82fbc5bfe7a3"
+    },
+    {
+      "id": "G12_lakeland_10_25",
+      "grade": "G12",
+      "map": "lakeland",
+      "x": 10.0,
+      "y": 25.0,
+      "hash": "800b9607044e433a8e1f304328eb3b33333b048f60ef293c06dd83f9c3bbe7a3"
+    },
+    {
+      "id": "G12_lakeland_13_12",
+      "grade": "G12",
+      "map": "lakeland",
+      "x": 13.0,
+      "y": 12.0,
+      "hash": "f8607444e49260e070b4f2b3b1b33373b64cb696b991d095dc4fbc4bf678b"
+    },
+    {
+      "id": "G12_lakeland_17_17",
+      "grade": "G12",
+      "map": "lakeland",
+      "x": 17.0,
+      "y": 17.0,
+      "hash": "940f840e414e4b320f9352cb2b6b337b333f0c3f696b383b509b83bbc2fbe5b7"
+    },
+    {
+      "id": "G12_lakeland_18_7",
+      "grade": "G12",
+      "map": "lakeland",
+      "x": 18.0,
+      "y": 7.0,
+      "hash": "800f96074c4e4c260f8603c32b633b31371b1c8f0a4b0e1f071b837bc3bfe7a3"
+    },
+    {
+      "id": "G12_lakeland_34_25",
+      "grade": "G12",
+      "map": "lakeland",
+      "x": 34.0,
+      "y": 25.0,
+      "hash": "800f960f024e58be5c9a599369873b33731b748f6c4f3b275e4fb0fbc3fbe5b7"
+    },
+    {
+      "id": "G12_lakeland_38_13",
+      "grade": "G12",
+      "map": "lakeland",
+      "x": 38.0,
+      "y": 13.0,
+      "hash": "101b8e07c4464d224ea60b6327e31b633b630ce3246339a30edb83fbc0bf67a3"
+    },
+    {
+      "id": "G12_lakeland_8_21",
+      "grade": "G12",
+      "map": "lakeland",
+      "x": 8.0,
+      "y": 21.0,
+      "hash": "101b86078c0e598e4696434761877323676f4f2fc9efb937269f817bc1bfe7a3"
+    },
+    {
+      "id": "G12_raktika_11_19",
+      "grade": "G12",
+      "map": "raktika",
+      "x": 11.0,
+      "y": 19.0,
+      "hash": "a10f21074c6e0c3a0dc6394336bb33391b3704cb616b38cb06cb83fbc3bbe7a3"
+    },
+    {
+      "id": "G12_raktika_13_24",
+      "grade": "G12",
+      "map": "raktika",
+      "x": 13.0,
+      "y": 24.0,
+      "hash": "210f218f40ce4b3e064f0ac72bab2333513b9c8f6ceb3e331e73833bc07be5b7"
+    },
+    {
+      "id": "G12_raktika_22_32",
+      "grade": "G12",
+      "map": "raktika",
+      "x": 22.0,
+      "y": 32.0,
+      "hash": "1a0fb1a7a1c6498e0f9e1b032c2739273d4f3ccf2967391f3cdbc27bc5bf678b"
+    },
+    {
+      "id": "G12_raktika_24_15",
+      "grade": "G12",
+      "map": "raktika",
+      "x": 24.0,
+      "y": 15.0,
+      "hash": "800fa10f84ce413e0f1603d72b6b3333f363dcdf6b6b3b1b1e9b827bc5bfe7a3"
+    },
+    {
+      "id": "G12_raktika_24_27",
+      "grade": "G12",
+      "map": "raktika",
+      "x": 24.0,
+      "y": 27.0,
+      "hash": "840b2107896649728c869743492b4b334b33e48f646b66936797837bc1bbe7a3"
+    },
+    {
+      "id": "G12_raktika_26_34",
+      "grade": "G12",
+      "map": "raktika",
+      "x": 26.0,
+      "y": 34.0,
+      "hash": "800fa10f884e4c26860703432b833b633b73443369e329831f9b8773c4ffe7a7"
+    },
+    {
+      "id": "G12_raktika_34_17",
+      "grade": "G12",
+      "map": "raktika",
+      "x": 34.0,
+      "y": 17.0,
+      "hash": "210f212701660b7a06b6d3d3cb33db31d339d1b76ccd3a331e6b16dbd47be5b7"
+    },
+    {
+      "id": "G12_raktika_35_22",
+      "grade": "G12",
+      "map": "raktika",
+      "x": 35.0,
+      "y": 22.0,
+      "hash": "212723268d6e88da1ac313632b63336333630deb6c6b3e6314f393fb83bbe7a3"
+    },
+    {
+      "id": "G12_tempest_12_11",
+      "grade": "G12",
+      "map": "tempest",
+      "x": 12.0,
+      "y": 11.0,
+      "hash": "200f4c070e6e43324fd24bd3635b633b633d6597656b213b67dfa3fbc2bbe783"
+    },
+    {
+      "id": "G12_tempest_13_14",
+      "grade": "G12",
+      "map": "tempest",
+      "x": 13.0,
+      "y": 14.0,
+      "hash": "800fcc0788c641860d860bc32acb0d631973309bc8ed993d0fdb83fbc3bbe7a3"
+    },
+    {
+      "id": "G12_tempest_16_18",
+      "grade": "G12",
+      "map": "tempest",
+      "x": 16.0,
+      "y": 18.0,
+      "hash": "c00fcc0f014e496607d2035b2b4b336b4d594c9d2f8f3b8b278b83fbc3fbe5b7"
+    },
+    {
+      "id": "G12_tempest_19_8",
+      "grade": "G12",
+      "map": "tempest",
+      "x": 19.0,
+      "y": 8.0,
+      "hash": "901b8c078c4e4c660d9e09d72bcb33333333248f48cf393b0edb83f3c3bbe7a3"
+    },
+    {
+      "id": "G12_tempest_25_11",
+      "grade": "G12",
+      "map": "tempest",
+      "x": 25.0,
+      "y": 11.0,
+      "hash": "400fcc078c4e412c0e4c03d54bad4b351337048f6969613b63f3a3fbc1bbe783"
+    },
+    {
+      "id": "G12_tempest_30_20",
+      "grade": "G12",
+      "map": "tempest",
+      "x": 30.0,
+      "y": 20.0,
+      "hash": "840b4c078c6e4c6686c7131329eb3b333b330c8f68eb393b06db83fbc3bbe7a3"
+    },
+    {
+      "id": "G12_tempest_32_5",
+      "grade": "G12",
+      "map": "tempest",
+      "x": 32.0,
+      "y": 5.0,
+      "hash": "100bcc278b66419a0e5a03f32b633b2333230ca729e53829076b837bc1bfe7a3"
+    },
+    {
+      "id": "G12_tempest_37_17",
+      "grade": "G12",
+      "map": "tempest",
+      "x": 37.0,
+      "y": 17.0,
+      "hash": "120fcc078c4e416e0e4e03d309b3133313738cc7ada73ba70ed383fbc1bfe7a3"
+    },
+    {
+      "id": "G14_garlemald_11.8_25.7",
+      "grade": "G14",
+      "map": "garlemald",
+      "x": 11.8,
+      "y": 25.7,
+      "hash": "4c3a4c264c661be21f0757537e4b79337933799d69cb793b5997397bc5fae1ba"
+    },
+    {
+      "id": "G14_garlemald_16.1_17.8",
+      "grade": "G14",
+      "map": "garlemald",
+      "x": 16.1,
+      "y": 17.8,
+      "hash": "847a4c0f44ce0336195b09d72b8b332b3b332d9f49cb393b1e1f033bc3fbe5bb"
+    },
+    {
+      "id": "G14_garlemald_16.6_11.9",
+      "grade": "G14",
+      "map": "garlemald",
+      "x": 16.6,
+      "y": 11.9,
+      "hash": "4c3b480f40ce02aa16cf43534bcb2b733b7315a748ef382b1e970afb81fba1b3"
+    },
+    {
+      "id": "G14_garlemald_25.3_12.4",
+      "grade": "G14",
+      "map": "garlemald",
+      "x": 25.3,
+      "y": 12.4,
+      "hash": "4c3f4c07c146133b33673863686b333b3b7b19a54ecb38eb18cb094b827bc1bb"
+    },
+    {
+      "id": "G14_garlemald_28.1_26.4",
+      "grade": "G14",
+      "map": "garlemald",
+      "x": 28.1,
+      "y": 26.4,
+      "hash": "481a480e404e0b3a1e9b53db4bdb333b337c15ad4dcb2b5b1b9b577382fac1ba"
+    },
+    {
+      "id": "G14_garlemald_29.3_35.4",
+      "grade": "G14",
+      "map": "garlemald",
+      "x": 29.3,
+      "y": 35.4,
+      "hash": "4c3f4c076066092b9f4f1193296b33333b3315a548cf2f3c5d31d261827bc5bb"
+    },
+    {
+      "id": "G14_garlemald_34.2_9.9",
+      "grade": "G14",
+      "map": "garlemald",
+      "x": 34.2,
+      "y": 9.9,
+      "hash": "4c2f4c27ca761a3b1a4d1b4d2b6f3b333b331b1f4a4b3a331a5b927bc27be1bb"
+    },
+    {
+      "id": "G14_garlemald_34.4_17.3",
+      "grade": "G14",
+      "map": "garlemald",
+      "x": 34.4,
+      "y": 17.3,
+      "hash": "4c3b4c27c466126b166316e3366b2763696359c520cb61c346c383d383fbe1bb"
+    },
+    {
+      "id": "G14_labyrinthos_18.6_18.1",
+      "grade": "G14",
+      "map": "labyrinthos",
+      "x": 18.6,
+      "y": 18.1,
+      "hash": "203d220fc44e083b17973197396f3b3b331b359940d731371ab711fb81fbe1bb"
+    },
+    {
+      "id": "G14_labyrinthos_21.8_37.5",
+      "grade": "G14",
+      "map": "labyrinthos",
+      "x": 21.8,
+      "y": 37.5,
+      "hash": "401f640f88ce337b472747936b4f6b39233325e549cb032b1e03711ba07ba1bf"
+    },
+    {
+      "id": "G14_labyrinthos_24.2_10.9",
+      "grade": "G14",
+      "map": "labyrinthos",
+      "x": 24.2,
+      "y": 10.9,
+      "hash": "7b620dc3e609f31ee353715b79333f333f151d4ddb29351eb917f383fbc1bf"
+    },
+    {
+      "id": "G14_labyrinthos_24.7_29.6",
+      "grade": "G14",
+      "map": "labyrinthos",
+      "x": 24.7,
+      "y": 29.6,
+      "hash": "203b2217c0d601fb06df30530b83333b131b158f484b217b56df12fb82fbe1bb"
+    },
+    {
+      "id": "G14_labyrinthos_24.9_21.8",
+      "grade": "G14",
+      "map": "labyrinthos",
+      "x": 24.9,
+      "y": 21.8,
+      "hash": "202b2215c15e093a04cd40854b376633393b311b4dcb09631e8f47eb83fba1be"
+    },
+    {
+      "id": "G14_labyrinthos_31.8_14.4",
+      "grade": "G14",
+      "map": "labyrinthos",
+      "x": 31.8,
+      "y": 14.4,
+      "hash": "3b620fc04e016b169743db636b2333532b118f53cb197b1c9b0c1b86fba1bb"
+    },
+    {
+      "id": "G14_labyrinthos_6.8_20.9",
+      "grade": "G14",
+      "map": "labyrinthos",
+      "x": 6.8,
+      "y": 20.9,
+      "hash": "202f220fccce199e5a9f539b63cb63534b53c5978d2b396b1adf13dbc3fbc1bb"
+    },
+    {
+      "id": "G14_labyrinthos_8.4_30.4",
+      "grade": "G14",
+      "map": "labyrinthos",
+      "x": 8.4,
+      "y": 30.4,
+      "hash": "3d6207c0ce09cf07cd5663516383233333159148db28391e4d177d83fba1bb"
+    },
+    {
+      "id": "G14_mareLamentorum_15.9_34.4",
+      "grade": "G14",
+      "map": "mareLamentorum",
+      "x": 15.9,
+      "y": 34.4,
+      "hash": "483b580f484e093b1edf13d34b4b23393b73051561cb682b4e5f471b833ba1bf"
+    },
+    {
+      "id": "G14_mareLamentorum_17.1_19.4",
+      "grade": "G14",
+      "map": "mareLamentorum",
+      "x": 17.1,
+      "y": 19.4,
+      "hash": "483b6807c0661bc31f1f5e6378cb735343539dd76d83393b1f5f16bbc6fbe1bb"
+    },
+    {
+      "id": "G14_mareLamentorum_18.7_25.7",
+      "grade": "G14",
+      "map": "mareLamentorum",
+      "x": 18.7,
+      "y": 25.7,
+      "hash": "c5b480d4c2605a21a9713cd0be92b713d7314b14ec32b831f930393837be1bf"
+    },
+    {
+      "id": "G14_mareLamentorum_22.8_36.3",
+      "grade": "G14",
+      "map": "mareLamentorum",
+      "x": 22.8,
+      "y": 36.3,
+      "hash": "483b580fc04e1b3a06c753d34b4b333333331d9f49c93f339887417b837ba1bb"
+    },
+    {
+      "id": "G14_mareLamentorum_25.6_33.3",
+      "grade": "G14",
+      "map": "mareLamentorum",
+      "x": 25.6,
+      "y": 33.3,
+      "hash": "481b480fd04e103a16df52d35a4b3b233b7319974ccb262b1e9f06db827be1bb"
+    },
+    {
+      "id": "G14_mareLamentorum_30.5_24.9",
+      "grade": "G14",
+      "map": "mareLamentorum",
+      "x": 30.5,
+      "y": 24.9,
+      "hash": "83b6807c066183b171f1b932bcb33633b3915b14d672acb1d9f063bc4fbc5bb"
+    },
+    {
+      "id": "G14_mareLamentorum_34.8_29.9",
+      "grade": "G14",
+      "map": "mareLamentorum",
+      "x": 34.8,
+      "y": 29.9,
+      "hash": "105d6c0d6c0601a61b9b07974a0d23293b3b16714ccb23231e0bf00b807bc1bf"
+    },
+    {
+      "id": "G14_thavnair_14.7_7.9",
+      "grade": "G14",
+      "map": "thavnair",
+      "x": 14.7,
+      "y": 7.9,
+      "hash": "4c3d0c0e8066293b6f0732c372e9e3318b3715874ccf2b2b121f035b827bc1bb"
+    },
+    {
+      "id": "G14_thavnair_14.8_26.6",
+      "grade": "G14",
+      "map": "thavnair",
+      "x": 14.8,
+      "y": 26.6,
+      "hash": "4c1f2c0fc04e0b3b1797c193c94bcd33513361874dcb232b1f9f03bb837be1bb"
+    },
+    {
+      "id": "G14_thavnair_19.5_14.2",
+      "grade": "G14",
+      "map": "thavnair",
+      "x": 19.5,
+      "y": 14.2,
+      "hash": "4c3b0c0fc12e25bb1ed5334d386f193b393b799568cb6b2f2f0f359bc03bc1bb"
+    },
+    {
+      "id": "G14_thavnair_21.0_27.2",
+      "grade": "G14",
+      "map": "thavnair",
+      "x": 21.0,
+      "y": 27.2,
+      "hash": "81d2c0f86663e3b3697539359cb63f1373f1d9749cb692b1e9b555b837ba1bb"
+    },
+    {
+      "id": "G14_thavnair_21.9_21.0",
+      "grade": "G14",
+      "map": "thavnair",
+      "x": 21.9,
+      "y": 21.0,
+      "hash": "4c1d2c06c1e61b0b16472e5b4c8b3923393b319770cf39d338c7326ba17be1bf"
+    },
+    {
+      "id": "G14_thavnair_26.8_28.9",
+      "grade": "G14",
+      "map": "thavnair",
+      "x": 26.8,
+      "y": 28.9,
+      "hash": "4c1f2c0ec16e0a3b06d743d34be33337877bc48548cf7a2d1f9857b183fb81bf"
+    },
+    {
+      "id": "G14_thavnair_27.1_8.9",
+      "grade": "G14",
+      "map": "thavnair",
+      "x": 27.1,
+      "y": 8.9,
+      "hash": "4c2f2c17c336033b0e59197d13ef3333333b64954feb197b465fc71b837ba1bf"
+    },
+    {
+      "id": "G14_thavnair_32.2_14.4",
+      "grade": "G14",
+      "map": "thavnair",
+      "x": 32.2,
+      "y": 14.4,
+      "hash": "4c0d2c0ec07a0a7306e313630b6333636b434cc54ccb39a31783033ba63be1bf"
+    },
+    {
+      "id": "G14_ultimaThule_12.7_13.4",
+      "grade": "G14",
+      "map": "ultimaThule",
+      "x": 12.7,
+      "y": 13.4,
+      "hash": "847a208da8ce1a661a1f79d7794b39333933391748cb796b189f1c5b827be1bb"
+    },
+    {
+      "id": "G14_ultimaThule_17.9_27.0",
+      "grade": "G14",
+      "map": "ultimaThule",
+      "x": 17.9,
+      "y": 27.0,
+      "hash": "f05b288d884e18271e0703072983394338631a715a5b3c7314c383d3c47be7bb"
+    },
+    {
+      "id": "G14_ultimaThule_21.4_36.3",
+      "grade": "G14",
+      "map": "ultimaThule",
+      "x": 21.4,
+      "y": 36.3,
+      "hash": "208da0ce014e1a2d17b30b632b639b4383c38d878d839b239e03903bc07be5bf"
+    },
+    {
+      "id": "G14_ultimaThule_25.7_17.2",
+      "grade": "G14",
+      "map": "ultimaThule",
+      "x": 25.7,
+      "y": 17.2,
+      "hash": "843bb00fac460da30ac312c33bcb34633f332de128c138c31f8b833bc23be5b7"
+    },
+    {
+      "id": "G14_ultimaThule_26.7_35.5",
+      "grade": "G14",
+      "map": "ultimaThule",
+      "x": 26.7,
+      "y": 35.5,
+      "hash": "244b300f20ce516e121d73cd7bcb3b2d393939196c333b631edb0373c37b41bf"
+    },
+    {
+      "id": "G14_ultimaThule_29.6_9.4",
+      "grade": "G14",
+      "map": "ultimaThule",
+      "x": 29.6,
+      "y": 9.4,
+      "hash": "503aa00da0e601360a4f05c72ccb2d333b3315a76ccb393b1edf037bc1fbe5bb"
+    },
+    {
+      "id": "G14_ultimaThule_6.1_19.0",
+      "grade": "G14",
+      "map": "ultimaThule",
+      "x": 6.1,
+      "y": 19.0,
+      "hash": "83b288f450e1b3b1f1756534cf371334323459561e579e35cdf167ba4fba1bb"
+    },
+    {
+      "id": "G14_ultimaThule_8.1_30.7",
+      "grade": "G14",
+      "map": "ultimaThule",
+      "x": 8.1,
+      "y": 30.7,
+      "hash": "c3b208d4e461c6a1c9f74d77c4b392b7b1b7d874ccf793b1c8f147b827ba1bb"
+    },
+    {
+      "id": "G15_elpis_11.8_33.1",
+      "grade": "G15",
+      "map": "elpis",
+      "x": 11.8,
+      "y": 33.1,
+      "hash": "c3bb80f424e097b0c9703932b2b33333317049729ef392d0d8d833bc3bbe7ab"
+    },
+    {
+      "id": "G15_elpis_13.0_8.7",
+      "grade": "G15",
+      "map": "elpis",
+      "x": 13.0,
+      "y": 8.7,
+      "hash": "3bb80f486619261edf09d32acb33333b3b0d9f6ceb293b08cf83dbc3bbe7bb"
+    },
+    {
+      "id": "G15_elpis_16.8_31.0",
+      "grade": "G15",
+      "map": "elpis",
+      "x": 16.8,
+      "y": 31.0,
+      "hash": "8c3bb80d404e093e1ed713d72bcf9b3b13234ccf64cb31bb1c9f867bc1bba7ab"
+    },
+    {
+      "id": "G15_elpis_22.5_24.6",
+      "grade": "G15",
+      "map": "elpis",
+      "x": 22.5,
+      "y": 24.6,
+      "hash": "883bb807406609731e7303e32be333333b3304bd68eb193b0edb81fbc1bbe7ab"
+    },
+    {
+      "id": "G15_elpis_27.2_24.3",
+      "grade": "G15",
+      "map": "elpis",
+      "x": 27.2,
+      "y": 24.3,
+      "hash": "43bb80f404e013a065f43c36b4b63335333448f60cb223b12df83fbc3bbe7bb"
+    },
+    {
+      "id": "G15_elpis_29.0_17.5",
+      "grade": "G15",
+      "map": "elpis",
+      "x": 29.0,
+      "y": 17.5,
+      "hash": "8c3b380f406e216b664f75c373eb73333b3319b74ce72ca3c64f636b813be1bb"
+    },
+    {
+      "id": "G15_elpis_29.9_9.5",
+      "grade": "G15",
+      "map": "elpis",
+      "x": 29.9,
+      "y": 9.5,
+      "hash": "843b381f404e0b2b1b0d036d0bed332d3b2d158d2ced3cbb06df03fbc3bbe5bb"
+    },
+    {
+      "id": "G15_elpis_37.1_18.5",
+      "grade": "G15",
+      "map": "elpis",
+      "x": 37.1,
+      "y": 18.5,
+      "hash": "843bb80f484e092f1a5b331b2b3323332b6324416ccb29a30b03063bc43be1bb"
+    },
+    {
+      "id": "G17_heritageFound_16.8_35.8",
+      "grade": "G17",
+      "map": "heritageFound",
+      "x": 16.8,
+      "y": 35.8,
+      "hash": "843bb04fe0ce093b1e5313c32bcb3353134b05e54ce709384e5903e383fbc1bb"
+    },
+    {
+      "id": "G17_heritageFound_17.2_22.3",
+      "grade": "G17",
+      "map": "heritageFound",
+      "x": 17.2,
+      "y": 22.3,
+      "hash": "843bb04fa44e00371e57038729ed3b2d1b2d0c9d6ccf3b7b1f5b03fbc1bbe1bb"
+    },
+    {
+      "id": "G17_heritageFound_22.0_19.0",
+      "grade": "G17",
+      "map": "heritageFound",
+      "x": 22.0,
+      "y": 19.0,
+      "hash": "1439b44f2046013b1a7719c32b0b37333d33188f29cb313b524b83fbc1bbe7ab"
+    },
+    {
+      "id": "G17_heritageFound_26.3_30.8",
+      "grade": "G17",
+      "map": "heritageFound",
+      "x": 26.3,
+      "y": 30.8,
+      "hash": "101bb44da2660b1303c912c329632333233104996e49239d368d933dc1bbe7ab"
+    },
+    {
+      "id": "G17_heritageFound_31.1_8.3",
+      "grade": "G17",
+      "map": "heritageFound",
+      "x": 31.1,
+      "y": 8.3,
+      "hash": "847bb047a0461b624f235e91691b6933133b159f68cb393b1edb053bc1bbe5bb"
+    },
+    {
+      "id": "G17_heritageFound_35.7_25.5",
+      "grade": "G17",
+      "map": "heritageFound",
+      "x": 35.7,
+      "y": 25.5,
+      "hash": "847bb047e4e60b6b1f6b13e34be36363334334c544cb2b9b1f0b083bc0fbe5bb"
+    },
+    {
+      "id": "G17_heritageFound_9.1_21.3",
+      "grade": "G17",
+      "map": "heritageFound",
+      "x": 9.1,
+      "y": 21.3,
+      "hash": "1479344da0ce093b065f41d3536b5b331933148d68db38319a6d8649a1bbe5bb"
+    },
+    {
+      "id": "G17_kozamauka_18.9_22.5",
+      "grade": "G17",
+      "map": "kozamauka",
+      "x": 18.9,
+      "y": 22.5,
+      "hash": "847b3405c86e733e46bd03fd61db633b231b05994cdf297b0edb03dbc3fbc1bf"
+    },
+    {
+      "id": "G17_kozamauka_20.0_6.9",
+      "grade": "G17",
+      "map": "kozamauka",
+      "x": 20.0,
+      "y": 6.9,
+      "hash": "205b341f444e018e1f9717572bcf3b330b330d9f0ccb2b7b1e9b03fbc1fbe7bf"
+    },
+    {
+      "id": "G17_kozamauka_31.3_14.9",
+      "grade": "G17",
+      "map": "kozamauka",
+      "x": 31.3,
+      "y": 14.9,
+      "hash": "303d340fc06e093b165f09e32bab33133b1b0c9d68eb3a3b174b03fb83bbe7ab"
+    },
+    {
+      "id": "G17_kozamauka_32.2_36.1",
+      "grade": "G17",
+      "map": "kozamauka",
+      "x": 32.2,
+      "y": 36.1,
+      "hash": "3439340d404e09331d0b73d34b4b3b3333330c9f28eb39bb1a8b82fba1bbe7ab"
+    },
+    {
+      "id": "G17_kozamauka_36.8_6.2",
+      "grade": "G17",
+      "map": "kozamauka",
+      "x": 36.8,
+      "y": 6.2,
+      "hash": "305b340d444e196670174f830bc333333333151348db397b1e1903fdc3fbe7bb"
+    },
+    {
+      "id": "G17_kozamauka_37.9_21.8",
+      "grade": "G17",
+      "map": "kozamauka",
+      "x": 37.9,
+      "y": 21.8,
+      "hash": "847b340fc04e01b61e9f03d7294b3b3331332d9d64db35331ab703b3c3bbe1bb"
+    },
+    {
+      "id": "G17_kozamauka_6.8_19.4",
+      "grade": "G17",
+      "map": "kozamauka",
+      "x": 6.8,
+      "y": 19.4,
+      "hash": "7b340dc44e316636df72d773cb33337b3f719f69636b634f9fa3fbc3fbe5bb"
+    },
+    {
+      "id": "G17_kozamauka_9.0_33.9",
+      "grade": "G17",
+      "map": "kozamauka",
+      "x": 9.0,
+      "y": 33.9,
+      "hash": "306f340d4646022b0b5f13932bdb333b3b1b1cc72dcf393f170b83bbc3bbe5bb"
+    },
+    {
+      "id": "G17_shaaloani_12.5_14.3",
+      "grade": "G17",
+      "map": "shaaloani",
+      "x": 12.5,
+      "y": 14.3,
+      "hash": "893b898fc04e012b061f11d329eb33333b0b159f4ccf392b1edf03fbc0fbe1bf"
+    },
+    {
+      "id": "G17_shaaloani_18.2_21.0",
+      "grade": "G17",
+      "map": "shaaloani",
+      "x": 18.2,
+      "y": 21.0,
+      "hash": "443ba98fc04e01cb179f23032b6b1b333b33048f2cef393b1f8f83fbc1bbe7bb"
+    },
+    {
+      "id": "G17_shaaloani_18.5_11.5",
+      "grade": "G17",
+      "map": "shaaloani",
+      "x": 18.5,
+      "y": 11.5,
+      "hash": "893b898fc04e093f0ed701c329ab33333b3b15974ccb393b0e5b03fbc2fbe1bf"
+    },
+    {
+      "id": "G17_shaaloani_19.6_34.5",
+      "grade": "G17",
+      "map": "shaaloani",
+      "x": 19.6,
+      "y": 34.5,
+      "hash": "897b898dc14e03321e1713d32beb33331b33d19f69cb393b5a9fb3bbc1fbe5bb"
+    },
+    {
+      "id": "G17_shaaloani_25.6_19.6",
+      "grade": "G17",
+      "map": "shaaloani",
+      "x": 25.6,
+      "y": 19.6,
+      "hash": "813b898fc14e094b1e6f03f32bd3333b3b3f14974ccf293b0e4b03fbc3fbe1bb"
+    },
+    {
+      "id": "G17_shaaloani_29.3_8.3",
+      "grade": "G17",
+      "map": "shaaloani",
+      "x": 29.3,
+      "y": 8.3,
+      "hash": "813b898fc0ce096b0e5b23b329a3333b331b1c9f0d4f393c1a7103e1c3fbe1bb"
+    },
+    {
+      "id": "G17_shaaloani_31.8_32.9",
+      "grade": "G17",
+      "map": "shaaloani",
+      "x": 31.8,
+      "y": 32.9,
+      "hash": "893b898dc04e013a1e5f13d32bcb33331b3b059f4ccf290b1ecb037bc3fbe1bb"
+    },
+    {
+      "id": "G17_shaaloani_35.5_16.8",
+      "grade": "G17",
+      "map": "shaaloani",
+      "x": 35.5,
+      "y": 16.8,
+      "hash": "101949a7c16609634eb7c3f3c359c33fcb37cd9fc9cbcbbb869f83fda3bbe7bb"
+    },
+    {
+      "id": "G17_urqopacha_13.7_14.2",
+      "grade": "G17",
+      "map": "urqopacha",
+      "x": 13.7,
+      "y": 14.2,
+      "hash": "8c7b660fc44e043b161b56834e8b9e335d4b492778cf316b304f34ef867be1bb"
+    },
+    {
+      "id": "G17_urqopacha_15.8_30.6",
+      "grade": "G17",
+      "map": "urqopacha",
+      "x": 15.8,
+      "y": 30.6,
+      "hash": "43b260fc4c6243b66db62c366eb373b653b85874ce7396b1e5703fbc3bbe1bb"
+    },
+    {
+      "id": "G17_urqopacha_17.0_23.3",
+      "grade": "G17",
+      "map": "urqopacha",
+      "x": 17.0,
+      "y": 23.3,
+      "hash": "459660d604601ba165f16d32bcb3b3b3b3715974dcb3b3b1e9b03fb837be5bb"
+    },
+    {
+      "id": "G17_urqopacha_21.6_23.9",
+      "grade": "G17",
+      "map": "urqopacha",
+      "x": 21.6,
+      "y": 23.9,
+      "hash": "43b660fc06e133b1b5309d30bab3b3b3b3b18cd49eb313b494b097bc3bbe5bb"
+    },
+    {
+      "id": "G17_urqopacha_21.6_26.0",
+      "grade": "G17",
+      "map": "urqopacha",
+      "x": 21.6,
+      "y": 26.0,
+      "hash": "439660d404619b2171f22db499333333333058768eb183b0fcb83fba1bbe5ab"
+    },
+    {
+      "id": "G17_urqopacha_29.0_24.0",
+      "grade": "G17",
+      "map": "urqopacha",
+      "x": 29.0,
+      "y": 24.0,
+      "hash": "44bd2605614e09ae1ec703c30bcb1b6333331499696b1839069d827b83bbe5ab"
+    },
+    {
+      "id": "G17_urqopacha_34.1_29.0",
+      "grade": "G17",
+      "map": "urqopacha",
+      "x": 34.1,
+      "y": 29.0,
+      "hash": "43b260d404e093a0e170353292b1b334333d19fc8eb9c6bcf1b833b81bbe5ab"
+    },
+    {
+      "id": "G17_urqopacha_34.2_32.5",
+      "grade": "G17",
+      "map": "urqopacha",
+      "x": 34.2,
+      "y": 32.5,
+      "hash": "42d2607444606230f0323032b833b633b6316a56df331b11efd0379c1fbe1bb"
+    },
+    {
+      "id": "G17_yakTel_11.3_33.2",
+      "grade": "G17",
+      "map": "yakTel",
+      "x": 11.3,
+      "y": 33.2,
+      "hash": "143d260fc84e199b1f9703d3236bf33b7b3b199778c9313952cbb3fb81bbe7bb"
+    },
+    {
+      "id": "G17_yakTel_15.5_26.8",
+      "grade": "G17",
+      "map": "yakTel",
+      "x": 15.5,
+      "y": 26.8,
+      "hash": "43b260fc06e093b1e5f03e329eb3933393b158d6cef3a4b1ecf03cbc3bbe1bf"
+    },
+    {
+      "id": "G17_yakTel_22.6_5.7",
+      "grade": "G17",
+      "map": "yakTel",
+      "x": 22.6,
+      "y": 5.7,
+      "hash": "43b060fc04e093b161b33d793c7cb33cb7b4d9d4a4b692b22570333c3fbe1bf"
+    },
+    {
+      "id": "G17_yakTel_22.7_35.9",
+      "grade": "G17",
+      "map": "yakTel",
+      "x": 22.7,
+      "y": 35.9,
+      "hash": "19260dc4ce096b1f4f03432a4b3b2333330c8f28cb3b6b0f4b837bc1bbe7ab"
+    },
+    {
+      "id": "G17_yakTel_24.7_21.0",
+      "grade": "G17",
+      "map": "yakTel",
+      "x": 24.7,
+      "y": 21.0,
+      "hash": "43b2617c356093b1e5903cd2bed3b3d3b37149728cf38cb1ecf03bb84bbe5bb"
+    },
+    {
+      "id": "G17_yakTel_31.2_21.9",
+      "grade": "G17",
+      "map": "yakTel",
+      "x": 31.2,
+      "y": 21.9,
+      "hash": "43b260fc446032a1b1f13d309db3b1b0b3bcc974ccf656b654bb1ebc1bbe1bb"
+    },
+    {
+      "id": "G17_yakTel_36.7_12.5",
+      "grade": "G17",
+      "map": "yakTel",
+      "x": 36.7,
+      "y": 12.5,
+      "hash": "43d2627c1660b6318c342c342c313433b4314c548c3398318c300dba0fbe1bb"
+    },
+    {
+      "id": "G17_yakTel_5.6_19.6",
+      "grade": "G17",
+      "map": "yakTel",
+      "x": 5.6,
+      "y": 19.6,
+      "hash": "439260fc64e1cbb1cdf7cc36cab393b39335c976ce33cb31e93863ba1bbe58b"
+    },
+    {
+      "id": "G18_livingMemory_10.3_35.9",
+      "grade": "G18",
+      "map": "livingMemory",
+      "x": 10.3,
+      "y": 35.9,
+      "hash": "1b3207c0ce009326f343e30be9336b336595e5cce9616b5ec514ab817be1bf"
+    },
+    {
+      "id": "G18_livingMemory_18.6_15.8",
+      "grade": "G18",
+      "map": "livingMemory",
+      "x": 18.6,
+      "y": 15.8,
+      "hash": "83da20740c6094b174302632a6b3b633b630ce528e3393b0e4f03f9c1bbe7bb"
+    },
+    {
+      "id": "G18_livingMemory_20.2_23.0",
+      "grade": "G18",
+      "map": "livingMemory",
+      "x": 20.2,
+      "y": 23.0,
+      "hash": "a83f23078066016b1e6b1a631b6b33233b631c450ccb28c31e8b018b833bc1bb"
+    },
+    {
+      "id": "G18_livingMemory_25.0_6.9",
+      "grade": "G18",
+      "map": "livingMemory",
+      "x": 25.0,
+      "y": 6.9,
+      "hash": "81db20748e6189b1b4b39792a7b393b3d1d1cd76ceb3c4b1edb06b3c0bbe5bf"
+    },
+    {
+      "id": "G18_livingMemory_31.0_18.1",
+      "grade": "G18",
+      "map": "livingMemory",
+      "x": 31.0,
+      "y": 18.1,
+      "hash": "8c3b2b25984619cf291d134f2c8b39a9391b3557654f213b16cfb1cbc1bbe3bb"
+    },
+    {
+      "id": "G18_livingMemory_35.0_35.3",
+      "grade": "G18",
+      "map": "livingMemory",
+      "x": 35.0,
+      "y": 35.3,
+      "hash": "83b320f8066212362c760d361ef6337633f048d48c928731ec7039bc33be5bb"
+    },
+    {
+      "id": "G18_livingMemory_38.5_28.1",
+      "grade": "G18",
+      "map": "livingMemory",
+      "x": 38.5,
+      "y": 28.1,
+      "hash": "83da20721660b33135b125b0eab173b1d3d0c2d2e6d361d2dcd0bf9c3bbe7bb"
+    },
+    {
+      "id": "G18_livingMemory_9.3_10.5",
+      "grade": "G18",
+      "map": "livingMemory",
+      "x": 9.3,
+      "y": 10.5,
+      "hash": "283b2315217600f20eeb19cb4b2353334f5b4dcf498b196b1bc39623c2bbe5bb"
+    }
+  ]
+}
