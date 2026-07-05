@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treasure Compass Lite — FF14 宝の地図 判別ツール</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#131722; --panel:#1b2130; --panel2:#20283a; --line:#2c3548;
+  --gold:#c9a24b; --gold-dim:#8f7434; --parchment:#e9e3d3; --sub:#8b93a7;
+  --teal:#4fd1b5; --danger:#d16a5a;
+  --disp:"Cinzel",serif; --body:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--ink);color:var(--parchment);font-family:var(--body);line-height:1.7;min-height:100vh}
+.wrap{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+
+header{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+.rose{width:44px;height:44px;flex:none;color:var(--gold)}
+h1{font-family:var(--disp);font-weight:700;font-size:clamp(20px,4vw,28px);letter-spacing:.08em;color:var(--gold)}
+h1 small{display:block;font-family:var(--body);font-weight:500;font-size:12px;letter-spacing:.2em;color:var(--sub)}
+.tagline{color:var(--sub);font-size:13px;margin:4px 0 24px 60px}
+
+nav{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:24px}
+nav button{background:none;border:none;color:var(--sub);font-family:var(--body);font-size:14px;font-weight:500;
+  padding:10px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s}
+nav button:hover{color:var(--parchment)}
+nav button.active{color:var(--gold);border-bottom-color:var(--gold)}
+nav button:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.tab{display:none}
+.tab.active{display:block}
+
+.drop{border:1.5px dashed var(--gold-dim);border-radius:8px;background:var(--panel);
+  padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.drop:hover,.drop.over{border-color:var(--gold);background:var(--panel2)}
+.drop p{color:var(--sub);font-size:14px}
+.drop .big{color:var(--parchment);font-size:16px;font-weight:500;margin-bottom:6px}
+.drop kbd{background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:1px 7px;font-family:var(--mono);font-size:12px;color:var(--gold)}
+
+.preview{display:flex;gap:20px;margin-top:20px;align-items:flex-start;flex-wrap:wrap}
+.preview img{max-width:280px;max-height:220px;border-radius:6px;border:1px solid var(--line)}
+
+.result{position:relative;overflow:hidden;background:var(--panel);border:1px solid var(--gold-dim);
+  border-radius:8px;padding:24px 28px;margin-top:20px;flex:1;min-width:260px}
+.result::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;opacity:.06;
+  background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g fill="none" stroke="%23c9a24b" stroke-width="1.5"><circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="30"/><path d="M50 4v92M4 50h92M18 18l64 64M82 18L18 82"/><path fill="%23c9a24b" d="M50 12l5 32-5 6-5-6z"/></g></svg>') center/contain no-repeat;pointer-events:none}
+.result .zone{font-size:15px;font-weight:700;letter-spacing:.05em}
+.result .grade{display:inline-block;font-family:var(--disp);font-weight:700;color:var(--ink);
+  background:var(--gold);border-radius:4px;padding:1px 10px;font-size:13px;margin-right:10px;vertical-align:2px}
+.coord{font-family:var(--disp);font-weight:700;font-size:clamp(28px,6vw,40px);color:var(--gold);
+  letter-spacing:.04em;margin:10px 0 4px}
+.meta{color:var(--sub);font-size:12px;font-family:var(--mono)}
+.meta.ok{color:var(--teal)}
+.meta.warn{color:var(--danger)}
+.result .note{font-size:13px;color:var(--sub);margin-top:6px}
+.copyrow{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+
+.mapwrap{margin-top:20px}
+.mapwrap h3{font-size:12px;color:var(--sub);font-weight:500;letter-spacing:.1em;margin-bottom:8px}
+.mapbox{position:relative;border:1px solid var(--line);border-radius:8px;overflow:hidden;
+  background:var(--panel);max-width:480px}
+.mapbox img,.mapbox svg{display:block;width:100%;height:auto}
+.marker{position:absolute;transform:translate(-50%,-50%);pointer-events:none}
+.marker .x{display:block;font-family:var(--disp);font-weight:700;font-size:22px;color:var(--gold);
+  text-shadow:0 0 6px rgba(0,0,0,.9);line-height:1}
+.marker .ring{position:absolute;left:50%;top:50%;width:34px;height:34px;transform:translate(-50%,-50%);
+  border:2px solid var(--gold);border-radius:50%;opacity:.7;animation:pulse 1.6s ease-out infinite}
+@keyframes pulse{0%{transform:translate(-50%,-50%) scale(.5);opacity:.8}100%{transform:translate(-50%,-50%) scale(1.4);opacity:0}}
+@media (prefers-reduced-motion:reduce){.marker .ring{animation:none}}
+
+.cands{margin-top:16px}
+.cands h3{font-size:12px;color:var(--sub);font-weight:500;letter-spacing:.1em;margin-bottom:8px}
+.cand{display:flex;justify-content:space-between;gap:12px;padding:8px 12px;border:1px solid var(--line);
+  border-radius:6px;margin-bottom:6px;font-size:13px;background:var(--panel)}
+.cand .d{font-family:var(--mono);color:var(--sub)}
+
+form.reg{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:24px;margin-top:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:16px}
+label{display:block;font-size:12px;color:var(--sub);margin-bottom:4px;letter-spacing:.05em}
+input,select{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:6px;
+  color:var(--parchment);font-family:var(--body);font-size:14px;padding:8px 10px}
+input:focus,select:focus{outline:none;border-color:var(--gold)}
+
+.btn{background:var(--gold);color:var(--ink);border:none;border-radius:6px;font-family:var(--body);
+  font-weight:700;font-size:14px;padding:9px 20px;cursor:pointer;transition:filter .15s}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:none;border:1px solid var(--gold-dim);color:var(--gold)}
+.btn:focus-visible{outline:2px solid var(--parchment);outline-offset:2px}
+
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--sub);font-weight:500;font-size:11px;letter-spacing:.1em}
+td .del{background:none;border:none;color:var(--danger);cursor:pointer;font-size:12px}
+td img{width:56px;border-radius:4px;vertical-align:middle}
+.count{color:var(--sub);font-size:13px;margin-top:16px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;
+  background:var(--panel2);border:1px solid var(--gold);color:var(--parchment);border-radius:6px;
+  padding:10px 20px;font-size:13px;transition:all .25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.help{background:var(--panel);border-left:3px solid var(--gold-dim);border-radius:0 6px 6px 0;
+  padding:14px 18px;font-size:13px;color:var(--sub);margin-top:24px}
+.help b{color:var(--parchment)}
+footer{margin-top:56px;color:var(--sub);font-size:11px;text-align:center;line-height:1.9}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <svg class="rose" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+    <circle cx="50" cy="50" r="44"/><path d="M50 10v80M10 50h80"/>
+    <path fill="currentColor" stroke="none" d="M50 18l6 28-6 8-6-8z"/>
+  </svg>
+  <h1>TREASURE COMPASS LITE<small>FF14 宝の地図 判別ツール</small></h1>
+</header>
+<p class="tagline">地図のスクリーンショットを貼り付けると、一致する地点と座標を表示します。</p>
+
+<nav role="tablist">
+  <button class="active" data-tab="find" role="tab">判別</button>
+  <button data-tab="reg" role="tab">登録</button>
+  <button data-tab="data" role="tab">データ管理</button>
+</nav>
+
+<!-- ===== 判別 ===== -->
+<section id="tab-find" class="tab active">
+  <div class="drop" id="dropFind" tabindex="0">
+    <p class="big">ここに地図画像をペースト <kbd>Ctrl</kbd>+<kbd>V</kbd></p>
+    <p>ドラッグ&ドロップ / クリックしてファイル選択も可。<br>Win+Shift+S で地図ウィンドウの絵の部分だけを切り取るのがおすすめ。</p>
+    <input type="file" id="fileFind" accept="image/*" hidden>
+  </div>
+  <div class="preview" id="findPreview" hidden>
+    <img id="findImg" alt="貼り付けた地図">
+    <div class="result" id="findResult"></div>
+  </div>
+  <div class="mapwrap" id="findMap" hidden></div>
+  <div class="cands" id="findCands" hidden></div>
+  <div class="help">
+    <b>使い方:</b> まず「登録」タブで手持ちの地図スクショと座標を登録してデータベースを育ててください。
+    登録済みの地図なら、次回から貼り付けるだけで即座に座標が出ます。
+  </div>
+</section>
+
+<!-- ===== 登録 ===== -->
+<section id="tab-reg" class="tab">
+  <div class="drop" id="dropReg" tabindex="0">
+    <p class="big">登録する地図画像をペースト <kbd>Ctrl</kbd>+<kbd>V</kbd></p>
+    <p>ゲーム内の地図ウィンドウをスクリーンショットしたものを使用してください。</p>
+    <input type="file" id="fileReg" accept="image/*" hidden>
+  </div>
+  <form class="reg" id="regForm" hidden>
+    <div class="preview" style="margin:0 0 16px">
+      <img id="regImg" style="max-width:200px" alt="登録する地図">
+    </div>
+    <div class="grid">
+      <div><label for="rGrade">グレード</label>
+        <select id="rGrade">
+          <option>G18</option><option>G17</option><option>G16</option><option>G15</option>
+          <option>G14</option><option>G13</option><option>G12</option><option>G11</option>
+          <option>G10</option><option>G9</option><option>G8</option><option>G7</option>
+          <option>G6</option><option>G5</option><option>G4</option><option>G3</option>
+          <option>G2</option><option>G1</option><option>隠された地図</option>
+        </select></div>
+      <div><label for="rZone">エリア名</label><input id="rZone" placeholder="例: リビングメモリー" required></div>
+      <div><label for="rX">座標 X</label><input id="rX" type="number" step="0.1" placeholder="14.2" required></div>
+      <div><label for="rY">座標 Y</label><input id="rY" type="number" step="0.1" placeholder="29.7" required></div>
+      <div style="grid-column:1/-1"><label for="rNote">メモ (任意)</label><input id="rNote" placeholder="例: 崖の上。北側から回り込む"></div>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;color:var(--sub)">
+      <input type="checkbox" id="rThumb" checked style="width:auto"> サムネイルも保存する(データ容量は増える)
+    </label>
+    <button type="submit" class="btn">この地点を登録する</button>
+    <span class="meta" id="regDup" style="margin-left:12px"></span>
+  </form>
+</section>
+
+<!-- ===== データ管理 ===== -->
+<section id="tab-data" class="tab">
+  <div class="copyrow" style="margin-top:0">
+    <button class="btn" id="btnExport">maps.json をダウンロード</button>
+    <button class="btn ghost" id="btnImport">JSONを読み込む</button>
+    <button class="btn ghost" id="btnClear">全データ削除</button>
+    <input type="file" id="fileJson" accept=".json,application/json" hidden>
+  </div>
+  <p class="count" id="dataCount"></p>
+  <table id="dataTable"><thead>
+    <tr><th></th><th>グレード</th><th>エリア</th><th>座標</th><th>ハッシュ</th><th></th></tr>
+  </thead><tbody></tbody></table>
+  <div class="help">
+    <b>GitHub Pages での公開手順:</b> ここでダウンロードした <b>maps.json</b> をこの index.html と同じ場所にコミットすると、
+    ページ読み込み時に自動でデータベースとして読み込まれます。ブラウザ内の一時保存(localStorage)とは別に、
+    リポジトリの maps.json が全ユーザー共通のマスターデータになります。
+  </div>
+</section>
+
+<footer>
+  記載されている会社名・製品名・システム名などは、各社の商標、または登録商標です。<br>
+  © SQUARE ENIX — FINAL FANTASY XIV に関する著作物の利用は「ファイナルファンタジーXIV著作物利用許諾条件」に従ってください。
+</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ============ データ層 ============ */
+let db = [];            // {id, grade, zone, x, y, hash, thumb?, note?}
+let memOnly = false;    // localStorage が使えない環境用フォールバック
+
+function loadLocal(){
+  try{ const s = localStorage.getItem("tcl-db"); if(s) db = JSON.parse(s); }
+  catch(e){ memOnly = true; }
+}
+function saveLocal(){
+  if(memOnly) return;
+  try{ localStorage.setItem("tcl-db", JSON.stringify(db)); }catch(e){ memOnly = true; }
+}
+async function loadRepoJson(){
+  try{
+    const r = await fetch("maps.json", {cache:"no-store"});
+    if(!r.ok) return;
+    const remote = await r.json();
+    if(!Array.isArray(remote)) return;
+    const have = new Set(db.map(e=>e.hash));
+    for(const e of remote){ if(e && e.hash && !have.has(e.hash)){ db.push(e); have.add(e.hash); } }
+  }catch(e){ /* ローカルで開いた場合など。無視 */ }
+}
+/* zones.json: { "エリア名": { "img": "zones/xxx.jpg", "max": 42 } }
+   img は任意。無ければ簡易グリッドで表示する。max はそのマップの座標最大値。 */
+let zones = {};
+async function loadZones(){
+  try{
+    const r = await fetch("zones.json", {cache:"no-store"});
+    if(r.ok){ const z = await r.json(); if(z && typeof z==="object") zones = z; }
+  }catch(e){ /* 無視 */ }
+}
+
+/* ============ 画像ハッシュ (dHash 64bit) ============ */
+function dHash(img){
+  const w=9, h=8, c=document.createElement("canvas");
+  c.width=w; c.height=h;
+  const ctx=c.getContext("2d",{willReadFrequently:true});
+  ctx.drawImage(img,0,0,w,h);
+  const d=ctx.getImageData(0,0,w,h).data;
+  const g=[];
+  for(let i=0;i<w*h;i++) g.push(0.299*d[i*4]+0.587*d[i*4+1]+0.114*d[i*4+2]);
+  let bits="";
+  for(let y=0;y<h;y++) for(let x=0;x<w-1;x++) bits += g[y*w+x] > g[y*w+x+1] ? "1" : "0";
+  // 64bit → 16桁hex
+  let hex="";
+  for(let i=0;i<64;i+=4) hex += parseInt(bits.slice(i,i+4),2).toString(16);
+  return hex;
+}
+function hamming(a,b){
+  if(!a||!b||a.length!==b.length) return 64;
+  let n=0;
+  for(let i=0;i<a.length;i++){
+    let x=parseInt(a[i],16)^parseInt(b[i],16);
+    while(x){ n+=x&1; x>>=1; }
+  }
+  return n;
+}
+function makeThumb(img){
+  const max=96, r=Math.min(max/img.naturalWidth, max/img.naturalHeight, 1);
+  const c=document.createElement("canvas");
+  c.width=Math.round(img.naturalWidth*r); c.height=Math.round(img.naturalHeight*r);
+  c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+  return c.toDataURL("image/jpeg",0.6);
+}
+
+/* ============ 画像入力の共通化 ============ */
+function bindImageInput(dropEl, fileEl, onImage){
+  const handleFile = f => {
+    if(!f || !f.type.startsWith("image/")) return;
+    const img=new Image();
+    img.onload=()=>onImage(img);
+    img.src=URL.createObjectURL(f);
+  };
+  dropEl.addEventListener("click",()=>fileEl.click());
+  dropEl.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();fileEl.click();} });
+  fileEl.addEventListener("change",()=>handleFile(fileEl.files[0]));
+  dropEl.addEventListener("dragover",e=>{e.preventDefault();dropEl.classList.add("over");});
+  dropEl.addEventListener("dragleave",()=>dropEl.classList.remove("over"));
+  dropEl.addEventListener("drop",e=>{
+    e.preventDefault(); dropEl.classList.remove("over");
+    handleFile(e.dataTransfer.files[0]);
+  });
+  return handleFile;
+}
+// ペーストはアクティブなタブに応じて振り分け
+document.addEventListener("paste",e=>{
+  for(const item of e.clipboardData.items){
+    if(item.type.startsWith("image/")){
+      const f=item.getAsFile();
+      const active=document.querySelector("nav button.active").dataset.tab;
+      (active==="reg"?regHandle:findHandle)(f);
+      e.preventDefault();
+      return;
+    }
+  }
+});
+
+/* ============ タブ ============ */
+document.querySelectorAll("nav button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    document.getElementById("tab-"+b.dataset.tab).classList.add("active");
+    if(b.dataset.tab==="data") renderTable();
+  });
+});
+
+/* ============ 判別 ============ */
+const findHandle = bindImageInput(
+  document.getElementById("dropFind"),
+  document.getElementById("fileFind"),
+  img=>{
+    document.getElementById("findImg").src=img.src;
+    document.getElementById("findPreview").hidden=false;
+    const hash=dHash(img);
+    showMatch(hash);
+  }
+);
+function showMatch(hash){
+  const box=document.getElementById("findResult");
+  const candsBox=document.getElementById("findCands");
+  const mapBox=document.getElementById("findMap");
+  if(db.length===0){
+    box.innerHTML=`<p class="zone">データベースが空です</p>
+      <p class="note">「登録」タブから手持ちの地図を登録するか、「データ管理」タブで maps.json を読み込んでください。</p>`;
+    candsBox.hidden=true; mapBox.hidden=true;
+    return;
+  }
+  const ranked=db.map(e=>({e,d:hamming(hash,e.hash)})).sort((a,b)=>a.d-b.d);
+  const best=ranked[0];
+  const conf = best.d<=6 ? "ok" : best.d<=12 ? "" : "warn";
+  const label = best.d<=6 ? "一致 (高精度)" : best.d<=12 ? "近い候補" : "一致度が低い — 未登録の地図かも";
+  box.innerHTML=`
+    <p class="zone"><span class="grade">${esc(best.e.grade)}</span>${esc(best.e.zone)}</p>
+    <p class="coord">( ${fmt(best.e.x)} , ${fmt(best.e.y)} )</p>
+    <p class="meta ${conf}">距離 ${best.d}/64 — ${label}</p>
+    ${best.e.note?`<p class="note">${esc(best.e.note)}</p>`:""}
+    <div class="copyrow">
+      <button class="btn" id="btnCopy">座標をコピー</button>
+    </div>`;
+  document.getElementById("btnCopy").addEventListener("click",()=>{
+    navigator.clipboard.writeText(`${best.e.zone} ( ${fmt(best.e.x)} , ${fmt(best.e.y)} )`)
+      .then(()=>toast("コピーしました。ゲーム内チャットに貼り付けできます"));
+  });
+  renderMap(best.e);
+  const others=ranked.slice(1,4).filter(r=>r.d<=20);
+  if(others.length){
+    candsBox.hidden=false;
+    candsBox.innerHTML=`<h3>他の候補</h3>`+others.map(r=>
+      `<div class="cand"><span>${esc(r.e.grade)} / ${esc(r.e.zone)} ( ${fmt(r.e.x)} , ${fmt(r.e.y)} )</span><span class="d">距離 ${r.d}</span></div>`).join("");
+  }else candsBox.hidden=true;
+}
+
+/* ============ 全体マップ表示 ============ */
+function renderMap(e){
+  const box=document.getElementById("findMap");
+  const z=zones[e.zone]||{};
+  const max=z.max||42;                       // FF14の座標は1始まり
+  const clamp=v=>Math.max(0,Math.min(100,v));
+  const px=clamp((e.x-1)/(max-1)*100);
+  const py=clamp((e.y-1)/(max-1)*100);
+  const marker=`<div class="marker" style="left:${px}%;top:${py}%"><span class="ring"></span><span class="x">✕</span></div>`;
+  if(z.img){
+    box.innerHTML=`<h3>全体マップ上の位置 — ${esc(e.zone)}</h3>
+      <div class="mapbox"><img src="${esc(z.img)}" alt="${esc(e.zone)}の全体マップ">${marker}</div>`;
+  }else{
+    box.innerHTML=`<h3>全体マップ上の位置 — ${esc(e.zone)}(簡易グリッド)</h3>
+      <div class="mapbox">${gridSvg(max)}${marker}</div>
+      <p class="note" style="font-size:12px;color:var(--sub);margin-top:6px">
+        zones/ フォルダに自分のスクショの全体マップを置いて zones.json に登録すると、実際のマップ上に表示されます。</p>`;
+  }
+  box.hidden=false;
+}
+function gridSvg(max){
+  const n=8, s=480;
+  let lines="";
+  for(let i=1;i<n;i++){
+    const p=(s/n)*i;
+    lines+=`<line x1="${p}" y1="0" x2="${p}" y2="${s}"/><line x1="0" y1="${p}" x2="${s}" y2="${p}"/>`;
+  }
+  let labels="";
+  for(let i=0;i<=n;i+=2){
+    const v=(1+(max-1)*i/n).toFixed(0), p=(s/n)*i;
+    labels+=`<text x="${Math.min(p+4,s-24)}" y="14">${v}</text><text x="4" y="${Math.max(p-4,14)}">${v}</text>`;
+  }
+  return `<svg viewBox="0 0 ${s} ${s}" role="img" aria-label="座標グリッド">
+    <rect width="${s}" height="${s}" fill="#161b28"/>
+    <g stroke="#2c3548" stroke-width="1">${lines}</g>
+    <g fill="#8b93a7" font-size="12" font-family="monospace">${labels}</g>
+  </svg>`;
+}
+
+/* ============ 登録 ============ */
+let regPending=null; // {img, hash}
+const regHandle = bindImageInput(
+  document.getElementById("dropReg"),
+  document.getElementById("fileReg"),
+  img=>{
+    const hash=dHash(img);
+    regPending={img,hash};
+    document.getElementById("regImg").src=img.src;
+    document.getElementById("regForm").hidden=false;
+    const dup=db.map(e=>({e,d:hamming(hash,e.hash)})).sort((a,b)=>a.d-b.d)[0];
+    const el=document.getElementById("regDup");
+    if(dup && dup.d<=6){
+      el.className="meta warn";
+      el.textContent=`⚠ 登録済みの可能性: ${dup.e.grade} ${dup.e.zone} (${fmt(dup.e.x)},${fmt(dup.e.y)}) 距離${dup.d}`;
+    }else{ el.textContent=""; }
+  }
+);
+document.getElementById("regForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  if(!regPending) return;
+  const entry={
+    id: Date.now().toString(36),
+    grade: document.getElementById("rGrade").value,
+    zone: document.getElementById("rZone").value.trim(),
+    x: parseFloat(document.getElementById("rX").value),
+    y: parseFloat(document.getElementById("rY").value),
+    hash: regPending.hash,
+    note: document.getElementById("rNote").value.trim()||undefined
+  };
+  if(document.getElementById("rThumb").checked) entry.thumb=makeThumb(regPending.img);
+  db.push(entry); saveLocal();
+  toast(`登録しました: ${entry.grade} ${entry.zone} ( ${fmt(entry.x)} , ${fmt(entry.y)} )`);
+  document.getElementById("regForm").hidden=true;
+  document.getElementById("rX").value=""; document.getElementById("rY").value="";
+  document.getElementById("rNote").value="";
+  regPending=null;
+});
+
+/* ============ データ管理 ============ */
+function renderTable(){
+  document.getElementById("dataCount").textContent=
+    `登録件数: ${db.length} 件` + (memOnly ? " (この環境では一時保存できません。必ずJSONをダウンロードしてください)" : "");
+  const tb=document.querySelector("#dataTable tbody");
+  tb.innerHTML=db.map((e,i)=>`<tr>
+    <td>${e.thumb?`<img src="${e.thumb}" alt="">`:""}</td>
+    <td>${esc(e.grade)}</td><td>${esc(e.zone)}</td>
+    <td>( ${fmt(e.x)} , ${fmt(e.y)} )</td>
+    <td style="font-family:var(--mono);font-size:11px;color:var(--sub)">${e.hash}</td>
+    <td><button class="del" data-i="${i}">削除</button></td></tr>`).join("");
+  tb.querySelectorAll(".del").forEach(btn=>btn.addEventListener("click",()=>{
+    db.splice(+btn.dataset.i,1); saveLocal(); renderTable();
+  }));
+}
+document.getElementById("btnExport").addEventListener("click",()=>{
+  const blob=new Blob([JSON.stringify(db,null,1)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="maps.json"; a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.getElementById("btnImport").addEventListener("click",()=>document.getElementById("fileJson").click());
+document.getElementById("fileJson").addEventListener("change",e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const arr=JSON.parse(r.result);
+      if(!Array.isArray(arr)) throw 0;
+      const have=new Set(db.map(x=>x.hash));
+      let added=0;
+      for(const x of arr){ if(x&&x.hash&&!have.has(x.hash)){ db.push(x); have.add(x.hash); added++; } }
+      saveLocal(); renderTable();
+      toast(`${added} 件を追加しました`);
+    }catch(err){ toast("JSONの形式が正しくありません"); }
+  };
+  r.readAsText(f);
+});
+document.getElementById("btnClear").addEventListener("click",()=>{
+  if(confirm("ブラウザに保存された全データを削除します。よろしいですか?")){
+    db=[]; saveLocal(); renderTable();
+  }
+});
+
+/* ============ util ============ */
+function esc(s){ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function fmt(n){ return Number(n).toFixed(1); }
+let toastTimer;
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove("show"),2600);
+}
+
+/* ============ init ============ */
+loadLocal();
+loadZones();
+loadRepoJson().then(()=>{ saveLocal(); });
+</script>
+</body>
+</html>
