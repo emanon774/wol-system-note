@@ -1,7 +1,7 @@
 
 ---
 title: ツール
-nav_order: 10
+nav_order: 50
 ---
 #自分用に作ったツールとか
 
