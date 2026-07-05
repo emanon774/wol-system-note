@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>宝の地図 早見ツール</title>
+<title>TRESUREMAP FINDER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -127,7 +127,7 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);border-top:1px solid va
 <body>
 <div class="wrap">
   <header>
-    <h1><span class="dim">TREASURE MAP FINDER</span>宝の地図 早見ツール</h1>
+    <h1><span class="dim">TREASURE MAP FINDER</span></h1>
     <span id="dataStatus">locations.json 読み込み中…</span>
   </header>
 
@@ -159,8 +159,8 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);border-top:1px solid va
 
     <!-- 右: 全体マップ(シグネチャ) -->
     <section class="panel" id="mapPanel">
-      <h2>② 掘り場所</h2>
-      <p class="placeholder" id="mapPlaceholder">判定すると、ここに全体マップと掘り場所が表示されます。</p>
+      <h2>② 座標</h2>
+      <p class="placeholder" id="mapPlaceholder">判定すると、ここに全体マップと座標が表示されます。</p>
       <div id="mapView">
         <img id="mapImg" alt="全体マップ">
         <div id="marker"><div class="ring"></div><div class="cross"></div></div>
@@ -173,7 +173,7 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);border-top:1px solid va
   </div>
 
   <footer>
-    照合方式: dHash(64bit 知覚ハッシュ)+ ハミング距離。データは locations.json / 全体マップ画像は maps/ に配置。
+    
   </footer>
 </div>
 
