@@ -3,92 +3,92 @@
   "maps": {
     "lakeland": {
       "name": "レイクランド",
-      "image": "maps/レイクランド.jpg",
+      "image": "maps/レイクランド.webp",
       "sizeFactor": 100
     },
     "kholusia": {
       "name": "コルシア島",
-      "image": "maps/コルシア島.jpg",
+      "image": "maps/コルシア島.webp",
       "sizeFactor": 100
     },
     "amhAraeng": {
       "name": "アム・アレーン",
-      "image": "maps/アム・アレーン.jpg",
+      "image": "maps/アム・アレーン.webp",
       "sizeFactor": 100
     },
     "ilMheg": {
       "name": "イル・メグ",
-      "image": "maps/イル・メグ.jpg",
+      "image": "maps/イル・メグ.webp",
       "sizeFactor": 100
     },
     "raktika": {
       "name": "ラケティカ大森林",
-      "image": "maps/ラケティカ大森林.jpg",
+      "image": "maps/ラケティカ大森林.webp",
       "sizeFactor": 100
     },
     "tempest": {
       "name": "テンペスト",
-      "image": "maps/テンペスト.jpg",
+      "image": "maps/テンペスト.webp",
       "sizeFactor": 100
     },
     "labyrinthos": {
       "name": "ラヴィリンソス",
-      "image": "maps/ラヴィリンソス.jpg",
+      "image": "maps/ラヴィリンソス.webp",
       "sizeFactor": 100
     },
     "thavnair": {
       "name": "サベネア島",
-      "image": "maps/サベネア島.jpg",
+      "image": "maps/サベネア島.webp",
       "sizeFactor": 100
     },
     "garlemald": {
       "name": "ガレマルド",
-      "image": "maps/ガレマルド.jpg",
+      "image": "maps/ガレマルド.webp",
       "sizeFactor": 100
     },
     "mareLamentorum": {
       "name": "嘆きの海",
-      "image": "maps/嘆きの海.jpg",
+      "image": "maps/嘆きの海.webp",
       "sizeFactor": 100
     },
     "elpis": {
       "name": "エルピス",
-      "image": "maps/エルピス.jpg",
+      "image": "maps/エルピス.webp",
       "sizeFactor": 100
     },
     "ultimaThule": {
       "name": "ウルティマ・トゥーレ",
-      "image": "maps/ウルティマ・トゥーレ.jpg",
+      "image": "maps/ウルティマ・トゥーレ.webp",
       "sizeFactor": 100
     },
     "urqopacha": {
       "name": "オルコ・パチャ",
-      "image": "maps/オルコ・パチャ.jpg",
+      "image": "maps/オルコ・パチャ.webp",
       "sizeFactor": 100
     },
     "kozamauka": {
       "name": "コザマル・カ",
-      "image": "maps/コザマル・カ.jpg",
+      "image": "maps/コザマル・カ.webp",
       "sizeFactor": 100
     },
     "yakTel": {
       "name": "ヤクテル樹海",
-      "image": "maps/ヤクテル樹海.jpg",
+      "image": "maps/ヤクテル樹海.webp",
       "sizeFactor": 100
     },
     "shaaloani": {
       "name": "シャーローニ荒野",
-      "image": "maps/シャーローニ荒野.jpg",
+      "image": "maps/シャーローニ荒野.webp",
       "sizeFactor": 100
     },
     "heritageFound": {
       "name": "ヘリテージファウンド",
-      "image": "maps/ヘリテージファウンド.jpg",
+      "image": "maps/ヘリテージファウンド.webp",
       "sizeFactor": 100
     },
     "livingMemory": {
       "name": "リビング・メモリー",
-      "image": "maps/リビング・メモリー.jpg",
+      "image": "maps/リビング・メモリー.webp",
       "sizeFactor": 100
     }
   },
