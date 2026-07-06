@@ -369,13 +369,15 @@ function runMatch() {
     const cls = d <= DIST_HIT ? "hit" : d <= DIST_NEAR ? "near" : "weak";
     const label = d <= DIST_HIT ? "一致" : d <= DIST_NEAR ? "近い" : "低";
     const mapDef = DB.maps[e.map] || { name: e.map };
+    const coordText = `X: ${e.x.toFixed(1)} / Y: ${e.y.toFixed(1)}` +
+      (e.z != null ? ` / Z: ${e.z.toFixed(1)}` : "");   // Z 未登録データ(null/undefined)は非表示
     const btn = document.createElement("button");
     btn.className = "cand";
     btn.innerHTML =
       `<span class="grade">${esc(e.grade)}</span>` +
       `<span class="place"><span class="nm">${esc(mapDef.name)}</span><br>` +
-      `<span class="xy">X: ${e.x.toFixed(1)} / Y: ${e.y.toFixed(1)}</span></span>` +
-      `<span class="badge ${cls}">${label} ${d}</span>`;
+      `<span class="xy">${coordText}</span></span>` +
+      `<span class=\"badge ${cls}\">${label} ${d}</span>`;
     btn.addEventListener("click", () => selectCandidate(btn, e));
     candList.appendChild(btn);
     if (i === 0 && d <= DIST_NEAR) selectCandidate(btn, e); // 最有力は自動表示
@@ -401,7 +403,8 @@ function selectCandidate(btn, entry) {
   else mapImg.src = mapDef.image;
   document.getElementById("flagMap").textContent = mapDef.name;
   document.getElementById("flagCoord").textContent =
-    `X: ${entry.x.toFixed(1)}  Y: ${entry.y.toFixed(1)}`;
+    `X: ${entry.x.toFixed(1)}  Y: ${entry.y.toFixed(1)}` +
+    (entry.z != null ? `  Z: ${entry.z.toFixed(1)}` : "");  // Z 未登録データは非表示
   flagLabel.style.display = "flex";
 }
 function placeMarker(entry, mapDef) {
