@@ -1,6 +1,36 @@
 {
   "hashSize": 16,
   "maps": {
+    "fringes": {
+      "name": "ギラバニア辺境地帯",
+      "image": "maps/fringes.webp",
+      "sizeFactor": 100
+    },
+    "peaks": {
+      "name": "ギラバニア山岳地帯",
+      "image": "maps/peaks.webp",
+      "sizeFactor": 100
+    },
+    "lochs": {
+      "name": "ギラバニア湖畔地帯",
+      "image": "maps/lochs.webp",
+      "sizeFactor": 100
+    },
+    "rubySea": {
+      "name": "紅玉海",
+      "image": "maps/rubySea.webp",
+      "sizeFactor": 100
+    },
+    "yanxia": {
+      "name": "ヤンサ",
+      "image": "maps/yanxia.webp",
+      "sizeFactor": 100
+    },
+    "azimSteppe": {
+      "name": "アジムステップ",
+      "image": "maps/azimSteppe.webp",
+      "sizeFactor": 100
+    },
     "lakeland": {
       "name": "レイクランド",
       "image": "maps/lakeland.webp",
@@ -93,6 +123,390 @@
     }
   },
   "entries": [
+    {
+      "id": "G10_azimSteppe_10_16",
+      "grade": "G10",
+      "map": "azimSteppe",
+      "x": 10.0,
+      "y": 16.0,
+      "hash": "fa20f084e497e581f6347624767334b1b509f24cb333b0fdb83fbc3bf6783"
+    },
+    {
+      "id": "G10_azimSteppe_15_33",
+      "grade": "G10",
+      "map": "azimSteppe",
+      "x": 15.0,
+      "y": 33.0,
+      "hash": "fa30f0a4e496e0e5e03d729cb1b331b3b1e9f6e6b393b1adb83fbc1bf6783"
+    },
+    {
+      "id": "G10_azimSteppe_16_25",
+      "grade": "G10",
+      "map": "azimSteppe",
+      "x": 16.0,
+      "y": 25.0,
+      "hash": "a00faa2789e64982038313d32ac33b7133390d9b28ed393d0fdb83fbc3bfe7a3"
+    },
+    {
+      "id": "G10_azimSteppe_22_37",
+      "grade": "G10",
+      "map": "azimSteppe",
+      "x": 22.0,
+      "y": 37.0,
+      "hash": "1baa0f826e48ae45974253498b1b1713570c8f3c6b1d1f0adb88fbc5bfe783"
+    },
+    {
+      "id": "G10_azimSteppe_29_12",
+      "grade": "G10",
+      "map": "azimSteppe",
+      "x": 29.0,
+      "y": 12.0,
+      "hash": "1faa0788e649ca0f9719e7238f1b7b395b048f2363181307dbc3fbc5bf6783"
+    },
+    {
+      "id": "G10_azimSteppe_29_35",
+      "grade": "G10",
+      "map": "azimSteppe",
+      "x": 29.0,
+      "y": 35.0,
+      "hash": "a00faa0f834e432e07161e9936db3553353b28cf22eb5033c3f3c3fbc5bfe783"
+    },
+    {
+      "id": "G10_azimSteppe_31_22",
+      "grade": "G10",
+      "map": "azimSteppe",
+      "x": 31.0,
+      "y": 22.0,
+      "hash": "200faa0780c6482e0e57139723873b6333330ccf296b1a1f07dbc3fbc5bf678b"
+    },
+    {
+      "id": "G10_azimSteppe_5_25",
+      "grade": "G10",
+      "map": "azimSteppe",
+      "x": 5.0,
+      "y": 25.0,
+      "hash": "a00faa1f8d16597618973cd72d0f3953395b78cb696b3c9f349b84fbc5bfafab"
+    },
+    {
+      "id": "G10_fringes_11_31",
+      "grade": "G10",
+      "map": "fringes",
+      "x": 11.0,
+      "y": 31.0,
+      "hash": "805fa0cf81ce539f071f0b1b2bd33b6b334924cb216b1ad907d3c37bc5bfe7a3"
+    },
+    {
+      "id": "G10_fringes_15_16",
+      "grade": "G10",
+      "map": "fringes",
+      "x": 15.0,
+      "y": 16.0,
+      "hash": "124ba0c728ce599e539e539772ef353b3d3b1c9f6e4b3b0b0f63c373c1bf6783"
+    },
+    {
+      "id": "G10_fringes_23_12",
+      "grade": "G10",
+      "map": "fringes",
+      "x": 23.0,
+      "y": 12.0,
+      "hash": "1219208fa08e496e0a3f07572bcf0967194b0ccb4c8f29934c9f0cb3c3f3e5a7"
+    },
+    {
+      "id": "G10_fringes_26_20",
+      "grade": "G10",
+      "map": "fringes",
+      "x": 26.0,
+      "y": 20.0,
+      "hash": "fa0cf89ce4d6e44c708cf634713533f5b4c9b292b998b453bc573c1bf6783"
+    },
+    {
+      "id": "G10_fringes_32_21",
+      "grade": "G10",
+      "map": "fringes",
+      "x": 32.0,
+      "y": 21.0,
+      "hash": "120f20cf808e496a064f63273ba7336b33238dc709731a53071b837bc5b7e78b"
+    },
+    {
+      "id": "G10_fringes_33_31",
+      "grade": "G10",
+      "map": "fringes",
+      "x": 33.0,
+      "y": 31.0,
+      "hash": "a0fa0c722ce46660ce61b4f26eb296b236365df26cb121b49bfc17bc0bf6783"
+    },
+    {
+      "id": "G10_fringes_8_28",
+      "grade": "G10",
+      "map": "fringes",
+      "x": 8.0,
+      "y": 28.0,
+      "hash": "820ba0c780ce4f261f071a4b2ecb3933393366336563c53bcf1bc27bc1bfe7a3"
+    },
+    {
+      "id": "G10_fringes_9_12",
+      "grade": "G10",
+      "map": "fringes",
+      "x": 9.0,
+      "y": 12.0,
+      "hash": "1fa0c781de51ca169f0d97496b73733133598b696b3d9f3d9bc17bc5bfe78b"
+    },
+    {
+      "id": "G10_lochs_16_29",
+      "grade": "G10",
+      "map": "lochs",
+      "x": 16.0,
+      "y": 29.0,
+      "hash": "fa2cf848e4cd60c4e17474b8b4b53494becc7d8671b2f193bc17bc5bfe783"
+    },
+    {
+      "id": "G10_lochs_20_23",
+      "grade": "G10",
+      "map": "lochs",
+      "x": 20.0,
+      "y": 23.0,
+      "hash": "800fb2cf80ee49a6168713d7312f33233b270ccf296b193f01dbc3fbc3bfe7a3"
+    },
+    {
+      "id": "G10_lochs_24_32",
+      "grade": "G10",
+      "map": "lochs",
+      "x": 24.0,
+      "y": 32.0,
+      "hash": "800fa2cf80ce413e1a8f1977392b1b3323130e4b666bd39dd3dbc3fbc5bfe7a3"
+    },
+    {
+      "id": "G10_lochs_25_8",
+      "grade": "G10",
+      "map": "lochs",
+      "x": 25.0,
+      "y": 8.0,
+      "hash": "fb2c700ce592e121e19172f8b33431b4b249b35cb113b32db83fbc3bb6783"
+    },
+    {
+      "id": "G10_lochs_30_17",
+      "grade": "G10",
+      "map": "lochs",
+      "x": 30.0,
+      "y": 17.0,
+      "hash": "fb2c70ace4c9e0cdf1cd72dbb1d235ecb5d9f0e6b3e7b161b86bbc4bf6783"
+    },
+    {
+      "id": "G10_lochs_32_6",
+      "grade": "G10",
+      "map": "lochs",
+      "x": 32.0,
+      "y": 6.0,
+      "hash": "121ba28fa2ce49661e1716176c8339433363f0b361fb2139c79dc3f3c3bfe7ab"
+    },
+    {
+      "id": "G10_lochs_6_7",
+      "grade": "G10",
+      "map": "lochs",
+      "x": 6.0,
+      "y": 7.0,
+      "hash": "a04fa2cf80ce493e0e971b532f8b3971333f64cf696b5c1b83dbc3fbc5a7e70b"
+    },
+    {
+      "id": "G10_lochs_9_18",
+      "grade": "G10",
+      "map": "lochs",
+      "x": 9.0,
+      "y": 18.0,
+      "hash": "101fa2e780f4417f06570257296f3b3b3d3b8c1fa90b2d9f099bc17bc5b7678b"
+    },
+    {
+      "id": "G10_peaks_12_5",
+      "grade": "G10",
+      "map": "peaks",
+      "x": 12.0,
+      "y": 5.0,
+      "hash": "fa0c70ace5f26489649d308c33979173d0f0f2def193b0edb83fbc3bf6783"
+    },
+    {
+      "id": "G10_peaks_15_23",
+      "grade": "G10",
+      "map": "peaks",
+      "x": 15.0,
+      "y": 23.0,
+      "hash": "4f208f08ce593e1697791373c3636347630ccb21cb1e4f067b8373c5bfe783"
+    },
+    {
+      "id": "G10_peaks_16_33",
+      "grade": "G10",
+      "map": "peaks",
+      "x": 16.0,
+      "y": 33.0,
+      "hash": "20cf20cf004e483606870bc72b2b3b33333f4f8f49231b3b191b83fbc5bfe783"
+    },
+    {
+      "id": "G10_peaks_16_9",
+      "grade": "G10",
+      "map": "peaks",
+      "x": 16.0,
+      "y": 9.0,
+      "hash": "fa0e700e645760e5302eb2d6b1b4919d119e329793b390edd83f9c3bf6783"
+    },
+    {
+      "id": "G10_peaks_24_32",
+      "grade": "G10",
+      "map": "peaks",
+      "x": 24.0,
+      "y": 32.0,
+      "hash": "101fa08f83ce52765e574e976d8f69436c1b6c8b60eb42df63f3c3f3c5a7e78b"
+    },
+    {
+      "id": "G10_peaks_26_14",
+      "grade": "G10",
+      "map": "peaks",
+      "x": 26.0,
+      "y": 14.0,
+      "hash": "800ba0cf834e472c0ea816d72ea733d333670cb728fb191f24dba07bc5bfe7a3"
+    },
+    {
+      "id": "G10_peaks_33_10",
+      "grade": "G10",
+      "map": "peaks",
+      "x": 33.0,
+      "y": 10.0,
+      "hash": "204f20cf00ce413e07c703432a23331f197ddcc3e45b99f39833c27bc5b7678b"
+    },
+    {
+      "id": "G10_peaks_9_32",
+      "grade": "G10",
+      "map": "peaks",
+      "x": 9.0,
+      "y": 32.0,
+      "hash": "206f20c704de429a63d267436e0b793b733fc4cf886b1a1b07d383fbc3bfe783"
+    },
+    {
+      "id": "G10_rubySea_17_10",
+      "grade": "G10",
+      "map": "rubySea",
+      "x": 17.0,
+      "y": 10.0,
+      "hash": "1f100f18265936471743476e076c336c2b6ccf60633a1f04db84f3c5bfe783"
+    },
+    {
+      "id": "G10_rubySea_18_36",
+      "grade": "G10",
+      "map": "rubySea",
+      "x": 18.0,
+      "y": 36.0,
+      "hash": "1b1807134e4b2e078716c72fe31b6333430cc32f839e03d19bc07bc5bfe78b"
+    },
+    {
+      "id": "G10_rubySea_28_30",
+      "grade": "G10",
+      "map": "rubySea",
+      "x": 28.0,
+      "y": 30.0,
+      "hash": "f181711d6593a1c9b161f3c2f1f3d373d0ccf296f1a9d079bc37bc5b7678b"
+    },
+    {
+      "id": "G10_rubySea_30_25",
+      "grade": "G10",
+      "map": "rubySea",
+      "x": 30.0,
+      "y": 25.0,
+      "hash": "800f180f184e507647b34bf30b731b33573bce0bcb6b9233c3b3c1f3c4bfe7a3"
+    },
+    {
+      "id": "G10_rubySea_33_18",
+      "grade": "G10",
+      "map": "rubySea",
+      "x": 33.0,
+      "y": 18.0,
+      "hash": "801f100f134e46461c572557634b1b633b4b4ccb286b1a1f07fb83fbc5bfe78b"
+    },
+    {
+      "id": "G10_rubySea_33_9",
+      "grade": "G10",
+      "map": "rubySea",
+      "x": 33.0,
+      "y": 9.0,
+      "hash": "800f180710e6507a525d636f61676377a757c6cf7279787b3a53c07bc5b7678b"
+    },
+    {
+      "id": "G10_rubySea_5_15",
+      "grade": "G10",
+      "map": "rubySea",
+      "x": 5.0,
+      "y": 15.0,
+      "hash": "25f900f184c4c461cd71dc73d973d3b3d6b1c8b69cb393b73f3a1f3c1bfe7a3"
+    },
+    {
+      "id": "G10_rubySea_8_30",
+      "grade": "G10",
+      "map": "rubySea",
+      "x": 8.0,
+      "y": 30.0,
+      "hash": "f180f1c4e492e534d1a432e7b19391f3d048f44ed603d5a59c373c0bf6783"
+    },
+    {
+      "id": "G10_yanxia_12_19",
+      "grade": "G10",
+      "map": "yanxia",
+      "x": 12.0,
+      "y": 19.0,
+      "hash": "20b900fb04e41360e5603c329eb3b331b33cccf62e33b3903dd837bc5bbe7a3"
+    },
+    {
+      "id": "G10_yanxia_13_30",
+      "grade": "G10",
+      "map": "yanxia",
+      "x": 13.0,
+      "y": 30.0,
+      "hash": "f900f104e416e064f03c72b6f3b2b2b2b0ecf29cb183f0f9f81fbc1bf6783"
+    },
+    {
+      "id": "G10_yanxia_20_5",
+      "grade": "G10",
+      "map": "yanxia",
+      "x": 20.0,
+      "y": 5.0,
+      "hash": "24f9007104e496e4a1a22d339e319331b390c8f24eb392d32cde1f9c1bb6783"
+    },
+    {
+      "id": "G10_yanxia_22_14",
+      "grade": "G10",
+      "map": "yanxia",
+      "x": 22.0,
+      "y": 14.0,
+      "hash": "f90071076413a065f03d329db1b331b710ecb268b381b4acbc07bc0bf6783"
+    },
+    {
+      "id": "G10_yanxia_22_28",
+      "grade": "G10",
+      "map": "yanxia",
+      "x": 22.0,
+      "y": 28.0,
+      "hash": "800fb00f0cce593e199779577b4b3b33333f708f696b38b772db83fbc3bfe7a3"
+    },
+    {
+      "id": "G10_yanxia_31_28",
+      "grade": "G10",
+      "map": "yanxia",
+      "x": 31.0,
+      "y": 28.0,
+      "hash": "500f900f00ee499a16d74b03610b412b593bd2cf7343329bf2dba2fbc1bbe783"
+    },
+    {
+      "id": "G10_yanxia_32_35",
+      "grade": "G10",
+      "map": "yanxia",
+      "x": 32.0,
+      "y": 35.0,
+      "hash": "28f902714e645a20fc302630ce30d3b391918b32f733f231b438373c3ff6783"
+    },
+    {
+      "id": "G10_yanxia_32_5",
+      "grade": "G10",
+      "map": "yanxia",
+      "x": 32.0,
+      "y": 5.0,
+      "hash": "f9007a14e49c60ec712c30bc31b5313430ceb69f3021b13db83fbc3bfe7a3"
+    },
     {
       "id": "G12_amhAraeng_12_14",
       "grade": "G12",
@@ -606,6 +1020,14 @@
       "hash": "3d6207c0ce09cf07cd5663516383233333159148db28391e4d177d83fba1bb"
     },
     {
+      "id": "G14_mareLamentorum_12.2_26.6",
+      "grade": "G14",
+      "map": "mareLamentorum",
+      "x": 12.2,
+      "y": 26.6,
+      "hash": "87b480d484e19ba188d19d7394b393b3937399549db69e31e4f1c6384fbe1bf"
+    },
+    {
       "id": "G14_mareLamentorum_15.9_34.4",
       "grade": "G14",
       "map": "mareLamentorum",
@@ -852,6 +1274,14 @@
       "x": 37.1,
       "y": 18.5,
       "hash": "843bb80f484e092f1a5b331b2b3323332b6324416ccb29a30b03063bc43be1bb"
+    },
+    {
+      "id": "G17_heritageFound_16.6_13.1",
+      "grade": "G17",
+      "map": "heritageFound",
+      "x": 16.6,
+      "y": 13.1,
+      "hash": "101bb00da6ce029e5f1f515768db73337333919b48cb693b6c9f3473c0fbe7bf"
     },
     {
       "id": "G17_heritageFound_16.8_35.8",
