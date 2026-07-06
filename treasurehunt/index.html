@@ -141,6 +141,11 @@ footer{margin-top:28px;font-size:12px;color:var(--muted);border-top:1px solid va
         <span class="big"><kbd>Ctrl</kbd> + <kbd>V</kbd> で貼り付け</span>
         <span class="sub">ドラッグ&ドロップ / クリックしてファイル選択も可</span>
         <input type="file" id="fileInput" accept="image/*" hidden>
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+      </div>
+      <div class="btnrow" id="sourceRow">
+        <button type="button" id="btnPickFile">画像を選択</button>
+        <button type="button" id="btnCamera">カメラで撮影</button>
       </div>
 
       <div id="cropStage">
@@ -220,6 +225,14 @@ document.addEventListener("paste", e => {
 dropzone.addEventListener("click", () => fileInput.click());
 dropzone.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") fileInput.click(); });
 fileInput.addEventListener("change", () => { if (fileInput.files[0]) loadFile(fileInput.files[0]); });
+
+// 入力ソースの選択: ファイル / カメラ
+// capture 属性付き input はモバイルではカメラを直接起動し、PCでは通常のファイル選択になる
+const cameraInput = document.getElementById("cameraInput");
+document.getElementById("btnPickFile").addEventListener("click", () => fileInput.click());
+document.getElementById("btnCamera").addEventListener("click", () => cameraInput.click());
+cameraInput.addEventListener("change", () => { if (cameraInput.files[0]) loadFile(cameraInput.files[0]); });
+
 ["dragover","dragenter"].forEach(t => dropzone.addEventListener(t, e => { e.preventDefault(); dropzone.classList.add("drag"); }));
 ["dragleave","drop"].forEach(t => dropzone.addEventListener(t, e => { e.preventDefault(); dropzone.classList.remove("drag"); }));
 dropzone.addEventListener("drop", e => {
@@ -228,6 +241,7 @@ dropzone.addEventListener("drop", e => {
 });
 
 function loadFile(file) {
+  fileInput.value = cameraInput.value = ""; // 同じ画像の再選択・再撮影でも change を発火させる
   const url = URL.createObjectURL(file);
   const img = new Image();
   img.onload = () => {
