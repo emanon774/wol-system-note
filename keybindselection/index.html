@@ -509,7 +509,7 @@ function readFiles(files){
 }
 async function loadSkillConfig(){
  try{
-   const res=await fetch("skill-config-v2.json",{cache:"no-store"});
+   const res=await fetch("skill-config.json",{cache:"no-store"});
    if(res.ok)SKILL_CONFIG=await res.json();
  }catch(e){
    console.warn("skill-config.json load failed; using built-in fallback",e);
