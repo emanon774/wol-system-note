@@ -72,12 +72,12 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 </head>
 <body>
 <main class="app">
-<h1>FF14 5 Keyboard Keybind Visualizer</h1>
-<p class="lead">5台のフルキーボードにスキルを配置し、各キーボードごとに Ctrl / Alt / Shift を自由に組み合わせられます。</p>
+<h1 id="appTitle">FF14 5 Keyboard Keybind Visualizer</h1>
+<p id="leadText" class="lead">5台のフルキーボードにスキルを配置し、各キーボードごとに Ctrl / Alt / Shift を自由に組み合わせられます。</p>
 
 <section class="panel">
 <div class="toolbar">
-  <strong>スキル</strong>
+  <strong id="skillsLabel">スキル</strong>
   <select id="jobSelect" class="job-select"></select>
   <button id="langJa" class="lang-btn">日本語</button>
   <button id="langEn" class="lang-btn">English</button>
@@ -88,15 +88,15 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 </div>
 <div id="drop" class="drop">追加したい画像をここへドラッグ＆ドロップ</div>
 <div class="skill-group">
-  <h3>WS / Spell</h3>
+  <h3 id="wsHeading">WS / Spell</h3>
   <div id="skillPoolWs" class="skill-pool"></div>
 </div>
 <div class="skill-group">
-  <h3>Ability</h3>
+  <h3 id="abilityHeading">Ability</h3>
   <div id="skillPoolAbility" class="skill-pool"></div>
 </div>
 <div class="skill-group">
-  <h3>Other</h3>
+  <h3 id="otherHeading">Other</h3>
   <div id="skillPoolOther" class="skill-pool"></div>
 </div>
 
@@ -105,20 +105,37 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 <section class="panel">
 <div class="toolbar">
   <input id="titleInput" type="text" value="My FF14 Keybinds">
-  <label><input id="showG" type="checkbox" checked> G1〜G5</label>
+  <label id="showGLabel"><input id="showG" type="checkbox" checked> <span>G1〜G5</span></label>
   <div class="spacer"></div>
   <button id="clearAll" class="danger">全キーボードをクリア</button>
   <button id="exportBtn" class="primary">キーバインドをTXT保存</button>
 </div>
 <div id="captureArea"></div>
-<p class="hint">Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。ダウンロードは割り当て一覧のTXTファイルのみです。</p>
+<p id="keyboardHint" class="hint">Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。ダウンロードは割り当て一覧のTXTファイルのみです。</p>
 </section>
 </main>
 
 <script src="skills.js"></script>
 <script>
 const JOBS=window.FF14_SKILLS||{};
-const JOB_DISPLAY_NAMES={"01_PLD": "Paladin（ナイト）", "02_WAR": "Warrior（戦士）", "03_DRK": "Dark Knight（暗黒騎士）", "04_GNB": "Gunbreaker（ガンブレイカー）", "05_MNK": "Monk（モンク）", "06_SAM": "Samurai（侍）", "07_DRG": "Dragoon（竜騎士）", "08_RPR": "Reaper（リーパー）", "09_NIN": "Ninja（忍者）", "10_VPR": "Viper（ヴァイパー）", "11_BRD": "Bard（吟遊詩人）", "12_MCH": "Machinist（機工士）", "13_DNC": "Dancer（踊り子）", "14_BLM": "Black Mage（黒魔道士）", "15_SMN": "Summoner（召喚士）", "16_RDM": "Red Mage（赤魔道士）", "17_PCT": "Pictomancer（ピクトマンサー）", "18_WHM": "White Mage（白魔道士）", "19_SCH": "Scholar（学者）", "20_AST": "Astrologian（占星術師）", "21_SGE": "Sage（賢者）", "22_BLU": "Blue Mage（青魔道士）", "General": "General（共通）"};
+const JOB_DISPLAY_NAMES={
+ ja:{
+  "General":"共通",
+  "01_PLD":"ナイト","02_WAR":"戦士","03_DRK":"暗黒騎士","04_GNB":"ガンブレイカー",
+  "05_MNK":"モンク","06_SAM":"侍","07_DRG":"竜騎士","08_RPR":"リーパー","09_NIN":"忍者","10_VPR":"ヴァイパー",
+  "11_BRD":"吟遊詩人","12_MCH":"機工士","13_DNC":"踊り子","14_BLM":"黒魔道士","15_SMN":"召喚士",
+  "16_RDM":"赤魔道士","17_PCT":"ピクトマンサー","18_WHM":"白魔道士","19_SCH":"学者","20_AST":"占星術師",
+  "21_SGE":"賢者","22_BLU":"青魔道士"
+ },
+ en:{
+  "General":"General",
+  "01_PLD":"Paladin","02_WAR":"Warrior","03_DRK":"Dark Knight","04_GNB":"Gunbreaker",
+  "05_MNK":"Monk","06_SAM":"Samurai","07_DRG":"Dragoon","08_RPR":"Reaper","09_NIN":"Ninja","10_VPR":"Viper",
+  "11_BRD":"Bard","12_MCH":"Machinist","13_DNC":"Dancer","14_BLM":"Black Mage","15_SMN":"Summoner",
+  "16_RDM":"Red Mage","17_PCT":"Pictomancer","18_WHM":"White Mage","19_SCH":"Scholar","20_AST":"Astrologian",
+  "21_SGE":"Sage","22_BLU":"Blue Mage"
+ }
+};
 const state={
  title:"My FF14 Keybinds",showG:true,custom:[],lang:"ja",jpNames:{},actionTypes:{},
  keyboards:Array.from({length:5},()=>({mods:{ctrl:false,alt:false,shift:false},bindings:{}}))
@@ -270,14 +287,14 @@ function renderKeyboards(){
  for(let ki=0;ki<5;ki++){
    const kb=state.keyboards[ki],card=document.createElement("div");card.className="keyboard-card";
    const head=document.createElement("div");head.className="keyboard-head";
-   const title=document.createElement("strong");title.textContent=`Keyboard ${ki+1}`;
+   const title=document.createElement("strong");title.textContent=`${tr("keyboard")} ${ki+1}`;
    head.append(title);
    ["ctrl","alt","shift"].forEach(m=>{
      const b=document.createElement("button");b.className="mod"+(kb.mods[m]?" on":"");b.textContent=m[0].toUpperCase()+m.slice(1);
      b.onclick=()=>{kb.mods[m]=!kb.mods[m];save();renderKeyboards()};head.append(b)
    });
-   const txt=document.createElement("span");txt.className="hint";txt.textContent="現在: "+(combo(kb)||"修飾なし");head.append(txt);
-   const clear=document.createElement("button");clear.className="danger";clear.textContent="このキーボードをクリア";
+   const txt=document.createElement("span");txt.className="hint";txt.textContent=tr("current")+": "+(combo(kb)||tr("none"));head.append(txt);
+   const clear=document.createElement("button");clear.className="danger";clear.textContent=tr("clearKeyboard");
    clear.onclick=()=>{kb.bindings={};save();renderKeyboards()};head.append(clear);
    card.append(head);
 
@@ -299,6 +316,73 @@ function renderKeyboards(){
    const num=document.createElement("div");num.className="numpad";np.forEach(d=>num.append(keyEl(d,ki)));
    layout.append(left,navbox,num);sc.append(layout);card.append(sc);root.append(card)
  }
+}
+
+const UI_TEXT={
+ ja:{
+  lead:"5台のフルキーボードにスキルを配置し、各キーボードごとに Ctrl / Alt / Shift を自由に組み合わせられます。",
+  skills:"スキル",
+  search:"スキル名を検索",
+  upload:"画像を追加",
+  clearCustom:"追加画像を削除",
+  drop:"追加したい画像をここへドラッグ＆ドロップ",
+  ws:"WS / 魔法",
+  ability:"アビリティ",
+  other:"その他",
+  showG:"G1〜G5",
+  clearAll:"全キーボードをクリア",
+  export:"キーバインドをTXT保存",
+  current:"現在",
+  none:"修飾なし",
+  clearKeyboard:"このキーボードをクリア",
+  keyboard:"キーボード",
+  hint:"Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。ダウンロードは割り当て一覧のTXTファイルのみです。",
+  noAssign:"（割り当てなし）"
+ },
+ en:{
+  lead:"Assign skills to five full keyboards. Ctrl / Alt / Shift can be toggled independently for each keyboard.",
+  skills:"Skills",
+  search:"Search skills",
+  upload:"Add Images",
+  clearCustom:"Remove Added Images",
+  drop:"Drag and drop additional images here",
+  ws:"Weaponskills / Spells",
+  ability:"Abilities",
+  other:"Other",
+  showG:"Show G1-G5",
+  clearAll:"Clear All Keyboards",
+  export:"Download Keybinds as TXT",
+  current:"Current",
+  none:"No modifier",
+  clearKeyboard:"Clear This Keyboard",
+  keyboard:"Keyboard",
+  hint:"Click Ctrl / Alt / Shift to toggle them on or off. With all three off, no modifier is used. Each keyboard has independent settings. Downloads are TXT keybind lists only.",
+  noAssign:"(No assignments)"
+ }
+};
+function tr(key){return UI_TEXT[state.lang]?.[key]||UI_TEXT.en[key]||key}
+function updateJobOptions(){
+ const js=document.getElementById("jobSelect");
+ const selected=js.value;
+ [...js.options].forEach(o=>o.textContent=JOB_DISPLAY_NAMES[state.lang]?.[o.value]||o.value);
+ if(selected)js.value=selected;
+}
+function updateStaticUi(){
+ document.documentElement.lang=state.lang==="ja"?"ja":"en";
+ document.getElementById("leadText").textContent=tr("lead");
+ document.getElementById("skillsLabel").textContent=tr("skills");
+ document.getElementById("skillSearch").placeholder=tr("search");
+ document.getElementById("uploadBtn").textContent=tr("upload");
+ document.getElementById("clearCustom").textContent=tr("clearCustom");
+ document.getElementById("drop").textContent=tr("drop");
+ document.getElementById("wsHeading").textContent=tr("ws");
+ document.getElementById("abilityHeading").textContent=tr("ability");
+ document.getElementById("otherHeading").textContent=tr("other");
+ document.querySelector("#showGLabel span").textContent=tr("showG");
+ document.getElementById("clearAll").textContent=tr("clearAll");
+ document.getElementById("exportBtn").textContent=tr("export");
+ document.getElementById("keyboardHint").textContent=tr("hint");
+ updateJobOptions();
 }
 async function renderSkills(){
  const job=document.getElementById("jobSelect").value;
@@ -386,11 +470,11 @@ function readFiles(files){
 }
 function init(){
  load();
- const js=document.getElementById("jobSelect");Object.keys(JOBS).forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=JOB_DISPLAY_NAMES[j]||j;js.append(o)});
+ const js=document.getElementById("jobSelect");Object.keys(JOBS).forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=JOB_DISPLAY_NAMES[state.lang]?.[j]||j;js.append(o)});
  document.getElementById("titleInput").value=state.title;document.getElementById("showG").checked=state.showG;
  js.onchange=renderSkills;document.getElementById("skillSearch").oninput=renderSkills;
- document.getElementById("langJa").onclick=async()=>{state.lang="ja";save();await renderSkills()};
- document.getElementById("langEn").onclick=()=>{state.lang="en";save();renderSkills()};
+ document.getElementById("langJa").onclick=async()=>{state.lang="ja";save();updateStaticUi();await renderSkills();renderKeyboards()};
+ document.getElementById("langEn").onclick=()=>{state.lang="en";save();updateStaticUi();renderSkills();renderKeyboards()};
  document.getElementById("uploadBtn").onclick=()=>document.getElementById("fileInput").click();
  document.getElementById("fileInput").onchange=e=>readFiles(e.target.files);
  const drop=document.getElementById("drop");
@@ -407,8 +491,8 @@ function init(){
    lines.push("");
 
    state.keyboards.forEach((kb,ki)=>{
-     const mod=combo(kb)||"なし";
-     lines.push(`Keyboard ${ki+1} [Modifier: ${mod}]`);
+     const mod=combo(kb)||tr("none");
+     lines.push(`${tr("keyboard")} ${ki+1} [Modifier: ${mod}]`);
 
      const entries=Object.entries(kb.bindings)
        .filter(([,skill])=>skill && skill.name)
@@ -421,7 +505,7 @@ function init(){
        .sort((a,b)=>a.label.localeCompare(b.label,"ja"));
 
      if(!entries.length){
-       lines.push("  （割り当てなし）");
+       lines.push("  "+tr("noAssign"));
      }else{
        entries.forEach(x=>lines.push(`  ${x.label} : ${x.name}`));
      }
@@ -436,7 +520,7 @@ function init(){
    a.click();
    setTimeout(()=>URL.revokeObjectURL(url),1000);
  };
- updateLanguageButtons();renderSkills();renderKeyboards()
+ updateStaticUi();updateLanguageButtons();renderSkills();renderKeyboards()
 }
 init();
 </script>
