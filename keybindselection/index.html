@@ -22,6 +22,7 @@ button{border:1px solid var(--line);background:var(--panel2);color:var(--text);b
 button:hover{border-color:#617086}
 button.primary{background:#236aa8;border-color:#478fcb}
 button.danger{color:#ffd2d2;border-color:#7c4545}
+.lang-btn.on{background:#256ba8;border-color:#61a6dd;box-shadow:inset 0 0 0 1px #ffffff15}
 input[type=text],select{background:#111720;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px}
 .job-select{min-width:140px}
 .search{min-width:230px}
@@ -75,6 +76,8 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 <div class="toolbar">
   <strong>スキル</strong>
   <select id="jobSelect" class="job-select"></select>
+  <button id="langJa" class="lang-btn">日本語</button>
+  <button id="langEn" class="lang-btn">English</button>
   <input id="skillSearch" class="search" type="text" placeholder="スキル名を検索">
   <button id="uploadBtn">画像を追加</button>
   <input id="fileInput" type="file" multiple accept="image/*" hidden>
@@ -82,7 +85,7 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 </div>
 <div id="drop" class="drop">追加したい画像をここへドラッグ＆ドロップ</div>
 <div id="skillPool" class="skill-pool"></div>
-<p class="hint">General（Sprint / Limit Break）とZIP内のジョブ別PvEアイコンを収録しています。ジョブフォルダ名は元データの名前をそのまま使用しています。Traits（特性）は一覧から除外しています。</p>
+<p class="hint">General（Sprint / Limit Break）とZIP内のジョブ別PvEアイコンを収録しています。日本語 / English を切り替えられます。日本語名はXIVAPIからジョブ単位で取得しブラウザに保存します。ジョブフォルダ名は元データの名前をそのまま使用しています。Traits（特性）は一覧から除外しています。</p>
 </section>
 
 <section class="panel">
@@ -102,7 +105,7 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 <script>
 const JOBS=window.FF14_SKILLS||{};
 const state={
- title:"My FF14 Keybinds",showG:true,custom:[],
+ title:"My FF14 Keybinds",showG:true,custom:[],lang:"ja",jpNames:{},
  keyboards:Array.from({length:5},()=>({mods:{ctrl:false,alt:false,shift:false},bindings:{}}))
 };
 
@@ -132,8 +135,61 @@ function combo(kb){
  return a.length?a.join("+"):"";
 }
 function bindKey(kb,key){return (combo(kb)||"None")+"|"+key}
+function jobAbbr(folder){
+ const m=String(folder||"").match(/^\d+_(.+)$/);
+ return m?m[1]:folder;
+}
+function displaySkillName(skill){
+ if(!skill)return "";
+ const en=skill.nameEn||skill.name||"";
+ if(state.lang==="en")return en;
+ if(skill.nameJa)return skill.nameJa;
+ const folder=skill.job||"";
+ if(folder==="General"){
+   if(en.toLowerCase()==="sprint")return "スプリント";
+   if(en.toLowerCase()==="limit break")return "リミットブレイク";
+ }
+ return (state.jpNames[folder]&&state.jpNames[folder][en])||en;
+}
+async function fetchActionNames(jobFolder,language){
+ const abbr=jobAbbr(jobFolder);
+ if(!abbr||jobFolder==="General")return [];
+ const query=encodeURIComponent(`+ClassJobCategory.${abbr}=true`);
+ let url=`https://v2.xivapi.com/api/search?sheets=Action&fields=Name&language=${language}&query=${query}&limit=500`;
+ const out=[];
+ try{
+   while(url){
+     const res=await fetch(url);
+     if(!res.ok)throw new Error("XIVAPI "+res.status);
+     const data=await res.json();
+     (data.results||[]).forEach(r=>out.push({id:r.row_id,name:r.fields?.Name||""}));
+     url=data.next?`https://v2.xivapi.com/api/search?fields=Name&language=${language}&cursor=${encodeURIComponent(data.next)}&limit=500`:"";
+   }
+ }catch(e){
+   console.warn("XIVAPI name load failed:",e);
+ }
+ return out;
+}
+async function ensureJapanese(jobFolder){
+ if(!jobFolder||jobFolder==="General"||state.jpNames[jobFolder])return;
+ state.jpNames[jobFolder]={};
+ const [enRows,jaRows]=await Promise.all([
+   fetchActionNames(jobFolder,"en"),
+   fetchActionNames(jobFolder,"ja")
+ ]);
+ const jaById=new Map(jaRows.map(x=>[x.id,x.name]));
+ enRows.forEach(x=>{
+   const ja=jaById.get(x.id);
+   if(x.name&&ja)state.jpNames[jobFolder][x.name]=ja;
+ });
+ save();
+}
+function updateLanguageButtons(){
+ document.getElementById("langJa").classList.toggle("on",state.lang==="ja");
+ document.getElementById("langEn").classList.toggle("on",state.lang==="en");
+}
 function skillByDrag(data){
- if(data.source==="builtin")return {name:data.name,src:data.src};
+ if(data.source==="builtin")return {name:data.name,nameEn:data.nameEn||data.name,nameJa:data.nameJa||"",job:data.job||"",src:data.src};
  if(data.source==="custom")return state.custom.find(x=>x.id===data.id)||null;
  return null
 }
@@ -161,7 +217,7 @@ function keyEl(def,ki){
      if(source)kb.bindings[bk]=source;else delete kb.bindings[bk];
      if(target)kb.bindings[d.bk]=target;else delete kb.bindings[d.bk];
    }else{
-     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.name,src:s.src}
+     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.nameEn||s.name,nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"",src:s.src}
    }
    save();renderKeyboards()
  });
@@ -203,28 +259,85 @@ function renderKeyboards(){
    layout.append(left,navbox,num);sc.append(layout);card.append(sc);root.append(card)
  }
 }
-function renderSkills(){
- const job=document.getElementById("jobSelect").value,q=document.getElementById("skillSearch").value.trim().toLowerCase();
+async function renderSkills(){
+ const job=document.getElementById("jobSelect").value;
+ if(state.lang==="ja")await ensureJapanese(job);
+ updateLanguageButtons();
+
+ const q=document.getElementById("skillSearch").value.trim().toLowerCase();
  const root=document.getElementById("skillPool");root.innerHTML="";
- const built=(JOBS[job]||[]).filter(s=>!q||s.name.toLowerCase().includes(q));
- [...built.map(s=>({...s,source:"builtin"})),...state.custom.filter(s=>!q||s.name.toLowerCase().includes(q)).map(s=>({...s,source:"custom"}))].forEach(s=>{
-   const d=document.createElement("div");d.className="skill"+(s.source==="custom"?" custom":"");d.draggable=true;
-   const img=document.createElement("img");img.src=s.src;img.alt=s.name;img.title=s.name;
-   const n=document.createElement("div");n.className="skill-name";n.textContent=s.name;
-   d.ondragstart=e=>e.dataTransfer.setData("text/plain",JSON.stringify(s.source==="builtin"?{source:"builtin",name:s.name,src:s.src}:{source:"custom",id:s.id}));
+
+ const built=(JOBS[job]||[])
+   .map(s=>({
+     ...s,
+     source:"builtin",
+     job,
+     nameEn:s.name,
+     nameJa:(job==="General"
+       ?(s.name.toLowerCase()==="sprint"?"スプリント":s.name.toLowerCase()==="limit break"?"リミットブレイク":"")
+       :(state.jpNames[job]?.[s.name]||""))
+   }))
+   .filter(s=>{
+     const label=displaySkillName(s).toLowerCase();
+     const en=(s.nameEn||"").toLowerCase();
+     return !q||label.includes(q)||en.includes(q);
+   });
+
+ const custom=state.custom
+   .map(s=>({...s,source:"custom",nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"Custom"}))
+   .filter(s=>{
+     const label=displaySkillName(s).toLowerCase();
+     const en=(s.nameEn||"").toLowerCase();
+     return !q||label.includes(q)||en.includes(q);
+   });
+
+ [...built,...custom].forEach(s=>{
+   const d=document.createElement("div");
+   d.className="skill"+(s.source==="custom"?" custom":"");
+   d.draggable=true;
+
+   const img=document.createElement("img");
+   img.src=s.src;img.alt=displaySkillName(s);img.title=displaySkillName(s);
+
+   const n=document.createElement("div");
+   n.className="skill-name";
+   n.textContent=displaySkillName(s);
+
+   d.ondragstart=e=>e.dataTransfer.setData(
+     "text/plain",
+     JSON.stringify(
+       s.source==="builtin"
+       ?{source:"builtin",name:s.nameEn,nameEn:s.nameEn,nameJa:s.nameJa,job:s.job,src:s.src}
+       :{source:"custom",id:s.id}
+     )
+   );
+
    d.append(img,n);
-   if(s.source==="custom"){const x=document.createElement("button");x.className="remove";x.textContent="×";x.onclick=e=>{e.stopPropagation();state.custom=state.custom.filter(v=>v.id!==s.id);save();renderSkills()};d.append(x)}
-   root.append(d)
- })
+
+   if(s.source==="custom"){
+     const x=document.createElement("button");
+     x.className="remove";x.textContent="×";
+     x.onclick=e=>{
+       e.stopPropagation();
+       state.custom=state.custom.filter(v=>v.id!==s.id);
+       save();renderSkills();
+     };
+     d.append(x);
+   }
+
+   root.append(d);
+ });
 }
 function readFiles(files){
- [...files].filter(f=>f.type.startsWith("image/")).forEach(f=>{const r=new FileReader();r.onload=()=>{state.custom.push({id:crypto.randomUUID(),name:f.name.replace(/\.[^.]+$/,""),src:r.result});save();renderSkills()};r.readAsDataURL(f)})
+ [...files].filter(f=>f.type.startsWith("image/")).forEach(f=>{const r=new FileReader();r.onload=()=>{state.custom.push({id:crypto.randomUUID(),name:f.name.replace(/\.[^.]+$/,""),nameEn:f.name.replace(/\.[^.]+$/,""),nameJa:"",job:"Custom",src:r.result});save();renderSkills()};r.readAsDataURL(f)})
 }
 function init(){
  load();
  const js=document.getElementById("jobSelect");Object.keys(JOBS).forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=j;js.append(o)});
  document.getElementById("titleInput").value=state.title;document.getElementById("showG").checked=state.showG;
  js.onchange=renderSkills;document.getElementById("skillSearch").oninput=renderSkills;
+ document.getElementById("langJa").onclick=async()=>{state.lang="ja";save();await renderSkills()};
+ document.getElementById("langEn").onclick=()=>{state.lang="en";save();renderSkills()};
  document.getElementById("uploadBtn").onclick=()=>document.getElementById("fileInput").click();
  document.getElementById("fileInput").onchange=e=>readFiles(e.target.files);
  const drop=document.getElementById("drop");
@@ -250,7 +363,7 @@ function init(){
          const parts=binding.split("|");
          const key=parts.slice(1).join("|");
          const label=(combo(kb)?combo(kb)+"+":"")+key;
-         return {label,name:skill.name};
+         return {label,name:displaySkillName(skill)};
        })
        .sort((a,b)=>a.label.localeCompare(b.label,"ja"));
 
@@ -270,7 +383,7 @@ function init(){
    a.click();
    setTimeout(()=>URL.revokeObjectURL(url),1000);
  };
- renderSkills();renderKeyboards()
+ updateLanguageButtons();renderSkills();renderKeyboards()
 }
 init();
 </script>
