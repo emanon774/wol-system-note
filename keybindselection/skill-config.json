@@ -1,12 +1,12 @@
 {
-  "version": "2026-08-10-official-pve-level100-hotbar-v2",
+  "version": "2026-08-11-official-pve-level100-hotbar-v3",
   "source": {
     "selectionPolicy": "Level 100 PvE keybind mapping. Keep only independently assignable player buttons. Exclude official hotbar-unassignable transformed actions, trait-replaced obsolete actions, autonomous pet actions, pet command/system actions, and redundant stance-release duplicates.",
     "officialBaseEn": "https://na.finalfantasyxiv.com/jobguide/",
     "officialBaseJa": "https://jp.finalfantasyxiv.com/jobguide/",
-    "verifiedAt": "2026-08-10",
-    "guideLastUpdateObserved": "04/28/2026",
-    "notes": "Blue Mage intentionally not audited."
+    "verifiedAt": "2026-08-11",
+    "guideLastUpdateObserved": "Patch 7.5 / current official job guide checked 2026-08-11",
+    "notes": "21 standard combat jobs audited; Blue Mage intentionally excluded from UI. Sprint and Limit Break are injected as common Other actions by index.html."
   },
   "jobs": {
     "01_PLD": {
