@@ -118,6 +118,15 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 <script src="skills.js"></script>
 <script>
 const JOBS=window.FF14_SKILLS||{};
+const SUPPORTED_JOBS=Object.keys(JOBS).filter(j=>/^\d+_/.test(j)&&j!=="22_BLU");
+const GENERAL_SKILLS=[
+ {name:"Sprint",nameEn:"Sprint",nameJa:"スプリント",job:"General",type:"other",src:makeGeneralIcon("SPR","スプリント")},
+ {name:"Limit Break",nameEn:"Limit Break",nameJa:"リミットブレイク",job:"General",type:"other",src:makeGeneralIcon("LB","リミットブレイク")}
+];
+function makeGeneralIcon(shortLabel,fullLabel){
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="#203247"/><rect x="3" y="3" width="58" height="58" rx="8" fill="none" stroke="#8dc8ff" stroke-width="2"/><text x="32" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="white">${shortLabel}</text><title>${fullLabel}</title></svg>`;
+ return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
 let SKILL_CONFIG={actionCategoryMap:{"2":"spell","3":"ws","4":"ability"},jobs:{}};
 const JOB_DISPLAY_NAMES={
  ja:{
@@ -436,7 +445,7 @@ async function renderSkills(){
    return icon?{name:s.name,src:icon.src,synthetic:true,type:s.type||jobCfg.types?.[s.name]||"other"}:null;
  }).filter(Boolean);
 
- const built=[...rawSkills,...syntheticSkills]
+ let built=[...rawSkills,...syntheticSkills]
    .map(s=>({
      ...s,
      source:"builtin",
@@ -453,6 +462,16 @@ async function renderSkills(){
      const en=(s.nameEn||"").toLowerCase();
      return !q||label.includes(q)||en.includes(q);
    });
+
+ // Common PvE keybinds: always expose Sprint / Limit Break under Other.
+ const generalBuilt=GENERAL_SKILLS
+   .map(s=>({...s,source:"builtin"}))
+   .filter(s=>{
+     const label=displaySkillName(s).toLowerCase();
+     const en=(s.nameEn||"").toLowerCase();
+     return !q||label.includes(q)||en.includes(q);
+   });
+ built=[...built,...generalBuilt];
 
  const custom=state.custom
    .map(s=>({...s,source:"custom",nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"Custom"}))
@@ -518,7 +537,7 @@ async function loadSkillConfig(){
 async function init(){
  await loadSkillConfig();
  load();
- const js=document.getElementById("jobSelect");Object.keys(JOBS).forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=JOB_DISPLAY_NAMES[state.lang]?.[j]||j;js.append(o)});
+ const js=document.getElementById("jobSelect");SUPPORTED_JOBS.forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=JOB_DISPLAY_NAMES[state.lang]?.[j]||j;js.append(o)});
  document.getElementById("titleInput").value=state.title;document.getElementById("showG").checked=state.showG;
  js.onchange=renderSkills;document.getElementById("skillSearch").oninput=renderSkills;
  document.getElementById("langJa").onclick=async()=>{state.lang="ja";save();updateStaticUi();await renderSkills();renderKeyboards()};
