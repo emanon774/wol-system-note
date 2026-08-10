@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FF14 5 Keyboard Keybind Visualizer</title>
+<style>
+:root{
+  --bg:#0c1016;--panel:#171c24;--panel2:#202733;--line:#384252;
+  --text:#f3f6fa;--muted:#9eabba;--accent:#6fb8ff;--key:48px;--gap:5px
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#182333 0,#0c1016 44%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{width:min(1600px,calc(100% - 24px));margin:auto;padding:24px 0 60px}
+h1{margin:0 0 6px;font-size:clamp(24px,3vw,38px)}
+.lead{margin:0 0 18px;color:var(--muted);line-height:1.7}
+.panel{background:rgba(23,28,36,.96);border:1px solid var(--line);border-radius:16px;padding:16px;margin:0 0 18px;box-shadow:0 14px 38px #0005}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+.spacer{flex:1}
+button,select,input{font:inherit}
+button{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:9px;padding:8px 12px;cursor:pointer}
+button:hover{border-color:#617086}
+button.primary{background:#236aa8;border-color:#478fcb}
+button.danger{color:#ffd2d2;border-color:#7c4545}
+input[type=text],select{background:#111720;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px}
+.job-select{min-width:140px}
+.search{min-width:230px}
+.drop{margin-top:12px;border:2px dashed #445165;border-radius:12px;padding:14px;text-align:center;color:var(--muted)}
+.drop.over{border-color:var(--accent);background:#6fb8ff12}
+.skill-pool{display:grid;grid-template-columns:repeat(auto-fill,64px);gap:8px;margin-top:12px;max-height:280px;overflow:auto;padding-right:4px}
+.skill{width:64px;position:relative;text-align:center;cursor:grab}
+.skill img{width:56px;height:56px;display:block;margin:auto;border-radius:9px;border:1px solid #4b5668;object-fit:cover}
+.skill-name{font-size:9px;color:#c8d1dc;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.custom .remove{position:absolute;right:1px;top:0;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:#000c}
+.keyboard-card{border:1px solid #323c4b;border-radius:14px;margin-top:14px;overflow:hidden;background:#10151d}
+.keyboard-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;background:#171e28;border-bottom:1px solid #323c4b}
+.keyboard-head strong{min-width:100px}
+.mod{padding:7px 11px}
+.mod.on{background:#256ba8;border-color:#61a6dd;box-shadow:inset 0 0 0 1px #ffffff15}
+.keyboard-scroll{overflow-x:auto;padding:12px}
+.keyboard-layout{display:grid;grid-template-columns:auto auto auto;gap:14px;align-items:start;min-width:max-content}
+.left-side{display:flex;gap:10px}
+.gkeys{display:grid;grid-template-columns:var(--key);gap:var(--gap);padding-top:54px}
+.gkeys.hidden{display:none}
+.main{display:grid;gap:8px}
+.row{display:flex;gap:var(--gap)}
+.gap{width:12px;flex:none}
+.key{height:var(--key);width:var(--key);flex:none;position:relative;border:1px solid #414c5c;border-radius:7px;background:linear-gradient(#ffffff0d,#ffffff02),#171d26;overflow:hidden}
+.key img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.key.dragover{outline:2px solid var(--accent)}
+.key-label{position:absolute;left:3px;top:3px;z-index:2;font-size:9px;font-weight:800;padding:2px 4px;border-radius:4px;background:#000b;text-shadow:0 1px 2px #000}
+.w125{width:calc(var(--key)*1.25 + var(--gap)*.25)}.w15{width:calc(var(--key)*1.5 + var(--gap)*.5)}
+.w175{width:calc(var(--key)*1.75 + var(--gap)*.75)}.w2{width:calc(var(--key)*2 + var(--gap))}
+.w225{width:calc(var(--key)*2.25 + var(--gap)*1.25)}.w275{width:calc(var(--key)*2.75 + var(--gap)*1.75)}
+.w625{width:calc(var(--key)*6.25 + var(--gap)*5.25)}
+.nav{display:grid;grid-template-columns:repeat(3,var(--key));gap:var(--gap)}
+.nav-spacer{height:calc(var(--key) + 8px);grid-column:1/-1}
+.nav-arrow-gap{height:calc(var(--key) + var(--gap));grid-column:1/-1}
+.blank{visibility:hidden}
+.numpad{display:grid;grid-template-columns:repeat(4,var(--key));grid-template-rows:repeat(5,var(--key));gap:var(--gap)}
+.np-plus{grid-column:4;grid-row:2/span 2;height:calc(var(--key)*2 + var(--gap))}
+.np-enter{grid-column:4;grid-row:4/span 2;height:calc(var(--key)*2 + var(--gap))}
+.np-zero{grid-column:1/span 2;width:calc(var(--key)*2 + var(--gap))}
+.hint{color:var(--muted);font-size:12px;line-height:1.7}
+#captureArea{display:inline-block;min-width:max-content}
+@media(max-width:800px){:root{--key:42px;--gap:4px}.app{width:calc(100% - 12px)}.panel{padding:10px}}
+</style>
+</head>
+<body>
+<main class="app">
+<h1>FF14 5 Keyboard Keybind Visualizer</h1>
+<p class="lead">5台のフルキーボードにスキルを配置し、各キーボードごとに Ctrl / Alt / Shift を自由に組み合わせられます。</p>
+
+<section class="panel">
+<div class="toolbar">
+  <strong>スキル</strong>
+  <select id="jobSelect" class="job-select"></select>
+  <input id="skillSearch" class="search" type="text" placeholder="スキル名を検索">
+  <button id="uploadBtn">画像を追加</button>
+  <input id="fileInput" type="file" multiple accept="image/*" hidden>
+  <button id="clearCustom" class="danger">追加画像を削除</button>
+</div>
+<div id="drop" class="drop">追加したい画像をここへドラッグ＆ドロップ</div>
+<div id="skillPool" class="skill-pool"></div>
+<p class="hint">General（Sprint / Limit Break）とZIP内のジョブ別PvEアイコンを収録しています。ジョブフォルダ名は元データの名前をそのまま使用しています。Traits（特性）は一覧から除外しています。</p>
+</section>
+
+<section class="panel">
+<div class="toolbar">
+  <input id="titleInput" type="text" value="My FF14 Keybinds">
+  <label><input id="showG" type="checkbox" checked> G1〜G5</label>
+  <div class="spacer"></div>
+  <button id="clearAll" class="danger">全キーボードをクリア</button>
+  <button id="exportBtn" class="primary">キーバインドをTXT保存</button>
+</div>
+<div id="captureArea"></div>
+<p class="hint">Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。ダウンロードは割り当て一覧のTXTファイルのみです。</p>
+</section>
+</main>
+
+<script src="skills.js"></script>
+<script>
+const JOBS=window.FF14_SKILLS||{};
+const state={
+ title:"My FF14 Keybinds",showG:true,custom:[],
+ keyboards:Array.from({length:5},()=>({mods:{ctrl:false,alt:false,shift:false},bindings:{}}))
+};
+
+const K=(id,label=id,cls="")=>({id,label,cls}), G=()=>({gap:true});
+const rows=[
+ [K("Esc"),G(),K("F1"),K("F2"),K("F3"),K("F4"),G(),K("F5"),K("F6"),K("F7"),K("F8"),G(),K("F9"),K("F10"),K("F11"),K("F12")],
+ [K("半角"),K("1"),K("2"),K("3"),K("4"),K("5"),K("6"),K("7"),K("8"),K("9"),K("0"),K("-"),K("^"),K("¥"),K("Backspace","Backspace","w2")],
+ [K("Tab","Tab","w15"),K("Q"),K("W"),K("E"),K("R"),K("T"),K("Y"),K("U"),K("I"),K("O"),K("P"),K("@"),K("["),K("Enter","Enter","w15")],
+ [K("Caps","Caps","w175"),K("A"),K("S"),K("D"),K("F"),K("G"),K("H"),K("J"),K("K"),K("L"),K(";"),K(":"),K("]"),K("Enter2","Enter","w125")],
+ [K("ShiftL","Shift","w225"),K("Z"),K("X"),K("C"),K("V"),K("B"),K("N"),K("M"),K(","),K("."),K("/"),K("\\"),K("ShiftR","Shift","w225")],
+ [K("CtrlL","Ctrl","w125"),K("WinL","Win","w125"),K("AltL","Alt","w125"),K("Space","Space","w625"),K("AltR","Alt","w125"),K("WinR","Win","w125"),K("Menu","Menu","w125"),K("CtrlR","Ctrl","w125")]
+];
+const nav=[K("Insert"),K("Home"),K("PageUp","PgUp"),K("Delete"),K("End"),K("PageDown","PgDn")];
+const arrows=[K("ArrowBlank","", "blank"),K("Up","↑"),K("ArrowBlank2","","blank"),K("Left","←"),K("Down","↓"),K("Right","→")];
+const np=[
+ {id:"NumLock",label:"Num"},{id:"NP/",label:"/"},{id:"NP*",label:"*"},{id:"NP-",label:"-"},
+ {id:"NP7",label:"7"},{id:"NP8",label:"8"},{id:"NP9",label:"9"},{id:"NP+",label:"+",cls:"np-plus"},
+ {id:"NP4",label:"4"},{id:"NP5",label:"5"},{id:"NP6",label:"6"},
+ {id:"NP1",label:"1"},{id:"NP2",label:"2"},{id:"NP3",label:"3"},{id:"NPEnter",label:"Enter",cls:"np-enter"},
+ {id:"NP0",label:"0",cls:"np-zero"},{id:"NP.",label:"."}
+];
+
+function save(){localStorage.setItem("ff14-5kb-v3",JSON.stringify(state))}
+function load(){try{const x=JSON.parse(localStorage.getItem("ff14-5kb-v3"));if(x)Object.assign(state,x)}catch(e){}}
+function combo(kb){
+ const a=[];if(kb.mods.ctrl)a.push("Ctrl");if(kb.mods.alt)a.push("Alt");if(kb.mods.shift)a.push("Shift");
+ return a.length?a.join("+"):"";
+}
+function bindKey(kb,key){return (combo(kb)||"None")+"|"+key}
+function skillByDrag(data){
+ if(data.source==="builtin")return {name:data.name,src:data.src};
+ if(data.source==="custom")return state.custom.find(x=>x.id===data.id)||null;
+ return null
+}
+function keyEl(def,ki){
+ const kb=state.keyboards[ki], el=document.createElement("div");
+ el.className="key "+(def.cls||"");el.dataset.key=def.id;
+ const bk=bindKey(kb,def.id),assigned=kb.bindings[bk];
+ if(assigned){const img=document.createElement("img");img.src=assigned.src;img.alt=assigned.name;el.append(img)}
+ const lab=document.createElement("div");lab.className="key-label";lab.textContent=def.label;
+ el.append(lab);
+ if(def.cls?.includes("blank"))return el;
+ el.draggable=!!assigned;
+ el.addEventListener("dragstart",e=>{
+   if(!assigned)return;
+   e.dataTransfer.setData("text/plain",JSON.stringify({source:"key",ki,key:def.id,bk}))
+ });
+ el.addEventListener("dragover",e=>{e.preventDefault();el.classList.add("dragover")});
+ el.addEventListener("dragleave",()=>el.classList.remove("dragover"));
+ el.addEventListener("drop",e=>{
+   e.preventDefault();el.classList.remove("dragover");
+   let d;try{d=JSON.parse(e.dataTransfer.getData("text/plain"))}catch{return}
+   if(d.source==="key"){
+     if(d.ki!==ki)return;
+     const target=kb.bindings[bk]||null,source=kb.bindings[d.bk]||null;
+     if(source)kb.bindings[bk]=source;else delete kb.bindings[bk];
+     if(target)kb.bindings[d.bk]=target;else delete kb.bindings[d.bk];
+   }else{
+     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.name,src:s.src}
+   }
+   save();renderKeyboards()
+ });
+ el.addEventListener("dblclick",()=>{delete kb.bindings[bk];save();renderKeyboards()});
+ return el
+}
+function renderKeyboards(){
+ const root=document.getElementById("captureArea");root.innerHTML="";
+ for(let ki=0;ki<5;ki++){
+   const kb=state.keyboards[ki],card=document.createElement("div");card.className="keyboard-card";
+   const head=document.createElement("div");head.className="keyboard-head";
+   const title=document.createElement("strong");title.textContent=`Keyboard ${ki+1}`;
+   head.append(title);
+   ["ctrl","alt","shift"].forEach(m=>{
+     const b=document.createElement("button");b.className="mod"+(kb.mods[m]?" on":"");b.textContent=m[0].toUpperCase()+m.slice(1);
+     b.onclick=()=>{kb.mods[m]=!kb.mods[m];save();renderKeyboards()};head.append(b)
+   });
+   const txt=document.createElement("span");txt.className="hint";txt.textContent="現在: "+(combo(kb)||"修飾なし");head.append(txt);
+   const clear=document.createElement("button");clear.className="danger";clear.textContent="このキーボードをクリア";
+   clear.onclick=()=>{kb.bindings={};save();renderKeyboards()};head.append(clear);
+   card.append(head);
+
+   const sc=document.createElement("div");sc.className="keyboard-scroll";
+   const layout=document.createElement("div");layout.className="keyboard-layout";
+   const left=document.createElement("div");left.className="left-side";
+   const g=document.createElement("div");g.className="gkeys"+(state.showG?"":" hidden");
+   for(let n=1;n<=5;n++)g.append(keyEl(K("G"+n),ki));
+   const main=document.createElement("div");main.className="main";
+   rows.forEach(r=>{const row=document.createElement("div");row.className="row";r.forEach(d=>{if(d.gap){const x=document.createElement("div");x.className="gap";row.append(x)}else row.append(keyEl(d,ki))});main.append(row)});
+   left.append(g,main);
+
+   const navbox=document.createElement("div");navbox.className="nav";
+   const spacer=document.createElement("div");spacer.className="nav-spacer";navbox.append(spacer);
+   nav.forEach(d=>navbox.append(keyEl(d,ki)));
+   const asp=document.createElement("div");asp.className="nav-arrow-gap";navbox.append(asp);
+   arrows.forEach(d=>navbox.append(keyEl(d,ki)));
+
+   const num=document.createElement("div");num.className="numpad";np.forEach(d=>num.append(keyEl(d,ki)));
+   layout.append(left,navbox,num);sc.append(layout);card.append(sc);root.append(card)
+ }
+}
+function renderSkills(){
+ const job=document.getElementById("jobSelect").value,q=document.getElementById("skillSearch").value.trim().toLowerCase();
+ const root=document.getElementById("skillPool");root.innerHTML="";
+ const built=(JOBS[job]||[]).filter(s=>!q||s.name.toLowerCase().includes(q));
+ [...built.map(s=>({...s,source:"builtin"})),...state.custom.filter(s=>!q||s.name.toLowerCase().includes(q)).map(s=>({...s,source:"custom"}))].forEach(s=>{
+   const d=document.createElement("div");d.className="skill"+(s.source==="custom"?" custom":"");d.draggable=true;
+   const img=document.createElement("img");img.src=s.src;img.alt=s.name;img.title=s.name;
+   const n=document.createElement("div");n.className="skill-name";n.textContent=s.name;
+   d.ondragstart=e=>e.dataTransfer.setData("text/plain",JSON.stringify(s.source==="builtin"?{source:"builtin",name:s.name,src:s.src}:{source:"custom",id:s.id}));
+   d.append(img,n);
+   if(s.source==="custom"){const x=document.createElement("button");x.className="remove";x.textContent="×";x.onclick=e=>{e.stopPropagation();state.custom=state.custom.filter(v=>v.id!==s.id);save();renderSkills()};d.append(x)}
+   root.append(d)
+ })
+}
+function readFiles(files){
+ [...files].filter(f=>f.type.startsWith("image/")).forEach(f=>{const r=new FileReader();r.onload=()=>{state.custom.push({id:crypto.randomUUID(),name:f.name.replace(/\.[^.]+$/,""),src:r.result});save();renderSkills()};r.readAsDataURL(f)})
+}
+function init(){
+ load();
+ const js=document.getElementById("jobSelect");Object.keys(JOBS).forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=j;js.append(o)});
+ document.getElementById("titleInput").value=state.title;document.getElementById("showG").checked=state.showG;
+ js.onchange=renderSkills;document.getElementById("skillSearch").oninput=renderSkills;
+ document.getElementById("uploadBtn").onclick=()=>document.getElementById("fileInput").click();
+ document.getElementById("fileInput").onchange=e=>readFiles(e.target.files);
+ const drop=document.getElementById("drop");
+ ["dragenter","dragover"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add("over")}));
+ ["dragleave","drop"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove("over")}));
+ drop.ondrop=e=>readFiles(e.dataTransfer.files);
+ document.getElementById("clearCustom").onclick=()=>{state.custom=[];save();renderSkills()};
+ document.getElementById("showG").onchange=e=>{state.showG=e.target.checked;save();renderKeyboards()};
+ document.getElementById("titleInput").oninput=e=>{state.title=e.target.value;save()};
+ document.getElementById("clearAll").onclick=()=>{state.keyboards.forEach(k=>k.bindings={});save();renderKeyboards()};
+ document.getElementById("exportBtn").onclick=()=>{
+   const lines=[];
+   lines.push(state.title || "FF14 Keybinds");
+   lines.push("");
+
+   state.keyboards.forEach((kb,ki)=>{
+     const mod=combo(kb)||"なし";
+     lines.push(`Keyboard ${ki+1} [Modifier: ${mod}]`);
+
+     const entries=Object.entries(kb.bindings)
+       .filter(([,skill])=>skill && skill.name)
+       .map(([binding,skill])=>{
+         const parts=binding.split("|");
+         const key=parts.slice(1).join("|");
+         const label=(combo(kb)?combo(kb)+"+":"")+key;
+         return {label,name:skill.name};
+       })
+       .sort((a,b)=>a.label.localeCompare(b.label,"ja"));
+
+     if(!entries.length){
+       lines.push("  （割り当てなし）");
+     }else{
+       entries.forEach(x=>lines.push(`  ${x.label} : ${x.name}`));
+     }
+     lines.push("");
+   });
+
+   const blob=new Blob([lines.join("\n")],{type:"text/plain;charset=utf-8"});
+   const url=URL.createObjectURL(blob);
+   const a=document.createElement("a");
+   a.download="ff14-keybinds.txt";
+   a.href=url;
+   a.click();
+   setTimeout(()=>URL.revokeObjectURL(url),1000);
+ };
+ renderSkills();renderKeyboards()
+}
+init();
+</script>
+</body>
+</html>
