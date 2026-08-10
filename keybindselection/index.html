@@ -36,8 +36,8 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 .skill-name{font-size:9px;color:#c8d1dc;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .skill-type{font-size:8px;color:#8fa0b3;text-align:center;margin-top:1px}
 .custom .remove{position:absolute;right:1px;top:0;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:#000c}
-.keyboard-card{border:1px solid #323c4b;border-radius:14px;margin-top:14px;overflow:hidden;background:#10151d}
-.keyboard-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;background:#171e28;border-bottom:1px solid #323c4b}
+.keyboard-card,.wxhb-card{border:1px solid #323c4b;border-radius:14px;margin-top:14px;overflow:hidden;background:#10151d}
+.keyboard-head,.wxhb-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;background:#171e28;border-bottom:1px solid #323c4b}
 .keyboard-head strong{min-width:100px}
 .mod{padding:7px 11px}
 .mod.on{background:#256ba8;border-color:#61a6dd;box-shadow:inset 0 0 0 1px #ffffff15}
@@ -66,6 +66,19 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 .np-enter{grid-column:4;grid-row:4/span 2;height:calc(var(--key)*2 + var(--gap))}
 .np-zero{grid-column:1/span 2;width:calc(var(--key)*2 + var(--gap))}
 .hint{color:var(--muted);font-size:12px;line-height:1.7}
+.slot-select{position:absolute;right:2px;bottom:2px;z-index:3;font-size:9px;padding:1px 2px;max-width:42px;background:#080b10dd;border:1px solid #6d7786;color:#fff;border-radius:4px}
+.wxhb-body{display:flex;gap:54px;align-items:center;justify-content:center;padding:22px 26px;overflow-x:auto;min-width:780px}
+.wxhb-half{display:flex;gap:22px;align-items:center;position:relative;padding:28px 18px 14px;border:1px solid #394658;border-radius:18px;background:radial-gradient(circle at center,#26314355,#10151d 68%)}
+.wxhb-half-label{position:absolute;left:0;right:0;top:7px;text-align:center;color:#d6e1ef;font-size:12px;font-weight:800;letter-spacing:.04em}
+.wxhb-cross{display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(3,56px);gap:4px;position:relative}
+.wxhb-cross::after{content:"";grid-column:2;grid-row:2;border:1px solid #334052;border-radius:12px;background:#0d1219}
+.wxhb-cross .pos-up{grid-column:2;grid-row:1}.wxhb-cross .pos-left{grid-column:1;grid-row:2}.wxhb-cross .pos-right{grid-column:3;grid-row:2}.wxhb-cross .pos-down{grid-column:2;grid-row:3}
+.wxhb-cross-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;color:#77869a;font-size:9px;font-weight:800;pointer-events:none;white-space:nowrap}
+.wxhb-slot{width:56px;height:56px;position:relative;border:1px solid #414c5c;border-radius:9px;background:linear-gradient(#ffffff0b,#ffffff02),#171d26;overflow:hidden;box-shadow:0 4px 12px #0006}
+.wxhb-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.wxhb-slot.dragover{outline:2px solid var(--accent)}
+.wxhb-slot .key-label{font-size:8px}
+.wxhb-bridge{width:58px;height:2px;background:#3b4657;flex:none;position:relative}.wxhb-bridge::after{content:"WXHB";position:absolute;left:50%;top:-10px;transform:translateX(-50%);font-size:9px;color:#738196;background:#10151d;padding:1px 5px}
 #captureArea{display:inline-block;min-width:max-content}
 @media(max-width:800px){:root{--key:42px;--gap:4px}.app{width:calc(100% - 12px)}.panel{padding:10px}}
 </style>
@@ -73,7 +86,7 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 <body>
 <main class="app">
 <h1 id="appTitle">FF14 5 Keyboard Keybind Visualizer</h1>
-<p id="leadText" class="lead">5台のフルキーボードにスキルを配置し、各キーボードごとに Ctrl / Alt / Shift を自由に組み合わせられます。</p>
+<p id="leadText" class="lead">5台のフルキーボードと2面のWXHBにスキルを配置できます。各キーボードでは Ctrl / Alt / Shift を自由に組み合わせられます。</p>
 
 <section class="panel">
 <div class="toolbar">
@@ -82,6 +95,7 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
   <button id="langJa" class="lang-btn">日本語</button>
   <button id="langEn" class="lang-btn">English</button>
   <input id="skillSearch" class="search" type="text" placeholder="スキル名を検索">
+  <label class="hint" id="medicineLabel">薬名 <input id="medicineName" type="text" placeholder="薬の正式名称"></label>
   <button id="uploadBtn">画像を追加</button>
   <input id="fileInput" type="file" multiple accept="image/*" hidden>
   <button id="clearCustom" class="danger">追加画像を削除</button>
@@ -108,10 +122,10 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
   <label id="showGLabel"><input id="showG" type="checkbox" checked> <span>G1〜G5</span></label>
   <div class="spacer"></div>
   <button id="clearAll" class="danger">全キーボードをクリア</button>
-  <button id="exportBtn" class="primary">キーバインドをTXT保存</button>
+  <button id="exportBtn" class="primary">FF14コマンドTXT保存</button>
 </div>
 <div id="captureArea"></div>
-<p id="keyboardHint" class="hint">Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。ダウンロードは割り当て一覧のTXTファイルのみです。</p>
+<p id="keyboardHint" class="hint">Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。各キーボードのHotbar番号と各キーのSlot、WXHBのXHBセット番号を設定すると、FF14の/hotbar・/crosshotbarコマンドTXTとして保存できます。</p>
 </section>
 </main>
 
@@ -119,10 +133,49 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 <script>
 const JOBS=window.FF14_SKILLS||{};
 const SUPPORTED_JOBS=Object.keys(JOBS).filter(j=>/^\d+_/.test(j)&&j!=="22_BLU");
+function svgIcon(kind,label){
+ const arrows={up:"M28 10 L12 27 H21 V46 H35 V27 H44 Z",down:"M28 46 L12 29 H21 V10 H35 V29 H44 Z",left:"M10 28 L27 12 V21 H46 V35 H27 V44 Z",right:"M46 28 L29 12 V21 H10 V35 H29 V44 Z"};
+ let body="";
+ if(kind.startsWith("move-")){const d=arrows[kind.slice(5)];body=`<path d="${d}" fill="#8fe1ff" stroke="#e7fbff" stroke-width="2"/><circle cx="28" cy="28" r="22" fill="none" stroke="#4e91ad" stroke-width="2"/>`;}
+ else if(kind.startsWith("camera-")){const dir=kind.slice(7);const d=arrows[dir];body=`<rect x="8" y="17" width="29" height="23" rx="5" fill="#6177a8" stroke="#dbe4ff" stroke-width="2"/><path d="M37 23 L49 17 V40 L37 34 Z" fill="#8ea5dc"/><circle cx="22" cy="28.5" r="7" fill="#111827" stroke="#e7efff" stroke-width="2"/><path d="${d}" transform="translate(0,0) scale(.45) translate(34,34)" fill="#ffd36d"/>`; }
+ else if(kind==="tilt"){body=`<path d="M12 36 Q28 15 44 36" fill="none" stroke="#8fe1ff" stroke-width="4"/><path d="M15 21 L10 31 L21 29" fill="#ffd36d"/><path d="M41 21 L46 31 L35 29" fill="#ffd36d"/><rect x="25" y="15" width="6" height="26" rx="3" fill="#e7efff"/>`; }
+ else if(kind==="potion"){body=`<path d="M21 8 H35 V15 L40 22 V46 H16 V22 L21 15 Z" fill="#d94a67" stroke="#ffe5eb" stroke-width="2"/><rect x="21" y="28" width="14" height="12" rx="3" fill="#ff9eb0"/><rect x="22" y="7" width="12" height="6" rx="2" fill="#d8ddea"/>`; }
+ else if(kind==="ether"){body=`<path d="M28 7 C38 18 44 24 44 34 A16 16 0 1 1 12 34 C12 24 18 18 28 7Z" fill="#6388ff" stroke="#e8edff" stroke-width="2"/><path d="M21 35 C25 28 31 25 37 26" fill="none" stroke="#bfe5ff" stroke-width="3"/>`; }
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#26364d"/><stop offset="1" stop-color="#10151d"/></linearGradient></defs><rect width="56" height="56" rx="9" fill="url(#g)"/>${body}</svg>`;
+ return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
 const GENERAL_SKILLS=[
- {name:"Sprint",nameEn:"Sprint",nameJa:"スプリント",job:"General",type:"other",src:"icons/General/sprint.png"},
- {name:"Limit Break",nameEn:"Limit Break",nameJa:"リミットブレイク",job:"General",type:"other",src:"icons/General/limit_break.png"}
+ {name:"Sprint",nameEn:"Sprint",nameJa:"スプリント",job:"General",type:"other",commandKind:"general",src:"icons/General/sprint.png"},
+ {name:"Limit Break",nameEn:"Limit Break",nameJa:"リミットブレイク",job:"General",type:"other",commandKind:"general",src:"icons/General/limit_break.png"},
+ {name:"Ether",nameEn:"Ether",nameJa:"エーテル",commandNameJa:"エーテル",commandNameEn:"Ether",job:"Item",type:"other",commandKind:"item",src:svgIcon("ether")},
+ {name:"Move Forward",nameEn:"Move Forward",nameJa:"前へ移動",job:"Control",type:"other",commandKind:"control",src:svgIcon("move-up")},
+ {name:"Move Back",nameEn:"Move Back",nameJa:"後ろへ移動",job:"Control",type:"other",commandKind:"control",src:svgIcon("move-down")},
+ {name:"Move Left",nameEn:"Move Left",nameJa:"左へ移動",job:"Control",type:"other",commandKind:"control",src:svgIcon("move-left")},
+ {name:"Move Right",nameEn:"Move Right",nameJa:"右へ移動",job:"Control",type:"other",commandKind:"control",src:svgIcon("move-right")},
+ {name:"Camera Up",nameEn:"Camera Up",nameJa:"カメラを上へ回転",job:"Control",type:"other",commandKind:"control",src:svgIcon("camera-up")},
+ {name:"Camera Down",nameEn:"Camera Down",nameJa:"カメラを下へ回転",job:"Control",type:"other",commandKind:"control",src:svgIcon("camera-down")},
+ {name:"Camera Left",nameEn:"Camera Left",nameJa:"カメラを左へ回転",job:"Control",type:"other",commandKind:"control",src:svgIcon("camera-left")},
+ {name:"Camera Right",nameEn:"Camera Right",nameJa:"カメラを右へ回転",job:"Control",type:"other",commandKind:"control",src:svgIcon("camera-right")},
+ {name:"Camera Tilt",nameEn:"Camera Tilt",nameJa:"チルト調整",job:"Control",type:"other",commandKind:"control",src:svgIcon("tilt")}
 ];
+
+const MEDICINE_DEFAULTS={
+ "01_PLD":"剛力","02_WAR":"剛力","03_DRK":"剛力","04_GNB":"剛力",
+ "05_MNK":"剛力","06_SAM":"剛力","07_DRG":"剛力","08_RPR":"剛力",
+ "09_NIN":"眼力","10_VPR":"眼力","11_BRD":"眼力","12_MCH":"眼力","13_DNC":"眼力",
+ "14_BLM":"知力","15_SMN":"知力","16_RDM":"知力","17_PCT":"知力",
+ "18_WHM":"心力","19_SCH":"心力","20_AST":"心力","21_SGE":"心力"
+};
+function medicineNameFor(job){
+ state.medicineNames=state.medicineNames||{};
+ if(!state.medicineNames[job])state.medicineNames[job]=MEDICINE_DEFAULTS[job]||"薬";
+ return state.medicineNames[job];
+}
+function medicineSkill(job){
+ const n=medicineNameFor(job);
+ return {name:"Medicine",nameEn:n,nameJa:n,commandNameJa:n,commandNameEn:n,job:"Item",type:"other",commandKind:"item",src:svgIcon("potion"),medicine:true};
+}
+
 let SKILL_CONFIG={actionCategoryMap:{"2":"spell","3":"ws","4":"ability"},jobs:{}};
 const JOB_DISPLAY_NAMES={
  ja:{
@@ -144,7 +197,9 @@ const JOB_DISPLAY_NAMES={
 };
 const state={
  title:"My FF14 Keybinds",showG:true,custom:[],lang:"ja",jpNames:{},actionTypes:{},
- keyboards:Array.from({length:5},()=>({mods:{ctrl:false,alt:false,shift:false},bindings:{}}))
+ keyboards:Array.from({length:5},(_,i)=>({mods:{ctrl:false,alt:false,shift:false},hotbar:i+1,bindings:{}})),
+ wxhbs:Array.from({length:2},(_,i)=>({set:i+1,bindings:{}})),
+ medicineNames:{}
 };
 
 const K=(id,label=id,cls="")=>({id,label,cls}), G=()=>({gap:true});
@@ -173,6 +228,26 @@ function combo(kb){
  return a.length?a.join("+"):"";
 }
 function bindKey(kb,key){return (combo(kb)||"None")+"|"+key}
+function firstFreeHotbarSlot(kb,ignoreBinding="") {
+ const used=new Set(Object.entries(kb.bindings||{}).filter(([k,v])=>k!==ignoreBinding&&v&&v.slot).map(([,v])=>Number(v.slot)));
+ for(let n=1;n<=12;n++)if(!used.has(n))return n;
+ return 1;
+}
+function ensureLayoutState(){
+ if(!Array.isArray(state.keyboards))state.keyboards=[];
+ while(state.keyboards.length<5)state.keyboards.push({mods:{ctrl:false,alt:false,shift:false},hotbar:state.keyboards.length+1,bindings:{}});
+ state.keyboards.forEach((kb,i)=>{
+   kb.mods=kb.mods||{ctrl:false,alt:false,shift:false}; kb.bindings=kb.bindings||{};
+   if(!Number.isInteger(Number(kb.hotbar))||Number(kb.hotbar)<1||Number(kb.hotbar)>10)kb.hotbar=Math.min(i+1,10);
+   Object.entries(kb.bindings).forEach(([binding,skill])=>{if(skill&&skill.commandKind!=="control"&&!skill.slot)skill.slot=firstFreeHotbarSlot(kb,binding)});
+ });
+ if(!Array.isArray(state.wxhbs))state.wxhbs=[];
+ while(state.wxhbs.length<2)state.wxhbs.push({set:state.wxhbs.length+1,bindings:{}});
+ state.wxhbs.forEach((wh,i)=>{wh.bindings=wh.bindings||{};if(!Number.isInteger(Number(wh.set))||Number(wh.set)<1||Number(wh.set)>8)wh.set=i+1});
+}
+function commandName(skill){const n=state.lang==="ja"?(skill?.commandNameJa||displaySkillName(skill)):(skill?.commandNameEn||skill?.nameEn||skill?.name||"");return String(n).replace(/"/g,'');}
+function isGeneralSkill(skill){return String(skill?.job||"")==="General";}
+function commandSub(skill){if(skill?.commandKind==="item")return "item";if(skill?.commandKind==="general"||isGeneralSkill(skill))return "general";return "set";}
 function jobAbbr(folder){
  const m=String(folder||"").match(/^\d+_(.+)$/);
  return m?m[1]:folder;
@@ -282,7 +357,7 @@ function updateLanguageButtons(){
  document.getElementById("langEn").classList.toggle("on",state.lang==="en");
 }
 function skillByDrag(data){
- if(data.source==="builtin")return {name:data.name,nameEn:data.nameEn||data.name,nameJa:data.nameJa||"",job:data.job||"",type:data.type||"other",src:data.src};
+ if(data.source==="builtin")return {name:data.name,nameEn:data.nameEn||data.name,nameJa:data.nameJa||"",job:data.job||"",type:data.type||"other",commandKind:data.commandKind||"",commandNameJa:data.commandNameJa||"",commandNameEn:data.commandNameEn||"",src:data.src};
  if(data.source==="custom")return state.custom.find(x=>x.id===data.id)||null;
  return null
 }
@@ -294,6 +369,18 @@ function keyEl(def,ki){
  const lab=document.createElement("div");lab.className="key-label";lab.textContent=def.label;
  el.append(lab);
  if(def.cls?.includes("blank"))return el;
+ if(assigned && assigned.commandKind!=="control"){
+   const slot=document.createElement("select");slot.className="slot-select";slot.title=state.lang==="ja"?"ホットバースロット":"Hotbar slot";
+   for(let n=1;n<=12;n++){const o=document.createElement("option");o.value=n;o.textContent=`S${n}`;slot.append(o)}
+   slot.value=String(assigned.slot||firstFreeHotbarSlot(kb,bk));assigned.slot=Number(slot.value);
+   slot.onmousedown=e=>e.stopPropagation();slot.onclick=e=>e.stopPropagation();slot.onchange=e=>{
+     const next=Number(e.target.value),prev=Number(assigned.slot);
+     const other=Object.entries(kb.bindings||{}).find(([k,v])=>k!==bk&&v&&Number(v.slot)===next);
+     if(other&&prev){other[1].slot=prev;}
+     assigned.slot=next;save();renderKeyboards();
+   };
+   el.append(slot);
+ }
  el.draggable=!!assigned;
  el.addEventListener("dragstart",e=>{
    if(!assigned)return;
@@ -310,20 +397,76 @@ function keyEl(def,ki){
      if(source)kb.bindings[bk]=source;else delete kb.bindings[bk];
      if(target)kb.bindings[d.bk]=target;else delete kb.bindings[d.bk];
    }else{
-     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.nameEn||s.name,nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"",type:s.type||rawSkillType(s),src:s.src}
+     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.nameEn||s.name,nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"",type:s.type||rawSkillType(s),commandKind:s.commandKind||"",commandNameJa:s.commandNameJa||"",commandNameEn:s.commandNameEn||"",src:s.src,...(s.commandKind==="control"?{}:{slot:firstFreeHotbarSlot(kb,bk)})}
    }
    save();renderKeyboards()
  });
  el.addEventListener("dblclick",()=>{delete kb.bindings[bk];save();renderKeyboards()});
  return el
 }
+function wxhbSlotEl(slotDef,wi){
+ const [visual,code]=Array.isArray(slotDef)?slotDef:[slotDef,slotDef];
+ const wh=state.wxhbs[wi], el=document.createElement("div");
+ el.className="wxhb-slot";
+ const assigned=wh.bindings[code];
+ if(assigned){const img=document.createElement("img");img.src=assigned.src;img.alt=assigned.name;el.append(img)}
+ const lab=document.createElement("div");lab.className="key-label";lab.textContent=`${visual} ${code}`;el.append(lab);
+ el.draggable=!!assigned;
+ el.addEventListener("dragstart",e=>{if(!assigned)return;e.dataTransfer.setData("text/plain",JSON.stringify({source:"wxhb",wi,slot:code}))});
+ el.addEventListener("dragover",e=>{e.preventDefault();el.classList.add("dragover")});
+ el.addEventListener("dragleave",()=>el.classList.remove("dragover"));
+ el.addEventListener("drop",e=>{
+   e.preventDefault();el.classList.remove("dragover");
+   let d;try{d=JSON.parse(e.dataTransfer.getData("text/plain"))}catch{return}
+   if(d.source==="wxhb"){
+     if(d.wi!==wi)return;
+     const target=wh.bindings[code]||null,source=wh.bindings[d.slot]||null;
+     if(source)wh.bindings[code]=source;else delete wh.bindings[code];
+     if(target)wh.bindings[d.slot]=target;else delete wh.bindings[d.slot];
+   }else if(d.source!=="key"){
+     const sk=skillByDrag(d);if(sk&&sk.commandKind!=="control")wh.bindings[code]={name:sk.nameEn||sk.name,nameEn:sk.nameEn||sk.name,nameJa:sk.nameJa||"",job:sk.job||"",type:sk.type||rawSkillType(sk),commandKind:sk.commandKind||"",commandNameJa:sk.commandNameJa||"",commandNameEn:sk.commandNameEn||"",src:sk.src};
+   }
+   save();renderKeyboards();
+ });
+ el.addEventListener("dblclick",()=>{delete wh.bindings[code];save();renderKeyboards()});
+ return el;
+}
+function renderWxhbs(root){
+ ensureLayoutState();
+ const halves=[
+   {name:"L2→R2",clusters:[{title:"D-PAD",slots:[["←","LDL","left"],["↑","LDU","up"],["→","LDR","right"],["↓","LDD","down"]]},{title:"ABXY",slots:[["□","LAL","left"],["△","LAU","up"],["○","LAR","right"],["×","LAD","down"]]}]},
+   {name:"R2→L2",clusters:[{title:"D-PAD",slots:[["←","RDL","left"],["↑","RDU","up"],["→","RDR","right"],["↓","RDD","down"]]},{title:"ABXY",slots:[["□","RAL","left"],["△","RAU","up"],["○","RAR","right"],["×","RAD","down"]]}]}
+ ];
+ for(let wi=0;wi<2;wi++){
+   const card=document.createElement("div");card.className="wxhb-card";
+   const head=document.createElement("div");head.className="wxhb-head";
+   const title=document.createElement("strong");title.textContent=`WXHB ${wi+1}`;head.append(title);
+   const setLabel=document.createElement("label");setLabel.className="hint";setLabel.textContent=state.lang==="ja"?" XHBセット ":" XHB Set ";
+   const setSel=document.createElement("select");for(let n=1;n<=8;n++){const o=document.createElement("option");o.value=n;o.textContent=n;setSel.append(o)}setSel.value=String(state.wxhbs[wi].set);setSel.onchange=e=>{state.wxhbs[wi].set=Number(e.target.value);save()};setLabel.append(setSel);head.append(setLabel);
+   const hint=document.createElement("span");hint.className="hint";hint.textContent=state.lang==="ja"?"画像に近い十字配置（公式位置コード固定）":"Cross-shaped layout (official position codes)";head.append(hint);
+   const clear=document.createElement("button");clear.className="danger";clear.textContent=tr("clearKeyboard");clear.onclick=()=>{state.wxhbs[wi].bindings={};save();renderKeyboards()};head.append(clear);
+   card.append(head);
+   const body=document.createElement("div");body.className="wxhb-body";
+   halves.forEach((h,hi)=>{
+     if(hi){const bridge=document.createElement("div");bridge.className="wxhb-bridge";body.append(bridge)}
+     const half=document.createElement("div");half.className="wxhb-half";
+     const hl=document.createElement("div");hl.className="wxhb-half-label";hl.textContent=h.name;half.append(hl);
+     h.clusters.forEach(c=>{const cross=document.createElement("div");cross.className="wxhb-cross";const ct=document.createElement("span");ct.className="wxhb-cross-title";ct.textContent=c.title;cross.append(ct);c.slots.forEach(([visual,code,pos])=>{const el=wxhbSlotEl([visual,code],wi);el.classList.add(`pos-${pos}`);cross.append(el)});half.append(cross)});
+     body.append(half);
+   });
+   card.append(body);root.append(card);
+ }
+}
 function renderKeyboards(){
+ ensureLayoutState();
  const root=document.getElementById("captureArea");root.innerHTML="";
  for(let ki=0;ki<5;ki++){
    const kb=state.keyboards[ki],card=document.createElement("div");card.className="keyboard-card";
    const head=document.createElement("div");head.className="keyboard-head";
    const title=document.createElement("strong");title.textContent=`${tr("keyboard")} ${ki+1}`;
    head.append(title);
+   const hbLabel=document.createElement("label");hbLabel.className="hint";hbLabel.textContent=state.lang==="ja"?" Hotbar ":" Hotbar ";
+   const hbSel=document.createElement("select");for(let n=1;n<=10;n++){const o=document.createElement("option");o.value=n;o.textContent=n;hbSel.append(o)}hbSel.value=String(kb.hotbar||ki+1);hbSel.onchange=e=>{kb.hotbar=Number(e.target.value);save()};hbLabel.append(hbSel);head.append(hbLabel);
    ["ctrl","alt","shift"].forEach(m=>{
      const b=document.createElement("button");b.className="mod"+(kb.mods[m]?" on":"");b.textContent=m[0].toUpperCase()+m.slice(1);
      b.onclick=()=>{kb.mods[m]=!kb.mods[m];save();renderKeyboards()};head.append(b)
@@ -351,11 +494,12 @@ function renderKeyboards(){
    const num=document.createElement("div");num.className="numpad";np.forEach(d=>num.append(keyEl(d,ki)));
    layout.append(left,navbox,num);sc.append(layout);card.append(sc);root.append(card)
  }
+ renderWxhbs(root);
 }
 
 const UI_TEXT={
  ja:{
-  lead:"5台のフルキーボードにスキルを配置し、各キーボードごとに Ctrl / Alt / Shift を自由に組み合わせられます。",
+  lead:"5台のフルキーボードと2面のWXHBにスキルを配置できます。各キーボードでは Ctrl / Alt / Shift を自由に組み合わせられます。",
   skills:"スキル",
   search:"スキル名を検索",
   upload:"画像を追加",
@@ -366,16 +510,16 @@ const UI_TEXT={
   other:"その他",
   showG:"G1〜G5",
   clearAll:"全キーボードをクリア",
-  export:"キーバインドをTXT保存",
+  export:"FF14コマンドTXT保存",
   current:"現在",
   none:"修飾なし",
   clearKeyboard:"このキーボードをクリア",
   keyboard:"キーボード",
-  hint:"Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。ダウンロードは割り当て一覧のTXTファイルのみです。",
+  hint:"Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。各キーボードのHotbar番号と各キーのSlot、WXHBのXHBセット番号を設定すると、FF14の/hotbar・/crosshotbarコマンドTXTとして保存できます。",
   noAssign:"（割り当てなし）"
  },
  en:{
-  lead:"Assign skills to five full keyboards. Ctrl / Alt / Shift can be toggled independently for each keyboard.",
+  lead:"Assign skills to five full keyboards and two WXHB panels. Ctrl / Alt / Shift can be toggled independently for each keyboard.",
   skills:"Skills",
   search:"Search skills",
   upload:"Add Images",
@@ -386,12 +530,12 @@ const UI_TEXT={
   other:"Other",
   showG:"Show G1-G5",
   clearAll:"Clear All Keyboards",
-  export:"Download Keybinds as TXT",
+  export:"Download FF14 Commands",
   current:"Current",
   none:"No modifier",
   clearKeyboard:"Clear This Keyboard",
   keyboard:"Keyboard",
-  hint:"Click Ctrl / Alt / Shift to toggle them on or off. With all three off, no modifier is used. Each keyboard has independent settings. Downloads are TXT keybind lists only.",
+  hint:"Click Ctrl / Alt / Shift to toggle them on or off. With all three off, no modifier is used. Each keyboard has independent settings. Set each keyboard Hotbar number and key Slot, plus each WXHB set number, then export FF14 /hotbar and /crosshotbar commands as TXT.",
   noAssign:"(No assignments)"
  }
 };
@@ -407,6 +551,8 @@ function updateStaticUi(){
  document.getElementById("leadText").textContent=tr("lead");
  document.getElementById("skillsLabel").textContent=tr("skills");
  document.getElementById("skillSearch").placeholder=tr("search");
+ document.getElementById("medicineLabel").firstChild.nodeValue=state.lang==="ja"?"薬名 ":"Medicine ";
+ document.getElementById("medicineName").placeholder=state.lang==="ja"?"薬の正式名称":"Exact item name";
  document.getElementById("uploadBtn").textContent=tr("upload");
  document.getElementById("clearCustom").textContent=tr("clearCustom");
  document.getElementById("drop").textContent=tr("drop");
@@ -459,8 +605,8 @@ async function renderSkills(){
      return !q||label.includes(q)||en.includes(q);
    });
 
- // Common PvE keybinds: always expose Sprint / Limit Break under Other.
- const generalBuilt=GENERAL_SKILLS
+ // Common utility buttons: Sprint/LB, Potion/Ether, movement and camera controls under Other.
+ const generalBuilt=[...GENERAL_SKILLS,medicineSkill(job)]
    .map(s=>({...s,source:"builtin"}))
    .filter(s=>{
      const label=displaySkillName(s).toLowerCase();
@@ -495,7 +641,7 @@ async function renderSkills(){
      "text/plain",
      JSON.stringify(
        s.source==="builtin"
-       ?{source:"builtin",name:s.nameEn,nameEn:s.nameEn,nameJa:s.nameJa,job:s.job,type:rawSkillType(s),src:s.src}
+       ?{source:"builtin",name:s.nameEn,nameEn:s.nameEn,nameJa:s.nameJa,job:s.job,type:rawSkillType(s),commandKind:s.commandKind||"",commandNameJa:s.commandNameJa||"",commandNameEn:s.commandNameEn||"",src:s.src}
        :{source:"custom",id:s.id}
      )
    );
@@ -535,7 +681,16 @@ async function init(){
  load();
  const js=document.getElementById("jobSelect");SUPPORTED_JOBS.forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=JOB_DISPLAY_NAMES[state.lang]?.[j]||j;js.append(o)});
  document.getElementById("titleInput").value=state.title;document.getElementById("showG").checked=state.showG;
- js.onchange=renderSkills;document.getElementById("skillSearch").oninput=renderSkills;
+ js.onchange=async()=>{
+   const job=js.value;
+   const mi=document.getElementById("medicineName");
+   mi.value=medicineNameFor(job);
+   await renderSkills();
+ };
+ document.getElementById("skillSearch").oninput=renderSkills;
+ const medicineInput=document.getElementById("medicineName");
+ medicineInput.value=medicineNameFor(js.value);
+ medicineInput.oninput=()=>{state.medicineNames=state.medicineNames||{};state.medicineNames[js.value]=medicineInput.value.trim()||MEDICINE_DEFAULTS[js.value]||"薬";save();renderSkills();};
  document.getElementById("langJa").onclick=async()=>{state.lang="ja";save();updateStaticUi();await renderSkills();renderKeyboards()};
  document.getElementById("langEn").onclick=()=>{state.lang="en";save();updateStaticUi();renderSkills();renderKeyboards()};
  document.getElementById("uploadBtn").onclick=()=>document.getElementById("fileInput").click();
@@ -547,41 +702,28 @@ async function init(){
  document.getElementById("clearCustom").onclick=()=>{state.custom=[];save();renderSkills()};
  document.getElementById("showG").onchange=e=>{state.showG=e.target.checked;save();renderKeyboards()};
  document.getElementById("titleInput").oninput=e=>{state.title=e.target.value;save()};
- document.getElementById("clearAll").onclick=()=>{state.keyboards.forEach(k=>k.bindings={});save();renderKeyboards()};
+ document.getElementById("clearAll").onclick=()=>{state.keyboards.forEach(k=>k.bindings={});state.wxhbs.forEach(w=>w.bindings={});save();renderKeyboards()};
  document.getElementById("exportBtn").onclick=()=>{
+   ensureLayoutState();
    const lines=[];
-   lines.push(state.title || "FF14 Keybinds");
-   lines.push("");
-
    state.keyboards.forEach((kb,ki)=>{
-     const mod=combo(kb)||tr("none");
-     lines.push(`${tr("keyboard")} ${ki+1} [Modifier: ${mod}]`);
-
-     const entries=Object.entries(kb.bindings)
-       .filter(([,skill])=>skill && skill.name)
-       .map(([binding,skill])=>{
-         const parts=binding.split("|");
-         const key=parts.slice(1).join("|");
-         const label=(combo(kb)?combo(kb)+"+":"")+key;
-         return {label,name:displaySkillName(skill)};
-       })
-       .sort((a,b)=>a.label.localeCompare(b.label,"ja"));
-
-     if(!entries.length){
-       lines.push("  "+tr("noAssign"));
-     }else{
-       entries.forEach(x=>lines.push(`  ${x.label} : ${x.name}`));
-     }
-     lines.push("");
+     const entries=Object.values(kb.bindings||{}).filter(skill=>skill&&skill.name&&skill.slot&&skill.commandKind!=="control").sort((a,b)=>Number(a.slot)-Number(b.slot));
+     entries.forEach(skill=>{
+       const sub=commandSub(skill);
+       lines.push(`/hotbar ${sub} "${commandName(skill)}" ${Number(kb.hotbar)||ki+1} ${Number(skill.slot)}`);
+     });
    });
-
-   const blob=new Blob([lines.join("\n")],{type:"text/plain;charset=utf-8"});
-   const url=URL.createObjectURL(blob);
-   const a=document.createElement("a");
-   a.download="ff14-keybinds.txt";
-   a.href=url;
-   a.click();
-   setTimeout(()=>URL.revokeObjectURL(url),1000);
+   state.wxhbs.forEach((wh,wi)=>{
+     const order=["LDL","LDU","LDR","LDD","LAL","LAU","LAR","LAD","RDL","RDU","RDR","RDD","RAL","RAU","RAR","RAD"];
+     order.forEach(slot=>{
+       const skill=wh.bindings?.[slot];if(!skill||!skill.name)return;
+       const sub=commandSub(skill);
+       lines.push(`/crosshotbar ${sub} "${commandName(skill)}" ${Number(wh.set)||wi+1} ${slot}`);
+     });
+   });
+   if(!lines.length)lines.push(state.lang==="ja"?"# 割り当てがありません":"# No assignments");
+   const blob=new Blob([lines.join("\n")+"\n"],{type:"text/plain;charset=utf-8"});
+   const url=URL.createObjectURL(blob);const a=document.createElement("a");a.download="ff14-hotbar-commands.txt";a.href=url;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
  };
  updateStaticUi();updateLanguageButtons();renderSkills();renderKeyboards()
 }
