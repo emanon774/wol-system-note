@@ -28,10 +28,13 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 .search{min-width:230px}
 .drop{margin-top:12px;border:2px dashed #445165;border-radius:12px;padding:14px;text-align:center;color:var(--muted)}
 .drop.over{border-color:var(--accent);background:#6fb8ff12}
-.skill-pool{display:grid;grid-template-columns:repeat(auto-fill,64px);gap:8px;margin-top:12px;max-height:280px;overflow:auto;padding-right:4px}
+.skill-group{margin-top:14px}
+.skill-group h3{margin:0 0 6px;font-size:13px;color:#d6deea}
+.skill-pool{display:grid;grid-template-columns:repeat(auto-fill,64px);gap:8px;max-height:220px;overflow:auto;padding:6px;border:1px solid #2f3947;border-radius:10px;background:#10151c}
 .skill{width:64px;position:relative;text-align:center;cursor:grab}
 .skill img{width:56px;height:56px;display:block;margin:auto;border-radius:9px;border:1px solid #4b5668;object-fit:cover}
 .skill-name{font-size:9px;color:#c8d1dc;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skill-type{font-size:8px;color:#8fa0b3;text-align:center;margin-top:1px}
 .custom .remove{position:absolute;right:1px;top:0;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:#000c}
 .keyboard-card{border:1px solid #323c4b;border-radius:14px;margin-top:14px;overflow:hidden;background:#10151d}
 .keyboard-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;background:#171e28;border-bottom:1px solid #323c4b}
@@ -84,8 +87,19 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
   <button id="clearCustom" class="danger">追加画像を削除</button>
 </div>
 <div id="drop" class="drop">追加したい画像をここへドラッグ＆ドロップ</div>
-<div id="skillPool" class="skill-pool"></div>
-<p class="hint">General（Sprint / Limit Break）とZIP内のジョブ別PvEアイコンを収録しています。日本語 / English を切り替えられます。日本語名はXIVAPIからジョブ単位で取得しブラウザに保存します。ジョブフォルダ名は元データの名前をそのまま使用しています。Traits（特性）は一覧から除外しています。</p>
+<div class="skill-group">
+  <h3>WS / Spell</h3>
+  <div id="skillPoolWs" class="skill-pool"></div>
+</div>
+<div class="skill-group">
+  <h3>Ability</h3>
+  <div id="skillPoolAbility" class="skill-pool"></div>
+</div>
+<div class="skill-group">
+  <h3>Other</h3>
+  <div id="skillPoolOther" class="skill-pool"></div>
+</div>
+
 </section>
 
 <section class="panel">
@@ -104,8 +118,9 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 <script src="skills.js"></script>
 <script>
 const JOBS=window.FF14_SKILLS||{};
+const JOB_DISPLAY_NAMES={"01_PLD": "Paladin（ナイト）", "02_WAR": "Warrior（戦士）", "03_DRK": "Dark Knight（暗黒騎士）", "04_GNB": "Gunbreaker（ガンブレイカー）", "05_MNK": "Monk（モンク）", "06_SAM": "Samurai（侍）", "07_DRG": "Dragoon（竜騎士）", "08_RPR": "Reaper（リーパー）", "09_NIN": "Ninja（忍者）", "10_VPR": "Viper（ヴァイパー）", "11_BRD": "Bard（吟遊詩人）", "12_MCH": "Machinist（機工士）", "13_DNC": "Dancer（踊り子）", "14_BLM": "Black Mage（黒魔道士）", "15_SMN": "Summoner（召喚士）", "16_RDM": "Red Mage（赤魔道士）", "17_PCT": "Pictomancer（ピクトマンサー）", "18_WHM": "White Mage（白魔道士）", "19_SCH": "Scholar（学者）", "20_AST": "Astrologian（占星術師）", "21_SGE": "Sage（賢者）", "22_BLU": "Blue Mage（青魔道士）", "General": "General（共通）"};
 const state={
- title:"My FF14 Keybinds",showG:true,custom:[],lang:"ja",jpNames:{},
+ title:"My FF14 Keybinds",showG:true,custom:[],lang:"ja",jpNames:{},actionTypes:{},
  keyboards:Array.from({length:5},()=>({mods:{ctrl:false,alt:false,shift:false},bindings:{}}))
 };
 
@@ -139,6 +154,17 @@ function jobAbbr(folder){
  const m=String(folder||"").match(/^\d+_(.+)$/);
  return m?m[1]:folder;
 }
+function displaySkillType(skill){
+ if(!skill)return "other";
+ if(skill.type)return skill.type;
+ if(skill.job==="General")return "other";
+ return state.actionTypes?.[skill.job]?.[skill.nameEn||skill.name]||"other";
+}
+function displayTypeLabel(type){
+ if(type==="ws")return "WS / Spell";
+ if(type==="ability")return "Ability";
+ return "Other";
+}
 function displaySkillName(skill){
  if(!skill)return "";
  const en=skill.nameEn||skill.name||"";
@@ -155,14 +181,18 @@ async function fetchActionNames(jobFolder,language){
  const abbr=jobAbbr(jobFolder);
  if(!abbr||jobFolder==="General")return [];
  const query=encodeURIComponent(`+ClassJobCategory.${abbr}=true`);
- let url=`https://v2.xivapi.com/api/search?sheets=Action&fields=Name&language=${language}&query=${query}&limit=500`;
+ let url=`https://v2.xivapi.com/api/search?sheets=Action&fields=Name,ActionCategory&language=${language}&query=${query}&limit=500`;
  const out=[];
  try{
    while(url){
      const res=await fetch(url);
      if(!res.ok)throw new Error("XIVAPI "+res.status);
      const data=await res.json();
-     (data.results||[]).forEach(r=>out.push({id:r.row_id,name:r.fields?.Name||""}));
+     (data.results||[]).forEach(r=>out.push({
+       id:r.row_id,
+       name:r.fields?.Name||"",
+       category:r.fields?.ActionCategory?.value||r.fields?.ActionCategory?.Name||r.fields?.ActionCategory||""
+     }));
      url=data.next?`https://v2.xivapi.com/api/search?fields=Name&language=${language}&cursor=${encodeURIComponent(data.next)}&limit=500`:"";
    }
  }catch(e){
@@ -170,9 +200,19 @@ async function fetchActionNames(jobFolder,language){
  }
  return out;
 }
+function normalizeActionType(category){
+ const c=String(category||"").toLowerCase();
+ if(c.includes("weaponskill")||c.includes("weapon skill")||c.includes("spell"))return "ws";
+ if(c.includes("ability"))return "ability";
+ return "other";
+}
 async function ensureJapanese(jobFolder){
- if(!jobFolder||jobFolder==="General"||state.jpNames[jobFolder])return;
- state.jpNames[jobFolder]={};
+ if(!jobFolder||jobFolder==="General")return;
+ if(state.jpNames[jobFolder] && state.actionTypes[jobFolder])return;
+
+ state.jpNames[jobFolder]=state.jpNames[jobFolder]||{};
+ state.actionTypes[jobFolder]=state.actionTypes[jobFolder]||{};
+
  const [enRows,jaRows]=await Promise.all([
    fetchActionNames(jobFolder,"en"),
    fetchActionNames(jobFolder,"ja")
@@ -181,6 +221,7 @@ async function ensureJapanese(jobFolder){
  enRows.forEach(x=>{
    const ja=jaById.get(x.id);
    if(x.name&&ja)state.jpNames[jobFolder][x.name]=ja;
+   if(x.name)state.actionTypes[jobFolder][x.name]=normalizeActionType(x.category);
  });
  save();
 }
@@ -189,7 +230,7 @@ function updateLanguageButtons(){
  document.getElementById("langEn").classList.toggle("on",state.lang==="en");
 }
 function skillByDrag(data){
- if(data.source==="builtin")return {name:data.name,nameEn:data.nameEn||data.name,nameJa:data.nameJa||"",job:data.job||"",src:data.src};
+ if(data.source==="builtin")return {name:data.name,nameEn:data.nameEn||data.name,nameJa:data.nameJa||"",job:data.job||"",type:data.type||"other",src:data.src};
  if(data.source==="custom")return state.custom.find(x=>x.id===data.id)||null;
  return null
 }
@@ -217,7 +258,7 @@ function keyEl(def,ki){
      if(source)kb.bindings[bk]=source;else delete kb.bindings[bk];
      if(target)kb.bindings[d.bk]=target;else delete kb.bindings[d.bk];
    }else{
-     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.nameEn||s.name,nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"",src:s.src}
+     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.nameEn||s.name,nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"",type:s.type||displaySkillType(s),src:s.src}
    }
    save();renderKeyboards()
  });
@@ -265,7 +306,13 @@ async function renderSkills(){
  updateLanguageButtons();
 
  const q=document.getElementById("skillSearch").value.trim().toLowerCase();
- const root=document.getElementById("skillPool");root.innerHTML="";
+
+ const roots={
+   ws:document.getElementById("skillPoolWs"),
+   ability:document.getElementById("skillPoolAbility"),
+   other:document.getElementById("skillPoolOther")
+ };
+ Object.values(roots).forEach(r=>r.innerHTML="");
 
  const built=(JOBS[job]||[])
    .map(s=>({
@@ -275,7 +322,8 @@ async function renderSkills(){
      nameEn:s.name,
      nameJa:(job==="General"
        ?(s.name.toLowerCase()==="sprint"?"スプリント":s.name.toLowerCase()==="limit break"?"リミットブレイク":"")
-       :(state.jpNames[job]?.[s.name]||""))
+       :(state.jpNames[job]?.[s.name]||"")),
+     type:(job==="General"?"other":(state.actionTypes[job]?.[s.name]||"other"))
    }))
    .filter(s=>{
      const label=displaySkillName(s).toLowerCase();
@@ -297,7 +345,9 @@ async function renderSkills(){
    d.draggable=true;
 
    const img=document.createElement("img");
-   img.src=s.src;img.alt=displaySkillName(s);img.title=displaySkillName(s);
+   img.src=s.src;
+   img.alt=displaySkillName(s);
+   img.title=displaySkillName(s);
 
    const n=document.createElement("div");
    n.className="skill-name";
@@ -307,7 +357,7 @@ async function renderSkills(){
      "text/plain",
      JSON.stringify(
        s.source==="builtin"
-       ?{source:"builtin",name:s.nameEn,nameEn:s.nameEn,nameJa:s.nameJa,job:s.job,src:s.src}
+       ?{source:"builtin",name:s.nameEn,nameEn:s.nameEn,nameJa:s.nameJa,job:s.job,type:displaySkillType(s),src:s.src}
        :{source:"custom",id:s.id}
      )
    );
@@ -316,24 +366,27 @@ async function renderSkills(){
 
    if(s.source==="custom"){
      const x=document.createElement("button");
-     x.className="remove";x.textContent="×";
+     x.className="remove";
+     x.textContent="×";
      x.onclick=e=>{
        e.stopPropagation();
        state.custom=state.custom.filter(v=>v.id!==s.id);
-       save();renderSkills();
+       save();
+       renderSkills();
      };
      d.append(x);
    }
 
-   root.append(d);
+   const type=displaySkillType(s);
+   (roots[type]||roots.other).append(d);
  });
 }
 function readFiles(files){
- [...files].filter(f=>f.type.startsWith("image/")).forEach(f=>{const r=new FileReader();r.onload=()=>{state.custom.push({id:crypto.randomUUID(),name:f.name.replace(/\.[^.]+$/,""),nameEn:f.name.replace(/\.[^.]+$/,""),nameJa:"",job:"Custom",src:r.result});save();renderSkills()};r.readAsDataURL(f)})
+ [...files].filter(f=>f.type.startsWith("image/")).forEach(f=>{const r=new FileReader();r.onload=()=>{state.custom.push({id:crypto.randomUUID(),name:f.name.replace(/\.[^.]+$/,""),nameEn:f.name.replace(/\.[^.]+$/,""),nameJa:"",job:"Custom",type:"other",src:r.result});save();renderSkills()};r.readAsDataURL(f)})
 }
 function init(){
  load();
- const js=document.getElementById("jobSelect");Object.keys(JOBS).forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=j;js.append(o)});
+ const js=document.getElementById("jobSelect");Object.keys(JOBS).forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=JOB_DISPLAY_NAMES[j]||j;js.append(o)});
  document.getElementById("titleInput").value=state.title;document.getElementById("showG").checked=state.showG;
  js.onchange=renderSkills;document.getElementById("skillSearch").oninput=renderSkills;
  document.getElementById("langJa").onclick=async()=>{state.lang="ja";save();await renderSkills()};
