@@ -120,13 +120,9 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 const JOBS=window.FF14_SKILLS||{};
 const SUPPORTED_JOBS=Object.keys(JOBS).filter(j=>/^\d+_/.test(j)&&j!=="22_BLU");
 const GENERAL_SKILLS=[
- {name:"Sprint",nameEn:"Sprint",nameJa:"スプリント",job:"General",type:"other",src:makeGeneralIcon("SPR","スプリント")},
- {name:"Limit Break",nameEn:"Limit Break",nameJa:"リミットブレイク",job:"General",type:"other",src:makeGeneralIcon("LB","リミットブレイク")}
+ {name:"Sprint",nameEn:"Sprint",nameJa:"スプリント",job:"General",type:"other",src:"icons/General/Sprint.png"},
+ {name:"Limit Break",nameEn:"Limit Break",nameJa:"リミットブレイク",job:"General",type:"other",src:"icons/General/Limit_Break.png"}
 ];
-function makeGeneralIcon(shortLabel,fullLabel){
- const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="10" fill="#203247"/><rect x="3" y="3" width="58" height="58" rx="8" fill="none" stroke="#8dc8ff" stroke-width="2"/><text x="32" y="37" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="white">${shortLabel}</text><title>${fullLabel}</title></svg>`;
- return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
-}
 let SKILL_CONFIG={actionCategoryMap:{"2":"spell","3":"ws","4":"ability"},jobs:{}};
 const JOB_DISPLAY_NAMES={
  ja:{
