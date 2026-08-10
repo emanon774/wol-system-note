@@ -6,7 +6,7 @@
     "officialBaseJa": "https://jp.finalfantasyxiv.com/jobguide/",
     "verifiedAt": "2026-08-11",
     "guideLastUpdateObserved": "Patch 7.5 / current official job guide checked 2026-08-11",
-    "notes": "21 standard combat jobs audited; Blue Mage intentionally excluded from UI. Sprint and Limit Break are injected as common Other actions by index.html."
+    "notes": "21 standard combat jobs audited; Blue Mage intentionally excluded from UI. Sprint and Limit Break are injected as common Other actions by index.html and use icons/General/Sprint.png and icons/General/Limit_Break.png."
   },
   "jobs": {
     "01_PLD": {
