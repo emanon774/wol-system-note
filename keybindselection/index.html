@@ -66,9 +66,6 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 .np-enter{grid-column:4;grid-row:4/span 2;height:calc(var(--key)*2 + var(--gap))}
 .np-zero{grid-column:1/span 2;width:calc(var(--key)*2 + var(--gap))}
 .hint{color:var(--muted);font-size:12px;line-height:1.7}
-.slot-select{position:absolute;right:2px;bottom:2px;z-index:3;font-size:9px;padding:1px 2px;max-width:42px;background:#080b10dd;border:1px solid #6d7786;color:#fff;border-radius:4px;opacity:.88;transition:opacity .15s}
-#captureArea.hide-slots .slot-select{display:none}
-#captureArea:not(.hide-slots) .key img{filter:brightness(.92)}
 .wxhb-body{display:flex;gap:54px;align-items:center;justify-content:center;padding:22px 26px;overflow-x:auto;min-width:780px}
 .wxhb-half{display:flex;gap:22px;align-items:center;position:relative;padding:28px 18px 14px;border:1px solid #394658;border-radius:18px;background:radial-gradient(circle at center,#26314355,#10151d 68%)}
 .wxhb-half-label{position:absolute;left:0;right:0;top:7px;text-align:center;color:#d6e1ef;font-size:12px;font-weight:800;letter-spacing:.04em}
@@ -80,6 +77,17 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 .wxhb-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .wxhb-slot.dragover{outline:2px solid var(--accent)}
 .wxhb-slot .key-label{font-size:8px}
+
+.keymap-modal{position:fixed;inset:0;z-index:1000;background:#000a;display:none;align-items:center;justify-content:center;padding:20px}
+.keymap-modal.open{display:flex}
+.keymap-dialog{width:min(1100px,96vw);max-height:90vh;overflow:auto;background:#171c24;border:1px solid #4b5668;border-radius:16px;box-shadow:0 24px 80px #000b}
+.keymap-head{position:sticky;top:0;z-index:3;display:flex;gap:10px;align-items:center;padding:14px 16px;background:#171c24;border-bottom:1px solid #384252}
+.keymap-head h2{margin:0;font-size:18px}.keymap-head .spacer{flex:1}
+.keymap-body{padding:14px 16px}.keymap-note{margin:0 0 12px;color:var(--muted);font-size:12px;line-height:1.7}
+.keymap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.keymap-row{display:grid;grid-template-columns:52px 1fr 1fr;gap:6px;align-items:center;padding:7px;border:1px solid #303a48;border-radius:9px;background:#10151c}
+.keymap-key{font-weight:800;text-align:center}.keymap-row select{min-width:0;padding:6px}
+.keymap-unmapped{opacity:.55}
 .wxhb-bridge{width:58px;height:2px;background:#3b4657;flex:none;position:relative}.wxhb-bridge::after{content:"XHB";position:absolute;left:50%;top:-10px;transform:translateX(-50%);font-size:9px;color:#738196;background:#10151d;padding:1px 5px}
 #captureArea{display:inline-block;min-width:max-content}
 @media(max-width:800px){:root{--key:42px;--gap:4px}.app{width:calc(100% - 12px)}.panel{padding:10px}}
@@ -122,15 +130,29 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 <div class="toolbar">
   <input id="titleInput" type="text" value="My FF14 Keybinds">
   <label id="showGLabel"><input id="showG" type="checkbox" checked> <span>G1〜G5</span></label>
-  <label id="showSlotsLabel"><input id="showSlots" type="checkbox"> <span>スロット番号表示</span></label>
   <div class="spacer"></div>
   <button id="clearAll" class="danger">全キーボードをクリア</button>
   <button id="exportBtn" class="primary">FF14コマンドTXT保存</button>
 </div>
 <div id="captureArea"></div>
-<p id="keyboardHint" class="hint">Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。Hotbarスロットは1〜12です。「スロット番号表示」でS1〜S12の表示を切り替えられます。各キーボードのHotbar番号と各キーのSlot、XHBのセット番号を設定すると、FF14の/hotbar・/crosshotbarコマンドTXTとして保存できます。</p>
+<p id="keyboardHint" class="hint">スキル配置とキー設定は分離されています。各キーボードの「キー設定」で、物理キーが参照するHotbar番号／Slot番号を設定してください。TXT出力時にその対応表から /hotbar コマンドを生成します。</p>
 </section>
 </main>
+<div id="keymapModal" class="keymap-modal" aria-hidden="true">
+  <div class="keymap-dialog" role="dialog" aria-modal="true" aria-labelledby="keymapTitle">
+    <div class="keymap-head">
+      <h2 id="keymapTitle">キー設定</h2>
+      <span id="keymapCombo" class="hint"></span>
+      <div class="spacer"></div>
+      <button id="keymapReset">デフォルトに戻す</button>
+      <button id="keymapClose" class="primary">閉じる</button>
+    </div>
+    <div class="keymap-body">
+      <p id="keymapNote" class="keymap-note"></p>
+      <div id="keymapGrid" class="keymap-grid"></div>
+    </div>
+  </div>
+</div>
 
 <script src="skills.js"></script>
 <script>
@@ -231,8 +253,8 @@ const JOB_DISPLAY_NAMES={
  }
 };
 const state={
- title:"My FF14 Keybinds",showG:true,showSlots:false,custom:[],lang:"ja",jpNames:{},actionTypes:{},
- keyboards:Array.from({length:5},(_,i)=>({mods:{ctrl:false,alt:false,shift:false},hotbar:i+1,bindings:{}})),
+ title:"My FF14 Keybinds",showG:true,custom:[],lang:"ja",jpNames:{},actionTypes:{},
+ keyboards:Array.from({length:5},(_,i)=>({mods:{ctrl:false,alt:false,shift:false},bindings:{},keymap:{}})),
  wxhbs:Array.from({length:3},(_,i)=>({set:i+1,bindings:{}})),
  medicineNames:{},itemIcons:{}
 };
@@ -263,18 +285,40 @@ function combo(kb){
  return a.length?a.join("+"):"";
 }
 function bindKey(kb,key){return (combo(kb)||"None")+"|"+key}
-function firstFreeHotbarSlot(kb,ignoreBinding="") {
- const used=new Set(Object.entries(kb.bindings||{}).filter(([k,v])=>k!==ignoreBinding&&v&&v.slot).map(([,v])=>Number(v.slot)));
- for(let n=1;n<=12;n++)if(!used.has(n))return n;
- return 1;
+function defaultKeymapForKeyboard(ki){
+ const map={};
+ const num=["1","2","3","4","5","6","7","8","9","0","-","^"];
+ const qrow=["Q","W","E","R","T","Y","U","I","O","P","@","["];
+ const hb1=Math.min(ki*2+1,10), hb2=Math.min(ki*2+2,10);
+ num.forEach((key,i)=>map[key]={hotbar:hb1,slot:i+1});
+ qrow.forEach((key,i)=>map[key]={hotbar:hb2,slot:i+1});
+ return map;
+}
+function normalizeKeymapEntry(v){
+ if(!v||typeof v!=="object")return null;
+ const hotbar=Number(v.hotbar),slot=Number(v.slot);
+ if(!Number.isInteger(hotbar)||hotbar<1||hotbar>10||!Number.isInteger(slot)||slot<1||slot>12)return null;
+ return {hotbar,slot};
 }
 function ensureLayoutState(){
  if(!Array.isArray(state.keyboards))state.keyboards=[];
- while(state.keyboards.length<5)state.keyboards.push({mods:{ctrl:false,alt:false,shift:false},hotbar:state.keyboards.length+1,bindings:{}});
+ while(state.keyboards.length<5)state.keyboards.push({mods:{ctrl:false,alt:false,shift:false},bindings:{},keymap:{}});
  state.keyboards.forEach((kb,i)=>{
-   kb.mods=kb.mods||{ctrl:false,alt:false,shift:false}; kb.bindings=kb.bindings||{};
-   if(!Number.isInteger(Number(kb.hotbar))||Number(kb.hotbar)<1||Number(kb.hotbar)>10)kb.hotbar=Math.min(i+1,10);
-   Object.entries(kb.bindings).forEach(([binding,skill])=>{if(skill&&skill.commandKind!=="control"&&!skill.slot)skill.slot=firstFreeHotbarSlot(kb,binding)});
+   kb.mods=kb.mods||{ctrl:false,alt:false,shift:false};kb.bindings=kb.bindings||{};
+   if(!kb.keymap||typeof kb.keymap!=="object"||Array.isArray(kb.keymap))kb.keymap={};
+   const defs=defaultKeymapForKeyboard(i);
+   if(!Object.keys(kb.keymap).length){kb.keymap=defs;}
+   else Object.keys(kb.keymap).forEach(k=>{const x=normalizeKeymapEntry(kb.keymap[k]);if(x)kb.keymap[k]=x;else delete kb.keymap[k]});
+   // v12以前のスキル側slot/hotbar設定を、可能なら物理キー側の対応表へ移行
+   Object.entries(kb.bindings).forEach(([binding,skill])=>{
+     const key=String(binding).split("|").slice(1).join("|");
+     if(skill&&skill.commandKind!=="control"&&skill.slot&&!kb.keymap[key]){
+       const hb=Number(kb.hotbar);const sl=Number(skill.slot);
+       if(hb>=1&&hb<=10&&sl>=1&&sl<=12)kb.keymap[key]={hotbar:hb,slot:sl};
+     }
+     if(skill&&"slot" in skill)delete skill.slot;
+   });
+   if("hotbar" in kb)delete kb.hotbar;
  });
  if(!Array.isArray(state.wxhbs))state.wxhbs=[];
  while(state.wxhbs.length<3)state.wxhbs.push({set:state.wxhbs.length+1,bindings:{}});
@@ -404,18 +448,6 @@ function keyEl(def,ki){
  const lab=document.createElement("div");lab.className="key-label";lab.textContent=def.label;
  el.append(lab);
  if(def.cls?.includes("blank"))return el;
- if(assigned && assigned.commandKind!=="control"){
-   const slot=document.createElement("select");slot.className="slot-select";slot.title=state.lang==="ja"?"ホットバースロット":"Hotbar slot";
-   for(let n=1;n<=12;n++){const o=document.createElement("option");o.value=n;o.textContent=`S${n}`;slot.append(o)}
-   slot.value=String(assigned.slot||firstFreeHotbarSlot(kb,bk));assigned.slot=Number(slot.value);
-   slot.onmousedown=e=>e.stopPropagation();slot.onclick=e=>e.stopPropagation();slot.onchange=e=>{
-     const next=Number(e.target.value),prev=Number(assigned.slot);
-     const other=Object.entries(kb.bindings||{}).find(([k,v])=>k!==bk&&v&&Number(v.slot)===next);
-     if(other&&prev){other[1].slot=prev;}
-     assigned.slot=next;save();renderKeyboards();
-   };
-   el.append(slot);
- }
  el.draggable=!!assigned;
  el.addEventListener("dragstart",e=>{
    if(!assigned)return;
@@ -432,12 +464,35 @@ function keyEl(def,ki){
      if(source)kb.bindings[bk]=source;else delete kb.bindings[bk];
      if(target)kb.bindings[d.bk]=target;else delete kb.bindings[d.bk];
    }else{
-     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.nameEn||s.name,nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"",type:s.type||rawSkillType(s),commandKind:s.commandKind||"",commandNameJa:s.commandNameJa||"",commandNameEn:s.commandNameEn||"",src:s.src,...(s.commandKind==="control"?{}:{slot:firstFreeHotbarSlot(kb,bk)})}
+     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.nameEn||s.name,nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"",type:s.type||rawSkillType(s),commandKind:s.commandKind||"",commandNameJa:s.commandNameJa||"",commandNameEn:s.commandNameEn||"",src:s.src}
    }
    save();renderKeyboards()
  });
  el.addEventListener("dblclick",()=>{delete kb.bindings[bk];save();renderKeyboards()});
  return el
+}
+let keymapEditingIndex=0;
+function allPhysicalKeys(){
+ const out=[];const seen=new Set();
+ const add=d=>{if(!d||d.gap||d.cls?.includes("blank")||seen.has(d.id))return;seen.add(d.id);out.push(d)};
+ rows.flat().forEach(add);nav.forEach(add);arrows.forEach(add);np.forEach(add);for(let n=1;n<=5;n++)add(K("G"+n));
+ return out;
+}
+function openKeymap(ki){keymapEditingIndex=ki;renderKeymapModal();const m=document.getElementById("keymapModal");m.classList.add("open");m.setAttribute("aria-hidden","false");}
+function closeKeymap(){const m=document.getElementById("keymapModal");m.classList.remove("open");m.setAttribute("aria-hidden","true");}
+function renderKeymapModal(){
+ ensureLayoutState();const ki=keymapEditingIndex,kb=state.keyboards[ki],grid=document.getElementById("keymapGrid");grid.innerHTML="";
+ document.getElementById("keymapTitle").textContent=(state.lang==="ja"?"キー設定 - キーボード ":"Key mapping - Keyboard ")+(ki+1);
+ document.getElementById("keymapCombo").textContent=(state.lang==="ja"?"修飾: ":"Modifier: ")+(combo(kb)||tr("none"));
+ document.getElementById("keymapNote").textContent=state.lang==="ja"?"スキルとは独立した対応表です。『未設定』のキーに置いたスキルはTXTへ出力しません。初期値では数字列とQ列をそれぞれSlot 1から右へ割り振っています。":"This map is independent of skills. Skills on unmapped keys are omitted from TXT export. Defaults assign both the number row and Q row from Slot 1 left-to-right.";
+ allPhysicalKeys().forEach(def=>{
+   const row=document.createElement("div");row.className="keymap-row";const current=normalizeKeymapEntry(kb.keymap?.[def.id]);if(!current)row.classList.add("keymap-unmapped");
+   const key=document.createElement("div");key.className="keymap-key";key.textContent=def.label||def.id;
+   const hb=document.createElement("select");const off=document.createElement("option");off.value="";off.textContent=state.lang==="ja"?"未設定":"Unmapped";hb.append(off);for(let n=1;n<=10;n++){const o=document.createElement("option");o.value=n;o.textContent=`HB ${n}`;hb.append(o)}hb.value=current?String(current.hotbar):"";
+   const sl=document.createElement("select");for(let n=1;n<=12;n++){const o=document.createElement("option");o.value=n;o.textContent=`Slot ${n}`;sl.append(o)}sl.value=current?String(current.slot):"1";sl.disabled=!current;
+   const apply=()=>{if(!hb.value){delete kb.keymap[def.id];sl.disabled=true;row.classList.add("keymap-unmapped");}else{kb.keymap[def.id]={hotbar:Number(hb.value),slot:Number(sl.value)};sl.disabled=false;row.classList.remove("keymap-unmapped");}save()};hb.onchange=apply;sl.onchange=apply;
+   row.append(key,hb,sl);grid.append(row);
+ });
 }
 function wxhbSlotEl(slotDef,wi){
  const [visual,code]=Array.isArray(slotDef)?slotDef:[slotDef,slotDef];
@@ -472,7 +527,7 @@ function renderWxhbs(root){
    {name:"",clusters:[{title:"D-PAD",slots:[["←","LDL","left"],["↑","LDU","up"],["→","LDR","right"],["↓","LDD","down"]]},{title:"ABXY",slots:[["□","LAL","left"],["△","LAU","up"],["○","LAR","right"],["×","LAD","down"]]}]},
    {name:"",clusters:[{title:"D-PAD",slots:[["←","RDL","left"],["↑","RDU","up"],["→","RDR","right"],["↓","RDD","down"]]},{title:"ABXY",slots:[["□","RAL","left"],["△","RAU","up"],["○","RAR","right"],["×","RAD","down"]]}]}
  ];
- for(let wi=0;wi<2;wi++){
+ for(let wi=0;wi<3;wi++){
    const card=document.createElement("div");card.className="wxhb-card";
    const head=document.createElement("div");head.className="wxhb-head";
    const title=document.createElement("strong");title.textContent=`XHB ${wi+1}`;head.append(title);
@@ -495,19 +550,17 @@ function renderWxhbs(root){
 function renderKeyboards(){
  ensureLayoutState();
  const root=document.getElementById("captureArea");root.innerHTML="";
- root.classList.toggle("hide-slots",!state.showSlots);
  for(let ki=0;ki<5;ki++){
    const kb=state.keyboards[ki],card=document.createElement("div");card.className="keyboard-card";
    const head=document.createElement("div");head.className="keyboard-head";
    const title=document.createElement("strong");title.textContent=`${tr("keyboard")} ${ki+1}`;
    head.append(title);
-   const hbLabel=document.createElement("label");hbLabel.className="hint";hbLabel.textContent=state.lang==="ja"?" Hotbar ":" Hotbar ";
-   const hbSel=document.createElement("select");for(let n=1;n<=10;n++){const o=document.createElement("option");o.value=n;o.textContent=n;hbSel.append(o)}hbSel.value=String(kb.hotbar||ki+1);hbSel.onchange=e=>{kb.hotbar=Number(e.target.value);save()};hbLabel.append(hbSel);head.append(hbLabel);
    ["ctrl","alt","shift"].forEach(m=>{
      const b=document.createElement("button");b.className="mod"+(kb.mods[m]?" on":"");b.textContent=m[0].toUpperCase()+m.slice(1);
      b.onclick=()=>{kb.mods[m]=!kb.mods[m];save();renderKeyboards()};head.append(b)
    });
    const txt=document.createElement("span");txt.className="hint";txt.textContent=tr("current")+": "+(combo(kb)||tr("none"));head.append(txt);
+   const keyset=document.createElement("button");keyset.textContent=state.lang==="ja"?"キー設定":"Key mapping";keyset.onclick=()=>openKeymap(ki);head.append(keyset);
    const clear=document.createElement("button");clear.className="danger";clear.textContent=tr("clearKeyboard");
    clear.onclick=()=>{kb.bindings={};save();renderKeyboards()};head.append(clear);
    card.append(head);
@@ -551,7 +604,7 @@ const UI_TEXT={
   none:"修飾なし",
   clearKeyboard:"このキーボードをクリア",
   keyboard:"キーボード",
-  hint:"Ctrl / Alt / Shift はクリックでON、もう一度クリックでOFF。修飾なしは3つともOFFです。各キーボードの設定は独立しています。Hotbarスロットは1〜12です。「スロット番号表示」でS1〜S12の表示を切り替えられます。各キーボードのHotbar番号と各キーのSlot、XHBのセット番号を設定すると、FF14の/hotbar・/crosshotbarコマンドTXTとして保存できます。",
+  hint:"スキル配置とキー設定は分離されています。各キーボードの「キー設定」で物理キー → Hotbar 1〜10 / Slot 1〜12 の対応を設定します。初期値は数字列がHotbar 1/3/5/7/9、Q列がHotbar 2/4/6/8/10で、1とQはいずれも各行のSlot 1です。TXT出力時にこの対応表を参照します。",
   noAssign:"（割り当てなし）"
  },
  en:{
@@ -571,7 +624,7 @@ const UI_TEXT={
   none:"No modifier",
   clearKeyboard:"Clear This Keyboard",
   keyboard:"Keyboard",
-  hint:"Click Ctrl / Alt / Shift to toggle them on or off. With all three off, no modifier is used. Each keyboard has independent settings. Hotbar slots are 1-12. Toggle Show slot numbers to keep skill icons unobstructed. Set each keyboard Hotbar number and key Slot, plus each XHB set number, then export FF14 /hotbar and /crosshotbar commands as TXT.",
+  hint:"Skill placement and key mapping are separate. Use Key mapping on each keyboard to map a physical key to Hotbar 1-10 / Slot 1-12. Defaults use Hotbars 1/3/5/7/9 for the number row and 2/4/6/8/10 for the Q row, with both 1 and Q starting at Slot 1. TXT export resolves placements through this map.",
   noAssign:"(No assignments)"
  }
 };
@@ -596,7 +649,6 @@ function updateStaticUi(){
  document.getElementById("abilityHeading").textContent=tr("ability");
  document.getElementById("otherHeading").textContent=tr("other");
  document.querySelector("#showGLabel span").textContent=tr("showG");
- document.querySelector("#showSlotsLabel span").textContent=state.lang==="ja"?"スロット番号表示":"Show slot numbers";
  document.getElementById("clearAll").textContent=tr("clearAll");
  document.getElementById("exportBtn").textContent=tr("export");
  document.getElementById("keyboardHint").textContent=tr("hint");
@@ -718,7 +770,6 @@ async function init(){
  load();
  const js=document.getElementById("jobSelect");SUPPORTED_JOBS.forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=JOB_DISPLAY_NAMES[state.lang]?.[j]||j;js.append(o)});
  document.getElementById("titleInput").value=state.title;document.getElementById("showG").checked=state.showG;
- document.getElementById("showSlots").checked=!!state.showSlots;
  js.onchange=async()=>{
    const job=js.value;
    const mi=document.getElementById("medicineName");
@@ -739,17 +790,20 @@ async function init(){
  drop.ondrop=e=>readFiles(e.dataTransfer.files);
  document.getElementById("clearCustom").onclick=()=>{state.custom=[];save();renderSkills()};
  document.getElementById("showG").onchange=e=>{state.showG=e.target.checked;save();renderKeyboards()};
- document.getElementById("showSlots").onchange=e=>{state.showSlots=e.target.checked;save();renderKeyboards()};
  document.getElementById("titleInput").oninput=e=>{state.title=e.target.value;save()};
  document.getElementById("clearAll").onclick=()=>{state.keyboards.forEach(k=>k.bindings={});state.wxhbs.forEach(w=>w.bindings={});save();renderKeyboards()};
+ document.getElementById("keymapClose").onclick=closeKeymap;
+ document.getElementById("keymapModal").onclick=e=>{if(e.target.id==="keymapModal")closeKeymap()};
+ document.getElementById("keymapReset").onclick=()=>{state.keyboards[keymapEditingIndex].keymap=defaultKeymapForKeyboard(keymapEditingIndex);save();renderKeymapModal()};
  document.getElementById("exportBtn").onclick=()=>{
    ensureLayoutState();
    const lines=[];
    state.keyboards.forEach((kb,ki)=>{
-     const entries=Object.values(kb.bindings||{}).filter(skill=>skill&&skill.name&&skill.slot&&skill.commandKind!=="control").sort((a,b)=>Number(a.slot)-Number(b.slot));
-     entries.forEach(skill=>{
-       const sub=commandSub(skill);
-       lines.push(`/hotbar ${sub} "${commandName(skill)}" ${Number(kb.hotbar)||ki+1} ${Number(skill.slot)}`);
+     const entries=Object.entries(kb.bindings||{}).map(([binding,skill])=>({binding,skill,key:String(binding).split("|").slice(1).join("|")})).filter(x=>x.skill&&x.skill.name&&x.skill.commandKind!=="control"&&normalizeKeymapEntry(kb.keymap?.[x.key]));
+     entries.sort((a,b)=>{const ma=normalizeKeymapEntry(kb.keymap[a.key]),mb=normalizeKeymapEntry(kb.keymap[b.key]);return ma.hotbar-mb.hotbar||ma.slot-mb.slot});
+     entries.forEach(({key,skill})=>{
+       const m=normalizeKeymapEntry(kb.keymap[key]);const sub=commandSub(skill);
+       lines.push(`/hotbar ${sub} "${commandName(skill)}" ${m.hotbar} ${m.slot}`);
      });
    });
    state.wxhbs.forEach((wh,wi)=>{
