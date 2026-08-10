@@ -118,6 +118,7 @@ input[type=text],select{background:#111720;border:1px solid var(--line);color:va
 <script src="skills.js"></script>
 <script>
 const JOBS=window.FF14_SKILLS||{};
+let SKILL_CONFIG={actionCategoryMap:{"2":"spell","3":"ws","4":"ability"},jobs:{}};
 const JOB_DISPLAY_NAMES={
  ja:{
   "General":"共通",
@@ -171,11 +172,25 @@ function jobAbbr(folder){
  const m=String(folder||"").match(/^\d+_(.+)$/);
  return m?m[1]:folder;
 }
-function displaySkillType(skill){
+function rawSkillType(skill){
  if(!skill)return "other";
+ const name=skill.nameEn||skill.name||"";
+ const cfg=SKILL_CONFIG.jobs?.[skill.job]||{};
+ const override=cfg.overrides?.[name];
+ if(override?.type)return override.type;
  if(skill.type)return skill.type;
  if(skill.job==="General")return "other";
- return state.actionTypes?.[skill.job]?.[skill.nameEn||skill.name]||"other";
+ return state.actionTypes?.[skill.job]?.[name]||"other";
+}
+function displaySkillType(skill){
+ const raw=rawSkillType(skill);
+ return raw==="ws"||raw==="spell" ? "ws" : raw;
+}
+function isSkillHidden(skill){
+ const name=skill?.nameEn||skill?.name||"";
+ const cfg=SKILL_CONFIG.jobs?.[skill?.job]||{};
+ if(cfg.overrides?.[name]?.hidden===true)return true;
+ return Array.isArray(cfg.hidden)&&cfg.hidden.includes(name);
 }
 function displayTypeLabel(type){
  if(type==="ws")return "WS / Spell";
@@ -208,7 +223,13 @@ async function fetchActionNames(jobFolder,language){
      (data.results||[]).forEach(r=>out.push({
        id:r.row_id,
        name:r.fields?.Name||"",
-       category:r.fields?.ActionCategory?.value||r.fields?.ActionCategory?.Name||r.fields?.ActionCategory||""
+       category:r.fields?.ActionCategory?.row_id
+         ??r.fields?.ActionCategory?.rowId
+         ??r.fields?.ActionCategory?.value
+         ??r.fields?.ActionCategory?.id
+         ??r.fields?.ActionCategory?.Name
+         ??r.fields?.ActionCategory
+         ??""
      }));
      url=data.next?`https://v2.xivapi.com/api/search?fields=Name&language=${language}&cursor=${encodeURIComponent(data.next)}&limit=500`:"";
    }
@@ -218,9 +239,16 @@ async function fetchActionNames(jobFolder,language){
  return out;
 }
 function normalizeActionType(category){
- const c=String(category||"").toLowerCase();
- if(c.includes("weaponskill")||c.includes("weapon skill")||c.includes("spell"))return "ws";
- if(c.includes("ability"))return "ability";
+ let raw=category;
+ if(raw && typeof raw==="object"){
+   raw=raw.row_id ?? raw.rowId ?? raw.value ?? raw.id ?? raw.Name ?? raw.name ?? "";
+ }
+ const c=String(raw??"").trim();
+ if(SKILL_CONFIG.actionCategoryMap?.[c])return SKILL_CONFIG.actionCategoryMap[c];
+ const lower=c.toLowerCase();
+ if(lower.includes("weaponskill")||lower.includes("weapon skill"))return "ws";
+ if(lower.includes("spell"))return "spell";
+ if(lower.includes("ability"))return "ability";
  return "other";
 }
 async function ensureJapanese(jobFolder){
@@ -275,7 +303,7 @@ function keyEl(def,ki){
      if(source)kb.bindings[bk]=source;else delete kb.bindings[bk];
      if(target)kb.bindings[d.bk]=target;else delete kb.bindings[d.bk];
    }else{
-     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.nameEn||s.name,nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"",type:s.type||displaySkillType(s),src:s.src}
+     const s=skillByDrag(d);if(s)kb.bindings[bk]={name:s.nameEn||s.name,nameEn:s.nameEn||s.name,nameJa:s.nameJa||"",job:s.job||"",type:s.type||rawSkillType(s),src:s.src}
    }
    save();renderKeyboards()
  });
@@ -386,7 +414,7 @@ function updateStaticUi(){
 }
 async function renderSkills(){
  const job=document.getElementById("jobSelect").value;
- if(state.lang==="ja")await ensureJapanese(job);
+ await ensureJapanese(job);
  updateLanguageButtons();
 
  const q=document.getElementById("skillSearch").value.trim().toLowerCase();
@@ -409,6 +437,7 @@ async function renderSkills(){
        :(state.jpNames[job]?.[s.name]||"")),
      type:(job==="General"?"other":(state.actionTypes[job]?.[s.name]||"other"))
    }))
+   .filter(s=>!isSkillHidden(s))
    .filter(s=>{
      const label=displaySkillName(s).toLowerCase();
      const en=(s.nameEn||"").toLowerCase();
@@ -441,7 +470,7 @@ async function renderSkills(){
      "text/plain",
      JSON.stringify(
        s.source==="builtin"
-       ?{source:"builtin",name:s.nameEn,nameEn:s.nameEn,nameJa:s.nameJa,job:s.job,type:displaySkillType(s),src:s.src}
+       ?{source:"builtin",name:s.nameEn,nameEn:s.nameEn,nameJa:s.nameJa,job:s.job,type:rawSkillType(s),src:s.src}
        :{source:"custom",id:s.id}
      )
    );
@@ -468,7 +497,16 @@ async function renderSkills(){
 function readFiles(files){
  [...files].filter(f=>f.type.startsWith("image/")).forEach(f=>{const r=new FileReader();r.onload=()=>{state.custom.push({id:crypto.randomUUID(),name:f.name.replace(/\.[^.]+$/,""),nameEn:f.name.replace(/\.[^.]+$/,""),nameJa:"",job:"Custom",type:"other",src:r.result});save();renderSkills()};r.readAsDataURL(f)})
 }
-function init(){
+async function loadSkillConfig(){
+ try{
+   const res=await fetch("skill-config.json",{cache:"no-store"});
+   if(res.ok)SKILL_CONFIG=await res.json();
+ }catch(e){
+   console.warn("skill-config.json load failed; using built-in fallback",e);
+ }
+}
+async function init(){
+ await loadSkillConfig();
  load();
  const js=document.getElementById("jobSelect");Object.keys(JOBS).forEach(j=>{const o=document.createElement("option");o.value=j;o.textContent=JOB_DISPLAY_NAMES[state.lang]?.[j]||j;js.append(o)});
  document.getElementById("titleInput").value=state.title;document.getElementById("showG").checked=state.showG;
