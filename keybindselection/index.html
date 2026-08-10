@@ -176,6 +176,7 @@ function rawSkillType(skill){
  if(!skill)return "other";
  const name=skill.nameEn||skill.name||"";
  const cfg=SKILL_CONFIG.jobs?.[skill.job]||{};
+ if(cfg.types?.[name])return cfg.types[name];
  const override=cfg.overrides?.[name];
  if(override?.type)return override.type;
  if(skill.type)return skill.type;
@@ -189,6 +190,7 @@ function displaySkillType(skill){
 function isSkillHidden(skill){
  const name=skill?.nameEn||skill?.name||"";
  const cfg=SKILL_CONFIG.jobs?.[skill?.job]||{};
+ if(Array.isArray(cfg.visible))return !cfg.visible.includes(name);
  if(cfg.overrides?.[name]?.hidden===true)return true;
  return Array.isArray(cfg.hidden)&&cfg.hidden.includes(name);
 }
