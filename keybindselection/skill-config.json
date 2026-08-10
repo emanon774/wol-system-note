@@ -1,0 +1,229 @@
+{
+  "version": "2026-08-10",
+  "source": {
+    "typePolicy": "FFXIV Official Job Guide PvE action Type: Weaponskill / Spell / Ability",
+    "officialBaseEn": "https://na.finalfantasyxiv.com/jobguide/",
+    "officialBaseJa": "https://jp.finalfantasyxiv.com/jobguide/"
+  },
+  "actionCategoryMap": {
+    "2": "spell",
+    "3": "ws",
+    "4": "ability"
+  },
+  "jobs": {
+    "01_PLD": {
+      "guide": "paladin"
+    },
+    "02_WAR": {
+      "guide": "warrior"
+    },
+    "03_DRK": {
+      "guide": "darkknight"
+    },
+    "04_GNB": {
+      "guide": "gunbreaker"
+    },
+    "05_MNK": {
+      "guide": "monk"
+    },
+    "06_SAM": {
+      "guide": "samurai"
+    },
+    "07_DRG": {
+      "guide": "dragoon"
+    },
+    "08_RPR": {
+      "guide": "reaper"
+    },
+    "09_NIN": {
+      "guide": "ninja"
+    },
+    "10_VPR": {
+      "guide": "viper"
+    },
+    "11_BRD": {
+      "guide": "bard"
+    },
+    "12_MCH": {
+      "guide": "machinist"
+    },
+    "13_DNC": {
+      "guide": "dancer"
+    },
+    "14_BLM": {
+      "guide": "blackmage"
+    },
+    "15_SMN": {
+      "guide": "summoner",
+      "hidden": [
+        "Ruby Ruin",
+        "Topaz Ruin",
+        "Emerald Ruin",
+        "Ruby Outburst",
+        "Topaz Outburst",
+        "Emerald Outburst",
+        "Ruby Ruin II",
+        "Topaz Ruin II",
+        "Emerald Ruin II",
+        "Ruby Ruin III",
+        "Topaz Ruin III",
+        "Emerald Ruin III",
+        "Astral Impulse",
+        "Astral Flare",
+        "Deathflare",
+        "Wyrmwave",
+        "Akh Morn",
+        "Ruby Rite",
+        "Topaz Rite",
+        "Emerald Rite",
+        "Ruby Disaster",
+        "Topaz Disaster",
+        "Emerald Disaster",
+        "Summon Phoenix",
+        "Fountain of Fire",
+        "Brand of Purgatory",
+        "Rekindle",
+        "Enkindle Phoenix",
+        "Everlasting Flight",
+        "Scarlet Flame",
+        "Revelation",
+        "Ruby Catastrophe",
+        "Topaz Catastrophe",
+        "Emerald Catastrophe",
+        "Crimson Cyclone",
+        "Crimson Strike",
+        "Mountain Buster",
+        "Slipstream",
+        "Summon Solar Bahamut",
+        "Umbral Impulse",
+        "Umbral Flare",
+        "Sunflare",
+        "Enkindle Solar Bahamut",
+        "Luxwave",
+        "Exodus"
+      ],
+      "overrides": {
+        "Ruin": {
+          "type": "spell"
+        },
+        "Summon Carbuncle": {
+          "type": "spell"
+        },
+        "Radiant Aegis": {
+          "type": "ability"
+        },
+        "Physick": {
+          "type": "spell"
+        },
+        "Aethercharge": {
+          "type": "spell"
+        },
+        "Summon Ruby": {
+          "type": "spell"
+        },
+        "Gemshine": {
+          "type": "spell"
+        },
+        "Fester": {
+          "type": "ability"
+        },
+        "Energy Drain": {
+          "type": "ability"
+        },
+        "Resurrection": {
+          "type": "spell"
+        },
+        "Summon Topaz": {
+          "type": "spell"
+        },
+        "Summon Emerald": {
+          "type": "spell"
+        },
+        "Ruin II": {
+          "type": "spell"
+        },
+        "Summon Ifrit": {
+          "type": "spell"
+        },
+        "Summon Titan": {
+          "type": "spell"
+        },
+        "Summon Garuda": {
+          "type": "spell"
+        },
+        "Outburst": {
+          "type": "spell"
+        },
+        "Energy Siphon": {
+          "type": "ability"
+        },
+        "Painflare": {
+          "type": "ability"
+        },
+        "Ruin III": {
+          "type": "spell"
+        },
+        "Dreadwyrm Trance": {
+          "type": "spell"
+        },
+        "Astral Flow": {
+          "type": "spell"
+        },
+        "Ruin IV": {
+          "type": "spell"
+        },
+        "Searing Light": {
+          "type": "ability"
+        },
+        "Summon Bahamut": {
+          "type": "spell"
+        },
+        "Enkindle Bahamut": {
+          "type": "ability"
+        },
+        "Tri-disaster": {
+          "type": "spell"
+        },
+        "Summon Ifrit II": {
+          "type": "spell"
+        },
+        "Summon Titan II": {
+          "type": "spell"
+        },
+        "Summon Garuda II": {
+          "type": "spell"
+        },
+        "Necrotize": {
+          "type": "ability"
+        },
+        "Searing Flash": {
+          "type": "ability"
+        },
+        "Lux Solaris": {
+          "type": "ability"
+        }
+      }
+    },
+    "16_RDM": {
+      "guide": "redmage"
+    },
+    "17_PCT": {
+      "guide": "pictomancer"
+    },
+    "18_WHM": {
+      "guide": "whitemage"
+    },
+    "19_SCH": {
+      "guide": "scholar"
+    },
+    "20_AST": {
+      "guide": "astrologian"
+    },
+    "21_SGE": {
+      "guide": "sage"
+    },
+    "22_BLU": {
+      "guide": "bluemage"
+    }
+  }
+}
