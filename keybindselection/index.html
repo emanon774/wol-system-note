@@ -428,7 +428,15 @@ async function renderSkills(){
  };
  Object.values(roots).forEach(r=>r.innerHTML="");
 
- const built=(JOBS[job]||[])
+ const jobCfg=SKILL_CONFIG.jobs?.[job]||{};
+ const rawSkills=[...new Map((JOBS[job]||[]).map(s=>[s.name,s])).values()];
+ const iconByName=new Map(rawSkills.map(s=>[s.name,s]));
+ const syntheticSkills=(jobCfg.synthetic||[]).map(s=>{
+   const icon=iconByName.get(s.iconFrom);
+   return icon?{name:s.name,src:icon.src,synthetic:true,type:s.type||jobCfg.types?.[s.name]||"other"}:null;
+ }).filter(Boolean);
+
+ const built=[...rawSkills,...syntheticSkills]
    .map(s=>({
      ...s,
      source:"builtin",
@@ -437,7 +445,7 @@ async function renderSkills(){
      nameJa:(job==="General"
        ?(s.name.toLowerCase()==="sprint"?"スプリント":s.name.toLowerCase()==="limit break"?"リミットブレイク":"")
        :(state.jpNames[job]?.[s.name]||"")),
-     type:(job==="General"?"other":(state.actionTypes[job]?.[s.name]||"other"))
+     type:(job==="General"?"other":(jobCfg.types?.[s.name]||s.type||state.actionTypes[job]?.[s.name]||"other"))
    }))
    .filter(s=>!isSkillHidden(s))
    .filter(s=>{
@@ -501,7 +509,7 @@ function readFiles(files){
 }
 async function loadSkillConfig(){
  try{
-   const res=await fetch("skill-config.json",{cache:"no-store"});
+   const res=await fetch("skill-config-v2.json",{cache:"no-store"});
    if(res.ok)SKILL_CONFIG=await res.json();
  }catch(e){
    console.warn("skill-config.json load failed; using built-in fallback",e);
