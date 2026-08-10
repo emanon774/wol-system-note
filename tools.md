@@ -6,4 +6,4 @@ nav_order: 50
 
 [宝の地図検索](treasurehunt/index.html)
 
-[キーバインドシミュレータ](keyabindselection/index.html)
+[キーバインドシミュレータ](keybindselection/index.html)
